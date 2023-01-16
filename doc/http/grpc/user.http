@@ -1,0 +1,9 @@
+###
+GRPC localhost:5001/user.User/getUser
+
+{
+  "id": 1
+}
+
+
+
