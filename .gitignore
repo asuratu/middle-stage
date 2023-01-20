@@ -6,9 +6,11 @@
 **/.DS_Store
 
 #deploy data
-
 data/*
 !data/.gitkeep
+
+#tpl
+tpl/*
 
 
 
