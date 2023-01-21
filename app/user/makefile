@@ -12,6 +12,9 @@ rpc:
 sql2pb:
 	@$(sql2pb) -go_package ./pb -host localhost -package user -password '' -port 3306 -schema stage_user -service_name user -user root > user.proto
 
+gen-model:
+	@$(goctl) model mysql datasource -url="root:PXDN93VRKUm8TeE7@tcp(localhost:3310)/ms_user" -table="$(m)"  -dir="rpc/model" -cache=true --style=goZero --home ../../tpl
+
 
 
 

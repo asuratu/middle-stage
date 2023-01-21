@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"middle/app/user/rpc/database"
+	"middle/app/user/rpc/db/database"
 	"middle/pkg/cmd"
 	"middle/pkg/cmd/make"
 	"middle/pkg/console"
@@ -12,16 +12,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func SetupCmd(c *ServiceContext) {
+func SetupCmd() {
 	var rootCmd = &cobra.Command{
-		Use:   c.Config.Name,
+		Use:   "user.rpc",
 		Short: "A simple forum project",
 		Long:  `this is root cmd`,
 	}
 
 	// 注册子命令
 	rootCmd.AddCommand(
-		cmd.CmdServe,
 		cmd.CmdKey,
 		make.CmdMake,
 		database.CmdMigrate,

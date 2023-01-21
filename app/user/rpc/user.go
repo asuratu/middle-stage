@@ -33,9 +33,6 @@ func main() {
 	})
 	defer s.Stop()
 
-	// 注册命令
-	svc.SetupCmd(ctx)
-
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
 	s.Start()
 }

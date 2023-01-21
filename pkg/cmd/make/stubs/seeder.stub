@@ -2,7 +2,7 @@ package seeders
 
 import (
     "fmt"
-    "middle/app/user/rpc/database/factories"
+    "middle/app/user/rpc/db/database/factories"
     "middle/pkg/console"
     "middle/pkg/logger"
     "middle/pkg/seed"
