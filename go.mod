@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/SpectatorNan/gorm-zero v1.1.0
+	github.com/bxcodec/faker/v3 v3.8.1
 	github.com/disintegration/imaging v1.6.2
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/gin-gonic/gin v1.8.2

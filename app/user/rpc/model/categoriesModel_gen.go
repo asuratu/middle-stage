@@ -3,136 +3,136 @@
 package model
 
 import (
-	"context"
-	"database/sql"
-	"fmt"
+    "context"
+    "database/sql"
+    "fmt"
 
-	"github.com/SpectatorNan/gorm-zero/gormc"
-	"github.com/zeromicro/go-zero/core/stores/cache"
-	"gorm.io/gorm"
+    "github.com/SpectatorNan/gorm-zero/gormc"
+    "github.com/zeromicro/go-zero/core/stores/cache"
+    "gorm.io/gorm"
 )
 
 var (
-	cacheMsUserCategoriesIdPrefix = "cache:msUser:categories:id:"
+    cacheMsUserCategoriesIdPrefix = "cache:msUser:categories:id:"
 )
 
 type (
-	categoriesModel interface {
-		Insert(ctx context.Context, tx *gorm.DB, data *Categories) error
+    categoriesModel interface {
+        Insert(ctx context.Context, tx *gorm.DB, data *Categories) error
 
-		FindOne(ctx context.Context, id int64) (*Categories, error)
-		Update(ctx context.Context, tx *gorm.DB, data *Categories) error
+        FindOne(ctx context.Context, id int64) (*Categories, error)
+        Update(ctx context.Context, tx *gorm.DB, data *Categories) error
 
-		Delete(ctx context.Context, tx *gorm.DB, id int64) error
-		Transaction(ctx context.Context, fn func(db *gorm.DB) error) error
-	}
+        Delete(ctx context.Context, tx *gorm.DB, id int64) error
+        Transaction(ctx context.Context, fn func(db *gorm.DB) error) error
+    }
 
-	defaultCategoriesModel struct {
-		gormc.CachedConn
-		table string
-	}
+    defaultCategoriesModel struct {
+        gormc.CachedConn
+        table string
+    }
 
-	Categories struct {
-		Id          int64          `gorm:"column:id"`
-		Name        string         `gorm:"column:name"`
-		Description sql.NullString `gorm:"column:description"`
-		CreatedAt   sql.NullTime   `gorm:"column:created_at"`
-		UpdatedAt   sql.NullTime   `gorm:"column:updated_at"`
-	}
+    Categories struct {
+        Id          int64          `gorm:"column:id"`
+        Name        string         `gorm:"column:name"`
+        Description sql.NullString `gorm:"column:description"`
+        CreatedAt   sql.NullTime   `gorm:"column:created_at"`
+        UpdatedAt   sql.NullTime   `gorm:"column:updated_at"`
+    }
 )
 
 func (Categories) TableName() string {
-	return "`categories`"
+    return "`categories`"
 }
 
 func newCategoriesModel(conn *gorm.DB, c cache.CacheConf) *defaultCategoriesModel {
-	return &defaultCategoriesModel{
-		CachedConn: gormc.NewConn(conn, c),
-		table:      "`categories`",
-	}
+    return &defaultCategoriesModel{
+        CachedConn: gormc.NewConn(conn, c),
+        table:      "`categories`",
+    }
 }
 
 func (m *defaultCategoriesModel) Insert(ctx context.Context, tx *gorm.DB, data *Categories) error {
 
-	err := m.ExecCtx(ctx, func(conn *gorm.DB) error {
-		db := conn
-		if tx != nil {
-			db = tx
-		}
-		return db.Save(&data).Error
-	}, m.getCacheKeys(data)...)
-	return err
+    err := m.ExecCtx(ctx, func(conn *gorm.DB) error {
+        db := conn
+        if tx != nil {
+            db = tx
+        }
+        return db.Save(&data).Error
+    }, m.getCacheKeys(data)...)
+    return err
 }
 
 func (m *defaultCategoriesModel) FindOne(ctx context.Context, id int64) (*Categories, error) {
-	msUserCategoriesIdKey := fmt.Sprintf("%s%v", cacheMsUserCategoriesIdPrefix, id)
-	var resp Categories
-	err := m.QueryCtx(ctx, &resp, msUserCategoriesIdKey, func(conn *gorm.DB, v interface{}) error {
-		return conn.Model(&Categories{}).Where("`id` = ?", id).First(&resp).Error
-	})
-	switch err {
-	case nil:
-		return &resp, nil
-	case gormc.ErrNotFound:
-		return nil, ErrNotFound
-	default:
-		return nil, err
-	}
+    msUserCategoriesIdKey := fmt.Sprintf("%s%v", cacheMsUserCategoriesIdPrefix, id)
+    var resp Categories
+    err := m.QueryCtx(ctx, &resp, msUserCategoriesIdKey, func(conn *gorm.DB, v interface{}) error {
+        return conn.Model(&Categories{}).Where("`id` = ?", id).First(&resp).Error
+    })
+    switch err {
+    case nil:
+        return &resp, nil
+    case gormc.ErrNotFound:
+        return nil, ErrNotFound
+    default:
+        return nil, err
+    }
 }
 
 func (m *defaultCategoriesModel) Update(ctx context.Context, tx *gorm.DB, data *Categories) error {
-	old, err := m.FindOne(ctx, data.Id)
-	if err != nil && err != ErrNotFound {
-		return err
-	}
-	err = m.ExecCtx(ctx, func(conn *gorm.DB) error {
-		db := conn
-		if tx != nil {
-			db = tx
-		}
-		return db.Save(data).Error
-	}, m.getCacheKeys(old)...)
-	return err
+    old, err := m.FindOne(ctx, data.Id)
+    if err != nil && err != ErrNotFound {
+        return err
+    }
+    err = m.ExecCtx(ctx, func(conn *gorm.DB) error {
+        db := conn
+        if tx != nil {
+            db = tx
+        }
+        return db.Save(data).Error
+    }, m.getCacheKeys(old)...)
+    return err
 }
 
 func (m *defaultCategoriesModel) getCacheKeys(data *Categories) []string {
-	if data == nil {
-		return []string{}
-	}
-	msUserCategoriesIdKey := fmt.Sprintf("%s%v", cacheMsUserCategoriesIdPrefix, data.Id)
-	cacheKeys := []string{
-		msUserCategoriesIdKey,
-	}
-	cacheKeys = append(cacheKeys, m.customCacheKeys(data)...)
-	return cacheKeys
+    if data == nil {
+        return []string{}
+    }
+    msUserCategoriesIdKey := fmt.Sprintf("%s%v", cacheMsUserCategoriesIdPrefix, data.Id)
+    cacheKeys := []string{
+        msUserCategoriesIdKey,
+    }
+    cacheKeys = append(cacheKeys, m.customCacheKeys(data)...)
+    return cacheKeys
 }
 
 func (m *defaultCategoriesModel) Delete(ctx context.Context, tx *gorm.DB, id int64) error {
-	data, err := m.FindOne(ctx, id)
-	if err != nil {
-		if err == ErrNotFound {
-			return nil
-		}
-		return err
-	}
-	err = m.ExecCtx(ctx, func(conn *gorm.DB) error {
-		db := conn
-		if tx != nil {
-			db = tx
-		}
-		return db.Delete(&Categories{}, id).Error
-	}, m.getCacheKeys(data)...)
-	return err
+    data, err := m.FindOne(ctx, id)
+    if err != nil {
+        if err == ErrNotFound {
+            return nil
+        }
+        return err
+    }
+    err = m.ExecCtx(ctx, func(conn *gorm.DB) error {
+        db := conn
+        if tx != nil {
+            db = tx
+        }
+        return db.Delete(&Categories{}, id).Error
+    }, m.getCacheKeys(data)...)
+    return err
 }
 
 func (m *defaultCategoriesModel) Transaction(ctx context.Context, fn func(db *gorm.DB) error) error {
-	return m.TransactCtx(ctx, fn)
+    return m.TransactCtx(ctx, fn)
 }
 
 func (m *defaultCategoriesModel) formatPrimary(primary interface{}) string {
-	return fmt.Sprintf("%s%v", cacheMsUserCategoriesIdPrefix, primary)
+    return fmt.Sprintf("%s%v", cacheMsUserCategoriesIdPrefix, primary)
 }
 
 func (m *defaultCategoriesModel) queryPrimary(conn *gorm.DB, v, primary interface{}) error {
-	return conn.Model(&Categories{}).Where("`id` = ?", primary).Take(v).Error
+    return conn.Model(&Categories{}).Where("`id` = ?", primary).Take(v).Error
 }

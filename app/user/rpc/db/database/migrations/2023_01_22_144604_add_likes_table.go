@@ -11,23 +11,25 @@ import (
 
 func init() {
 
-	type Link struct {
+	type Likes struct {
 		ID uint64 `gorm:"column:id;primaryKey;autoIncrement;" json:"id,omitempty"`
 
-		Name string `gorm:"type:varchar(255);not null"`
-		URL  string `gorm:"type:varchar(255);default:null"`
+		Name     string `gorm:"type:varchar(255);not null;index"`
+		Email    string `gorm:"type:varchar(255);index;default:null"`
+		Phone    string `gorm:"type:varchar(20);index;default:null"`
+		Password string `gorm:"type:varchar(255)"`
 
 		CreatedAt time.Time `gorm:"column:created_at;index;" json:"created_at,omitempty"`
 		UpdatedAt time.Time `gorm:"column:updated_at;index;" json:"updated_at,omitempty"`
 	}
 
 	up := func(migrator gorm.Migrator, DB *sql.DB) {
-		migrator.AutoMigrate(&Link{})
+		migrator.AutoMigrate(&Likes{})
 	}
 
 	down := func(migrator gorm.Migrator, DB *sql.DB) {
-		migrator.DropTable(&Link{})
+		migrator.DropTable(&Likes{})
 	}
 
-	migrate.Add("2022_08_07_164130_add_links_table", up, down)
+	migrate.Add("2023_01_22_144604_add_likes_table", up, down)
 }

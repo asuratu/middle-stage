@@ -2,8 +2,8 @@ package migrations
 
 import (
 	"database/sql"
+	"time"
 
-	"middle/app/user/rpc/model"
 	"middle/pkg/migrate"
 
 	"gorm.io/gorm"
@@ -12,14 +12,14 @@ import (
 func init() {
 
 	type User struct {
-		models.BaseModel
+		ID uint64 `gorm:"column:id;primaryKey;autoIncrement;" json:"id,omitempty"`
 	}
 	type Category struct {
-		models.BaseModel
+		ID uint64 `gorm:"column:id;primaryKey;autoIncrement;" json:"id,omitempty"`
 	}
 
 	type Topic struct {
-		models.BaseModel
+		ID uint64 `gorm:"column:id;primaryKey;autoIncrement;" json:"id,omitempty"`
 
 		Title      string `gorm:"type:varchar(255);not null;index"`
 		Body       string `gorm:"type:longtext;not null"`
@@ -30,7 +30,8 @@ func init() {
 		User     User
 		Category Category
 
-		models.CommonTimestampsField
+		CreatedAt time.Time `gorm:"column:created_at;index;" json:"created_at,omitempty"`
+		UpdatedAt time.Time `gorm:"column:updated_at;index;" json:"updated_at,omitempty"`
 	}
 
 	up := func(migrator gorm.Migrator, DB *sql.DB) {
