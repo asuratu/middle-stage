@@ -1,7 +1,7 @@
 air := $(shell which air)
 sql2pb := $(shell which sql2pb)
 goctl := $(shell which goctl)
-date = $(shell date "+%Y-%m-%d %H:%M:%S")
+date = $(shell date "+%Y-%m-%d-%H:%M:%S")
 
 dir = ~/code/go/go-zero/MiddleStage
 
@@ -18,15 +18,13 @@ rpc:
 ############################################################
 
 db.init:
-	docker exec -i mysql mysql --default-character-set=utf8mb4 -uroot -proot dev < ./proto/model/schema.sql
+	docker exec -i mysql_stage mysql --default-character-set=utf8mb4 -uroot -pPXDN93VRKUm8TeE7 ms_user < ./deploy/sql/migrations.sql
 
 db.dump:
-	docker exec -it mysql mysqldump --no-data --default-character-set=utf8mb4 -R -E --hex-blob -uroot -proot dev > ./tmp/backup_schema-$(date).sql
+	docker exec -it mysql_stage mysqldump --no-data --default-character-set=utf8mb4 -R -E --hex-blob -uroot -pPXDN93VRKUm8TeE7 ms_user > ./deploy/sql/backup_schema_$(date).sql
 
 db.dump.with.data:
-	docker exec -it mysql mysqldump --default-character-set=utf8mb4 -R -E --hex-blob -uroot -proot dev > ./tmp/backup.sql
+	docker exec -it mysql_stage mysqldump --default-character-set=utf8mb4 -R -E --hex-blob -uroot -pPXDN93VRKUm8TeE7 ms_user > ./deploy/sql/backup_schema_data_$(date).sql
 
-db.init:
-	docker exec -i mysql mysql --default-character-set=utf8mb4 -uroot -proot dev < ./proto/model/schema.sql
 
 
