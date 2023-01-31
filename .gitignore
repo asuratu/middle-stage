@@ -6,12 +6,18 @@
 **/.DS_Store
 
 #deploy data
-default.etcd
+default.etcd/*
 data/*
 !data/.gitkeep
 
+#public
+public/*
+
 #tpl
 tpl/*
+
+#tmp
+app/user/rpc/tmp/*
 
 
 
