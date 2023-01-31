@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/zeromicro/go-zero/core/syncx"
 	"middle/app/user/rpc/internal/config"
+	"middle/app/user/rpc/model"
 	"middle/pkg/database"
 
 	"github.com/SpectatorNan/gorm-zero/gormc"
@@ -12,9 +13,9 @@ import (
 )
 
 type ServiceContext struct {
-	Config config.Config
-	//UserModel model.UsersModel
-	cache cache.Cache
+	Config    config.Config
+	UserModel model.UsersModel
+	cache     cache.Cache
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -34,8 +35,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	}
 
 	return &ServiceContext{
-		Config: c,
-		//UserModel: model.NewUsersModel(db, c.Cache),
-		cache: ca,
+		Config:    c,
+		UserModel: model.NewUsersModel(database.DB, c.Cache),
+		cache:     ca,
 	}
 }

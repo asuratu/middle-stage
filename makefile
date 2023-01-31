@@ -3,7 +3,7 @@ sql2pb := $(shell which sql2pb)
 goctl := $(shell which goctl)
 date = $(shell date "+%Y-%m-%d-%H:%M:%S")
 
-dir = ~/code/go/go-zero/MiddleStage
+dir = ~/code/go/go-zero/middle-stage
 
 api:
 	@cd $(dir)/app/$(m)/api && $(air) $(m).go -f etc/$(m).yaml
@@ -11,6 +11,8 @@ api:
 rpc:
 	@cd $(dir)/app/$(m)/rpc && $(air) $(m).go -f etc/$(m).yaml
 
+sql2pb:
+	@$(sql2pb) -go_package ./pb -host localhost -package user -password PXDN93VRKUm8TeE7 -port 3310 -schema ms_user -service_name user -user root > user.proto
 
 ############################################################
 # 数据库相关:

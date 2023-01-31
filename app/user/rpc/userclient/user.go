@@ -13,11 +13,93 @@ import (
 )
 
 type (
-	IdRequest    = user.IdRequest
-	UserResponse = user.UserResponse
+	AddCategoriesReq      = user.AddCategoriesReq
+	AddCategoriesResp     = user.AddCategoriesResp
+	AddLikesReq           = user.AddLikesReq
+	AddLikesResp          = user.AddLikesResp
+	AddLinksReq           = user.AddLinksReq
+	AddLinksResp          = user.AddLinksResp
+	AddTopicsReq          = user.AddTopicsReq
+	AddTopicsResp         = user.AddTopicsResp
+	AddUsersReq           = user.AddUsersReq
+	AddUsersResp          = user.AddUsersResp
+	Categories            = user.Categories
+	DelCategoriesReq      = user.DelCategoriesReq
+	DelCategoriesResp     = user.DelCategoriesResp
+	DelLikesReq           = user.DelLikesReq
+	DelLikesResp          = user.DelLikesResp
+	DelLinksReq           = user.DelLinksReq
+	DelLinksResp          = user.DelLinksResp
+	DelTopicsReq          = user.DelTopicsReq
+	DelTopicsResp         = user.DelTopicsResp
+	DelUsersReq           = user.DelUsersReq
+	DelUsersResp          = user.DelUsersResp
+	GetCategoriesByIdReq  = user.GetCategoriesByIdReq
+	GetCategoriesByIdResp = user.GetCategoriesByIdResp
+	GetLikesByIdReq       = user.GetLikesByIdReq
+	GetLikesByIdResp      = user.GetLikesByIdResp
+	GetLinksByIdReq       = user.GetLinksByIdReq
+	GetLinksByIdResp      = user.GetLinksByIdResp
+	GetTopicsByIdReq      = user.GetTopicsByIdReq
+	GetTopicsByIdResp     = user.GetTopicsByIdResp
+	GetUsersByIdReq       = user.GetUsersByIdReq
+	GetUsersByIdResp      = user.GetUsersByIdResp
+	Likes                 = user.Likes
+	Links                 = user.Links
+	SearchCategoriesReq   = user.SearchCategoriesReq
+	SearchCategoriesResp  = user.SearchCategoriesResp
+	SearchLikesReq        = user.SearchLikesReq
+	SearchLikesResp       = user.SearchLikesResp
+	SearchLinksReq        = user.SearchLinksReq
+	SearchLinksResp       = user.SearchLinksResp
+	SearchTopicsReq       = user.SearchTopicsReq
+	SearchTopicsResp      = user.SearchTopicsResp
+	SearchUsersReq        = user.SearchUsersReq
+	SearchUsersResp       = user.SearchUsersResp
+	Topics                = user.Topics
+	UpdateCategoriesReq   = user.UpdateCategoriesReq
+	UpdateCategoriesResp  = user.UpdateCategoriesResp
+	UpdateLikesReq        = user.UpdateLikesReq
+	UpdateLikesResp       = user.UpdateLikesResp
+	UpdateLinksReq        = user.UpdateLinksReq
+	UpdateLinksResp       = user.UpdateLinksResp
+	UpdateTopicsReq       = user.UpdateTopicsReq
+	UpdateTopicsResp      = user.UpdateTopicsResp
+	UpdateUsersReq        = user.UpdateUsersReq
+	UpdateUsersResp       = user.UpdateUsersResp
+	Users                 = user.Users
 
 	User interface {
-		GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error)
+		// -----------------------categories-----------------------
+		AddCategories(ctx context.Context, in *AddCategoriesReq, opts ...grpc.CallOption) (*AddCategoriesResp, error)
+		UpdateCategories(ctx context.Context, in *UpdateCategoriesReq, opts ...grpc.CallOption) (*UpdateCategoriesResp, error)
+		DelCategories(ctx context.Context, in *DelCategoriesReq, opts ...grpc.CallOption) (*DelCategoriesResp, error)
+		GetCategoriesById(ctx context.Context, in *GetCategoriesByIdReq, opts ...grpc.CallOption) (*GetCategoriesByIdResp, error)
+		SearchCategories(ctx context.Context, in *SearchCategoriesReq, opts ...grpc.CallOption) (*SearchCategoriesResp, error)
+		// -----------------------likes-----------------------
+		AddLikes(ctx context.Context, in *AddLikesReq, opts ...grpc.CallOption) (*AddLikesResp, error)
+		UpdateLikes(ctx context.Context, in *UpdateLikesReq, opts ...grpc.CallOption) (*UpdateLikesResp, error)
+		DelLikes(ctx context.Context, in *DelLikesReq, opts ...grpc.CallOption) (*DelLikesResp, error)
+		GetLikesById(ctx context.Context, in *GetLikesByIdReq, opts ...grpc.CallOption) (*GetLikesByIdResp, error)
+		SearchLikes(ctx context.Context, in *SearchLikesReq, opts ...grpc.CallOption) (*SearchLikesResp, error)
+		// -----------------------links-----------------------
+		AddLinks(ctx context.Context, in *AddLinksReq, opts ...grpc.CallOption) (*AddLinksResp, error)
+		UpdateLinks(ctx context.Context, in *UpdateLinksReq, opts ...grpc.CallOption) (*UpdateLinksResp, error)
+		DelLinks(ctx context.Context, in *DelLinksReq, opts ...grpc.CallOption) (*DelLinksResp, error)
+		GetLinksById(ctx context.Context, in *GetLinksByIdReq, opts ...grpc.CallOption) (*GetLinksByIdResp, error)
+		SearchLinks(ctx context.Context, in *SearchLinksReq, opts ...grpc.CallOption) (*SearchLinksResp, error)
+		// -----------------------topics-----------------------
+		AddTopics(ctx context.Context, in *AddTopicsReq, opts ...grpc.CallOption) (*AddTopicsResp, error)
+		UpdateTopics(ctx context.Context, in *UpdateTopicsReq, opts ...grpc.CallOption) (*UpdateTopicsResp, error)
+		DelTopics(ctx context.Context, in *DelTopicsReq, opts ...grpc.CallOption) (*DelTopicsResp, error)
+		GetTopicsById(ctx context.Context, in *GetTopicsByIdReq, opts ...grpc.CallOption) (*GetTopicsByIdResp, error)
+		SearchTopics(ctx context.Context, in *SearchTopicsReq, opts ...grpc.CallOption) (*SearchTopicsResp, error)
+		// -----------------------users-----------------------
+		AddUsers(ctx context.Context, in *AddUsersReq, opts ...grpc.CallOption) (*AddUsersResp, error)
+		UpdateUsers(ctx context.Context, in *UpdateUsersReq, opts ...grpc.CallOption) (*UpdateUsersResp, error)
+		DelUsers(ctx context.Context, in *DelUsersReq, opts ...grpc.CallOption) (*DelUsersResp, error)
+		GetUsersById(ctx context.Context, in *GetUsersByIdReq, opts ...grpc.CallOption) (*GetUsersByIdResp, error)
+		SearchUsers(ctx context.Context, in *SearchUsersReq, opts ...grpc.CallOption) (*SearchUsersResp, error)
 	}
 
 	defaultUser struct {
@@ -31,7 +113,132 @@ func NewUser(cli zrpc.Client) User {
 	}
 }
 
-func (m *defaultUser) GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+// -----------------------categories-----------------------
+func (m *defaultUser) AddCategories(ctx context.Context, in *AddCategoriesReq, opts ...grpc.CallOption) (*AddCategoriesResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
-	return client.GetUser(ctx, in, opts...)
+	return client.AddCategories(ctx, in, opts...)
+}
+
+func (m *defaultUser) UpdateCategories(ctx context.Context, in *UpdateCategoriesReq, opts ...grpc.CallOption) (*UpdateCategoriesResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.UpdateCategories(ctx, in, opts...)
+}
+
+func (m *defaultUser) DelCategories(ctx context.Context, in *DelCategoriesReq, opts ...grpc.CallOption) (*DelCategoriesResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.DelCategories(ctx, in, opts...)
+}
+
+func (m *defaultUser) GetCategoriesById(ctx context.Context, in *GetCategoriesByIdReq, opts ...grpc.CallOption) (*GetCategoriesByIdResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.GetCategoriesById(ctx, in, opts...)
+}
+
+func (m *defaultUser) SearchCategories(ctx context.Context, in *SearchCategoriesReq, opts ...grpc.CallOption) (*SearchCategoriesResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.SearchCategories(ctx, in, opts...)
+}
+
+// -----------------------likes-----------------------
+func (m *defaultUser) AddLikes(ctx context.Context, in *AddLikesReq, opts ...grpc.CallOption) (*AddLikesResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.AddLikes(ctx, in, opts...)
+}
+
+func (m *defaultUser) UpdateLikes(ctx context.Context, in *UpdateLikesReq, opts ...grpc.CallOption) (*UpdateLikesResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.UpdateLikes(ctx, in, opts...)
+}
+
+func (m *defaultUser) DelLikes(ctx context.Context, in *DelLikesReq, opts ...grpc.CallOption) (*DelLikesResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.DelLikes(ctx, in, opts...)
+}
+
+func (m *defaultUser) GetLikesById(ctx context.Context, in *GetLikesByIdReq, opts ...grpc.CallOption) (*GetLikesByIdResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.GetLikesById(ctx, in, opts...)
+}
+
+func (m *defaultUser) SearchLikes(ctx context.Context, in *SearchLikesReq, opts ...grpc.CallOption) (*SearchLikesResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.SearchLikes(ctx, in, opts...)
+}
+
+// -----------------------links-----------------------
+func (m *defaultUser) AddLinks(ctx context.Context, in *AddLinksReq, opts ...grpc.CallOption) (*AddLinksResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.AddLinks(ctx, in, opts...)
+}
+
+func (m *defaultUser) UpdateLinks(ctx context.Context, in *UpdateLinksReq, opts ...grpc.CallOption) (*UpdateLinksResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.UpdateLinks(ctx, in, opts...)
+}
+
+func (m *defaultUser) DelLinks(ctx context.Context, in *DelLinksReq, opts ...grpc.CallOption) (*DelLinksResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.DelLinks(ctx, in, opts...)
+}
+
+func (m *defaultUser) GetLinksById(ctx context.Context, in *GetLinksByIdReq, opts ...grpc.CallOption) (*GetLinksByIdResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.GetLinksById(ctx, in, opts...)
+}
+
+func (m *defaultUser) SearchLinks(ctx context.Context, in *SearchLinksReq, opts ...grpc.CallOption) (*SearchLinksResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.SearchLinks(ctx, in, opts...)
+}
+
+// -----------------------topics-----------------------
+func (m *defaultUser) AddTopics(ctx context.Context, in *AddTopicsReq, opts ...grpc.CallOption) (*AddTopicsResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.AddTopics(ctx, in, opts...)
+}
+
+func (m *defaultUser) UpdateTopics(ctx context.Context, in *UpdateTopicsReq, opts ...grpc.CallOption) (*UpdateTopicsResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.UpdateTopics(ctx, in, opts...)
+}
+
+func (m *defaultUser) DelTopics(ctx context.Context, in *DelTopicsReq, opts ...grpc.CallOption) (*DelTopicsResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.DelTopics(ctx, in, opts...)
+}
+
+func (m *defaultUser) GetTopicsById(ctx context.Context, in *GetTopicsByIdReq, opts ...grpc.CallOption) (*GetTopicsByIdResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.GetTopicsById(ctx, in, opts...)
+}
+
+func (m *defaultUser) SearchTopics(ctx context.Context, in *SearchTopicsReq, opts ...grpc.CallOption) (*SearchTopicsResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.SearchTopics(ctx, in, opts...)
+}
+
+// -----------------------users-----------------------
+func (m *defaultUser) AddUsers(ctx context.Context, in *AddUsersReq, opts ...grpc.CallOption) (*AddUsersResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.AddUsers(ctx, in, opts...)
+}
+
+func (m *defaultUser) UpdateUsers(ctx context.Context, in *UpdateUsersReq, opts ...grpc.CallOption) (*UpdateUsersResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.UpdateUsers(ctx, in, opts...)
+}
+
+func (m *defaultUser) DelUsers(ctx context.Context, in *DelUsersReq, opts ...grpc.CallOption) (*DelUsersResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.DelUsers(ctx, in, opts...)
+}
+
+func (m *defaultUser) GetUsersById(ctx context.Context, in *GetUsersByIdReq, opts ...grpc.CallOption) (*GetUsersByIdResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.GetUsersById(ctx, in, opts...)
+}
+
+func (m *defaultUser) SearchUsers(ctx context.Context, in *SearchUsersReq, opts ...grpc.CallOption) (*SearchUsersResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.SearchUsers(ctx, in, opts...)
 }

@@ -1,0 +1,15 @@
+{"@timestamp":"2023-01-01T17:27:41.344+08:00","caller":"logic/getusersbyidlogic.go:28","content":"GetUsersById: id:1","level":"info","span":"dec8e2be090e3cf8","trace":"58a037d1faa10c065665d9dcd450b537"}
+{"@timestamp":"2023-01-01T17:27:41.344+08:00","caller":"logic/getusersbyidlogic.go:29","content":"************GetUsersById: id:1","level":"info"}
+{"@timestamp":"2023-01-01T17:27:41.344+08:00","caller":"serverinterceptors/statinterceptor.go:72","content":"127.0.0.1:58738 - /user.user/GetUsersById - {\"id\":1}","duration":"0.1ms","level":"info","span":"dec8e2be090e3cf8","trace":"58a037d1faa10c065665d9dcd450b537"}
+{"@timestamp":"2023-01-01T17:30:34.838+08:00","caller":"logic/getusersbyidlogic.go:28","content":"GetUsersById: id:1","level":"info","span":"72b8b48e0e52cacd","trace":"12adac01c880fe7dd5f8e75954739780"}
+{"@timestamp":"2023-01-01T17:30:34.838+08:00","caller":"logic/getusersbyidlogic.go:29","content":"************GetUsersById: id:1","level":"info"}
+{"@timestamp":"2023-01-01T17:30:34.838+08:00","caller":"serverinterceptors/statinterceptor.go:72","content":"127.0.0.1:59501 - /user.user/GetUsersById - {\"id\":1}","duration":"0.1ms","level":"info","span":"72b8b48e0e52cacd","trace":"12adac01c880fe7dd5f8e75954739780"}
+{"@timestamp":"2023-01-31T17:31:10.185+08:00","caller":"logic/getusersbyidlogic.go:28","content":"GetUsersById: id:1","level":"info","span":"2c749f1b5437b1ee","trace":"7274dcc1dedcb1e76cb5d7e8d8325c19"}
+{"@timestamp":"2023-01-31T17:31:10.185+08:00","caller":"logic/getusersbyidlogic.go:29","content":"************GetUsersById: id:1","level":"info"}
+{"@timestamp":"2023-01-31T17:31:10.185+08:00","caller":"serverinterceptors/statinterceptor.go:72","content":"127.0.0.1:59501 - /user.user/GetUsersById - {\"id\":1}","duration":"0.1ms","level":"info","span":"2c749f1b5437b1ee","trace":"7274dcc1dedcb1e76cb5d7e8d8325c19"}
+{"@timestamp":"2023-01-31T17:32:02.929+08:00","caller":"logic/getusersbyidlogic.go:28","content":"GetUsersById: id:1","level":"info","span":"6560bba5d749289e","trace":"d9af87e7622bd023428c2df73ab5f32f"}
+{"@timestamp":"2023-01-31T17:32:02.929+08:00","caller":"logic/getusersbyidlogic.go:29","content":"************GetUsersById: id:1","level":"info"}
+{"@timestamp":"2023-01-31T17:32:02.929+08:00","caller":"serverinterceptors/statinterceptor.go:72","content":"127.0.0.1:59501 - /user.user/GetUsersById - {\"id\":1}","duration":"0.1ms","level":"info","span":"6560bba5d749289e","trace":"d9af87e7622bd023428c2df73ab5f32f"}
+{"@timestamp":"2023-01-31T17:32:04.416+08:00","caller":"logic/getusersbyidlogic.go:28","content":"GetUsersById: id:1","level":"info","span":"cdac8277e99db48a","trace":"d82b2fbb508e18c0e29acf7e9a75c6c3"}
+{"@timestamp":"2023-01-31T17:32:04.416+08:00","caller":"logic/getusersbyidlogic.go:29","content":"************GetUsersById: id:1","level":"info"}
+{"@timestamp":"2023-01-31T17:32:04.416+08:00","caller":"serverinterceptors/statinterceptor.go:72","content":"127.0.0.1:59501 - /user.user/GetUsersById - {\"id\":1}","duration":"0.1ms","level":"info","span":"cdac8277e99db48a","trace":"d82b2fbb508e18c0e29acf7e9a75c6c3"}

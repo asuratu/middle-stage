@@ -22,7 +22,36 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
-	GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error)
+	// -----------------------categories-----------------------
+	AddCategories(ctx context.Context, in *AddCategoriesReq, opts ...grpc.CallOption) (*AddCategoriesResp, error)
+	UpdateCategories(ctx context.Context, in *UpdateCategoriesReq, opts ...grpc.CallOption) (*UpdateCategoriesResp, error)
+	DelCategories(ctx context.Context, in *DelCategoriesReq, opts ...grpc.CallOption) (*DelCategoriesResp, error)
+	GetCategoriesById(ctx context.Context, in *GetCategoriesByIdReq, opts ...grpc.CallOption) (*GetCategoriesByIdResp, error)
+	SearchCategories(ctx context.Context, in *SearchCategoriesReq, opts ...grpc.CallOption) (*SearchCategoriesResp, error)
+	// -----------------------likes-----------------------
+	AddLikes(ctx context.Context, in *AddLikesReq, opts ...grpc.CallOption) (*AddLikesResp, error)
+	UpdateLikes(ctx context.Context, in *UpdateLikesReq, opts ...grpc.CallOption) (*UpdateLikesResp, error)
+	DelLikes(ctx context.Context, in *DelLikesReq, opts ...grpc.CallOption) (*DelLikesResp, error)
+	GetLikesById(ctx context.Context, in *GetLikesByIdReq, opts ...grpc.CallOption) (*GetLikesByIdResp, error)
+	SearchLikes(ctx context.Context, in *SearchLikesReq, opts ...grpc.CallOption) (*SearchLikesResp, error)
+	// -----------------------links-----------------------
+	AddLinks(ctx context.Context, in *AddLinksReq, opts ...grpc.CallOption) (*AddLinksResp, error)
+	UpdateLinks(ctx context.Context, in *UpdateLinksReq, opts ...grpc.CallOption) (*UpdateLinksResp, error)
+	DelLinks(ctx context.Context, in *DelLinksReq, opts ...grpc.CallOption) (*DelLinksResp, error)
+	GetLinksById(ctx context.Context, in *GetLinksByIdReq, opts ...grpc.CallOption) (*GetLinksByIdResp, error)
+	SearchLinks(ctx context.Context, in *SearchLinksReq, opts ...grpc.CallOption) (*SearchLinksResp, error)
+	// -----------------------topics-----------------------
+	AddTopics(ctx context.Context, in *AddTopicsReq, opts ...grpc.CallOption) (*AddTopicsResp, error)
+	UpdateTopics(ctx context.Context, in *UpdateTopicsReq, opts ...grpc.CallOption) (*UpdateTopicsResp, error)
+	DelTopics(ctx context.Context, in *DelTopicsReq, opts ...grpc.CallOption) (*DelTopicsResp, error)
+	GetTopicsById(ctx context.Context, in *GetTopicsByIdReq, opts ...grpc.CallOption) (*GetTopicsByIdResp, error)
+	SearchTopics(ctx context.Context, in *SearchTopicsReq, opts ...grpc.CallOption) (*SearchTopicsResp, error)
+	// -----------------------users-----------------------
+	AddUsers(ctx context.Context, in *AddUsersReq, opts ...grpc.CallOption) (*AddUsersResp, error)
+	UpdateUsers(ctx context.Context, in *UpdateUsersReq, opts ...grpc.CallOption) (*UpdateUsersResp, error)
+	DelUsers(ctx context.Context, in *DelUsersReq, opts ...grpc.CallOption) (*DelUsersResp, error)
+	GetUsersById(ctx context.Context, in *GetUsersByIdReq, opts ...grpc.CallOption) (*GetUsersByIdResp, error)
+	SearchUsers(ctx context.Context, in *SearchUsersReq, opts ...grpc.CallOption) (*SearchUsersResp, error)
 }
 
 type userClient struct {
@@ -33,9 +62,225 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 	return &userClient{cc}
 }
 
-func (c *userClient) GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/user.User/getUser", in, out, opts...)
+func (c *userClient) AddCategories(ctx context.Context, in *AddCategoriesReq, opts ...grpc.CallOption) (*AddCategoriesResp, error) {
+	out := new(AddCategoriesResp)
+	err := c.cc.Invoke(ctx, "/user.user/AddCategories", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UpdateCategories(ctx context.Context, in *UpdateCategoriesReq, opts ...grpc.CallOption) (*UpdateCategoriesResp, error) {
+	out := new(UpdateCategoriesResp)
+	err := c.cc.Invoke(ctx, "/user.user/UpdateCategories", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) DelCategories(ctx context.Context, in *DelCategoriesReq, opts ...grpc.CallOption) (*DelCategoriesResp, error) {
+	out := new(DelCategoriesResp)
+	err := c.cc.Invoke(ctx, "/user.user/DelCategories", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) GetCategoriesById(ctx context.Context, in *GetCategoriesByIdReq, opts ...grpc.CallOption) (*GetCategoriesByIdResp, error) {
+	out := new(GetCategoriesByIdResp)
+	err := c.cc.Invoke(ctx, "/user.user/GetCategoriesById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) SearchCategories(ctx context.Context, in *SearchCategoriesReq, opts ...grpc.CallOption) (*SearchCategoriesResp, error) {
+	out := new(SearchCategoriesResp)
+	err := c.cc.Invoke(ctx, "/user.user/SearchCategories", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) AddLikes(ctx context.Context, in *AddLikesReq, opts ...grpc.CallOption) (*AddLikesResp, error) {
+	out := new(AddLikesResp)
+	err := c.cc.Invoke(ctx, "/user.user/AddLikes", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UpdateLikes(ctx context.Context, in *UpdateLikesReq, opts ...grpc.CallOption) (*UpdateLikesResp, error) {
+	out := new(UpdateLikesResp)
+	err := c.cc.Invoke(ctx, "/user.user/UpdateLikes", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) DelLikes(ctx context.Context, in *DelLikesReq, opts ...grpc.CallOption) (*DelLikesResp, error) {
+	out := new(DelLikesResp)
+	err := c.cc.Invoke(ctx, "/user.user/DelLikes", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) GetLikesById(ctx context.Context, in *GetLikesByIdReq, opts ...grpc.CallOption) (*GetLikesByIdResp, error) {
+	out := new(GetLikesByIdResp)
+	err := c.cc.Invoke(ctx, "/user.user/GetLikesById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) SearchLikes(ctx context.Context, in *SearchLikesReq, opts ...grpc.CallOption) (*SearchLikesResp, error) {
+	out := new(SearchLikesResp)
+	err := c.cc.Invoke(ctx, "/user.user/SearchLikes", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) AddLinks(ctx context.Context, in *AddLinksReq, opts ...grpc.CallOption) (*AddLinksResp, error) {
+	out := new(AddLinksResp)
+	err := c.cc.Invoke(ctx, "/user.user/AddLinks", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UpdateLinks(ctx context.Context, in *UpdateLinksReq, opts ...grpc.CallOption) (*UpdateLinksResp, error) {
+	out := new(UpdateLinksResp)
+	err := c.cc.Invoke(ctx, "/user.user/UpdateLinks", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) DelLinks(ctx context.Context, in *DelLinksReq, opts ...grpc.CallOption) (*DelLinksResp, error) {
+	out := new(DelLinksResp)
+	err := c.cc.Invoke(ctx, "/user.user/DelLinks", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) GetLinksById(ctx context.Context, in *GetLinksByIdReq, opts ...grpc.CallOption) (*GetLinksByIdResp, error) {
+	out := new(GetLinksByIdResp)
+	err := c.cc.Invoke(ctx, "/user.user/GetLinksById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) SearchLinks(ctx context.Context, in *SearchLinksReq, opts ...grpc.CallOption) (*SearchLinksResp, error) {
+	out := new(SearchLinksResp)
+	err := c.cc.Invoke(ctx, "/user.user/SearchLinks", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) AddTopics(ctx context.Context, in *AddTopicsReq, opts ...grpc.CallOption) (*AddTopicsResp, error) {
+	out := new(AddTopicsResp)
+	err := c.cc.Invoke(ctx, "/user.user/AddTopics", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UpdateTopics(ctx context.Context, in *UpdateTopicsReq, opts ...grpc.CallOption) (*UpdateTopicsResp, error) {
+	out := new(UpdateTopicsResp)
+	err := c.cc.Invoke(ctx, "/user.user/UpdateTopics", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) DelTopics(ctx context.Context, in *DelTopicsReq, opts ...grpc.CallOption) (*DelTopicsResp, error) {
+	out := new(DelTopicsResp)
+	err := c.cc.Invoke(ctx, "/user.user/DelTopics", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) GetTopicsById(ctx context.Context, in *GetTopicsByIdReq, opts ...grpc.CallOption) (*GetTopicsByIdResp, error) {
+	out := new(GetTopicsByIdResp)
+	err := c.cc.Invoke(ctx, "/user.user/GetTopicsById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) SearchTopics(ctx context.Context, in *SearchTopicsReq, opts ...grpc.CallOption) (*SearchTopicsResp, error) {
+	out := new(SearchTopicsResp)
+	err := c.cc.Invoke(ctx, "/user.user/SearchTopics", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) AddUsers(ctx context.Context, in *AddUsersReq, opts ...grpc.CallOption) (*AddUsersResp, error) {
+	out := new(AddUsersResp)
+	err := c.cc.Invoke(ctx, "/user.user/AddUsers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UpdateUsers(ctx context.Context, in *UpdateUsersReq, opts ...grpc.CallOption) (*UpdateUsersResp, error) {
+	out := new(UpdateUsersResp)
+	err := c.cc.Invoke(ctx, "/user.user/UpdateUsers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) DelUsers(ctx context.Context, in *DelUsersReq, opts ...grpc.CallOption) (*DelUsersResp, error) {
+	out := new(DelUsersResp)
+	err := c.cc.Invoke(ctx, "/user.user/DelUsers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) GetUsersById(ctx context.Context, in *GetUsersByIdReq, opts ...grpc.CallOption) (*GetUsersByIdResp, error) {
+	out := new(GetUsersByIdResp)
+	err := c.cc.Invoke(ctx, "/user.user/GetUsersById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) SearchUsers(ctx context.Context, in *SearchUsersReq, opts ...grpc.CallOption) (*SearchUsersResp, error) {
+	out := new(SearchUsersResp)
+	err := c.cc.Invoke(ctx, "/user.user/SearchUsers", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +291,36 @@ func (c *userClient) GetUser(ctx context.Context, in *IdRequest, opts ...grpc.Ca
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
-	GetUser(context.Context, *IdRequest) (*UserResponse, error)
+	// -----------------------categories-----------------------
+	AddCategories(context.Context, *AddCategoriesReq) (*AddCategoriesResp, error)
+	UpdateCategories(context.Context, *UpdateCategoriesReq) (*UpdateCategoriesResp, error)
+	DelCategories(context.Context, *DelCategoriesReq) (*DelCategoriesResp, error)
+	GetCategoriesById(context.Context, *GetCategoriesByIdReq) (*GetCategoriesByIdResp, error)
+	SearchCategories(context.Context, *SearchCategoriesReq) (*SearchCategoriesResp, error)
+	// -----------------------likes-----------------------
+	AddLikes(context.Context, *AddLikesReq) (*AddLikesResp, error)
+	UpdateLikes(context.Context, *UpdateLikesReq) (*UpdateLikesResp, error)
+	DelLikes(context.Context, *DelLikesReq) (*DelLikesResp, error)
+	GetLikesById(context.Context, *GetLikesByIdReq) (*GetLikesByIdResp, error)
+	SearchLikes(context.Context, *SearchLikesReq) (*SearchLikesResp, error)
+	// -----------------------links-----------------------
+	AddLinks(context.Context, *AddLinksReq) (*AddLinksResp, error)
+	UpdateLinks(context.Context, *UpdateLinksReq) (*UpdateLinksResp, error)
+	DelLinks(context.Context, *DelLinksReq) (*DelLinksResp, error)
+	GetLinksById(context.Context, *GetLinksByIdReq) (*GetLinksByIdResp, error)
+	SearchLinks(context.Context, *SearchLinksReq) (*SearchLinksResp, error)
+	// -----------------------topics-----------------------
+	AddTopics(context.Context, *AddTopicsReq) (*AddTopicsResp, error)
+	UpdateTopics(context.Context, *UpdateTopicsReq) (*UpdateTopicsResp, error)
+	DelTopics(context.Context, *DelTopicsReq) (*DelTopicsResp, error)
+	GetTopicsById(context.Context, *GetTopicsByIdReq) (*GetTopicsByIdResp, error)
+	SearchTopics(context.Context, *SearchTopicsReq) (*SearchTopicsResp, error)
+	// -----------------------users-----------------------
+	AddUsers(context.Context, *AddUsersReq) (*AddUsersResp, error)
+	UpdateUsers(context.Context, *UpdateUsersReq) (*UpdateUsersResp, error)
+	DelUsers(context.Context, *DelUsersReq) (*DelUsersResp, error)
+	GetUsersById(context.Context, *GetUsersByIdReq) (*GetUsersByIdResp, error)
+	SearchUsers(context.Context, *SearchUsersReq) (*SearchUsersResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -54,8 +328,80 @@ type UserServer interface {
 type UnimplementedUserServer struct {
 }
 
-func (UnimplementedUserServer) GetUser(context.Context, *IdRequest) (*UserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+func (UnimplementedUserServer) AddCategories(context.Context, *AddCategoriesReq) (*AddCategoriesResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddCategories not implemented")
+}
+func (UnimplementedUserServer) UpdateCategories(context.Context, *UpdateCategoriesReq) (*UpdateCategoriesResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateCategories not implemented")
+}
+func (UnimplementedUserServer) DelCategories(context.Context, *DelCategoriesReq) (*DelCategoriesResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DelCategories not implemented")
+}
+func (UnimplementedUserServer) GetCategoriesById(context.Context, *GetCategoriesByIdReq) (*GetCategoriesByIdResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCategoriesById not implemented")
+}
+func (UnimplementedUserServer) SearchCategories(context.Context, *SearchCategoriesReq) (*SearchCategoriesResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchCategories not implemented")
+}
+func (UnimplementedUserServer) AddLikes(context.Context, *AddLikesReq) (*AddLikesResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddLikes not implemented")
+}
+func (UnimplementedUserServer) UpdateLikes(context.Context, *UpdateLikesReq) (*UpdateLikesResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateLikes not implemented")
+}
+func (UnimplementedUserServer) DelLikes(context.Context, *DelLikesReq) (*DelLikesResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DelLikes not implemented")
+}
+func (UnimplementedUserServer) GetLikesById(context.Context, *GetLikesByIdReq) (*GetLikesByIdResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLikesById not implemented")
+}
+func (UnimplementedUserServer) SearchLikes(context.Context, *SearchLikesReq) (*SearchLikesResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchLikes not implemented")
+}
+func (UnimplementedUserServer) AddLinks(context.Context, *AddLinksReq) (*AddLinksResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddLinks not implemented")
+}
+func (UnimplementedUserServer) UpdateLinks(context.Context, *UpdateLinksReq) (*UpdateLinksResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateLinks not implemented")
+}
+func (UnimplementedUserServer) DelLinks(context.Context, *DelLinksReq) (*DelLinksResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DelLinks not implemented")
+}
+func (UnimplementedUserServer) GetLinksById(context.Context, *GetLinksByIdReq) (*GetLinksByIdResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLinksById not implemented")
+}
+func (UnimplementedUserServer) SearchLinks(context.Context, *SearchLinksReq) (*SearchLinksResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchLinks not implemented")
+}
+func (UnimplementedUserServer) AddTopics(context.Context, *AddTopicsReq) (*AddTopicsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddTopics not implemented")
+}
+func (UnimplementedUserServer) UpdateTopics(context.Context, *UpdateTopicsReq) (*UpdateTopicsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTopics not implemented")
+}
+func (UnimplementedUserServer) DelTopics(context.Context, *DelTopicsReq) (*DelTopicsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DelTopics not implemented")
+}
+func (UnimplementedUserServer) GetTopicsById(context.Context, *GetTopicsByIdReq) (*GetTopicsByIdResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTopicsById not implemented")
+}
+func (UnimplementedUserServer) SearchTopics(context.Context, *SearchTopicsReq) (*SearchTopicsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchTopics not implemented")
+}
+func (UnimplementedUserServer) AddUsers(context.Context, *AddUsersReq) (*AddUsersResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddUsers not implemented")
+}
+func (UnimplementedUserServer) UpdateUsers(context.Context, *UpdateUsersReq) (*UpdateUsersResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUsers not implemented")
+}
+func (UnimplementedUserServer) DelUsers(context.Context, *DelUsersReq) (*DelUsersResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DelUsers not implemented")
+}
+func (UnimplementedUserServer) GetUsersById(context.Context, *GetUsersByIdReq) (*GetUsersByIdResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUsersById not implemented")
+}
+func (UnimplementedUserServer) SearchUsers(context.Context, *SearchUsersReq) (*SearchUsersResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchUsers not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -70,20 +416,452 @@ func RegisterUserServer(s grpc.ServiceRegistrar, srv UserServer) {
 	s.RegisterService(&User_ServiceDesc, srv)
 }
 
-func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IdRequest)
+func _User_AddCategories_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddCategoriesReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).GetUser(ctx, in)
+		return srv.(UserServer).AddCategories(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.User/getUser",
+		FullMethod: "/user.user/AddCategories",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetUser(ctx, req.(*IdRequest))
+		return srv.(UserServer).AddCategories(ctx, req.(*AddCategoriesReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UpdateCategories_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateCategoriesReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UpdateCategories(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/UpdateCategories",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UpdateCategories(ctx, req.(*UpdateCategoriesReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_DelCategories_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DelCategoriesReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).DelCategories(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/DelCategories",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).DelCategories(ctx, req.(*DelCategoriesReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_GetCategoriesById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCategoriesByIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetCategoriesById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/GetCategoriesById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetCategoriesById(ctx, req.(*GetCategoriesByIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_SearchCategories_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchCategoriesReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).SearchCategories(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/SearchCategories",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).SearchCategories(ctx, req.(*SearchCategoriesReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_AddLikes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddLikesReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).AddLikes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/AddLikes",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).AddLikes(ctx, req.(*AddLikesReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UpdateLikes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateLikesReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UpdateLikes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/UpdateLikes",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UpdateLikes(ctx, req.(*UpdateLikesReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_DelLikes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DelLikesReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).DelLikes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/DelLikes",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).DelLikes(ctx, req.(*DelLikesReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_GetLikesById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLikesByIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetLikesById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/GetLikesById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetLikesById(ctx, req.(*GetLikesByIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_SearchLikes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchLikesReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).SearchLikes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/SearchLikes",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).SearchLikes(ctx, req.(*SearchLikesReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_AddLinks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddLinksReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).AddLinks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/AddLinks",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).AddLinks(ctx, req.(*AddLinksReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UpdateLinks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateLinksReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UpdateLinks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/UpdateLinks",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UpdateLinks(ctx, req.(*UpdateLinksReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_DelLinks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DelLinksReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).DelLinks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/DelLinks",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).DelLinks(ctx, req.(*DelLinksReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_GetLinksById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLinksByIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetLinksById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/GetLinksById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetLinksById(ctx, req.(*GetLinksByIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_SearchLinks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchLinksReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).SearchLinks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/SearchLinks",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).SearchLinks(ctx, req.(*SearchLinksReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_AddTopics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddTopicsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).AddTopics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/AddTopics",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).AddTopics(ctx, req.(*AddTopicsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UpdateTopics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateTopicsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UpdateTopics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/UpdateTopics",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UpdateTopics(ctx, req.(*UpdateTopicsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_DelTopics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DelTopicsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).DelTopics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/DelTopics",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).DelTopics(ctx, req.(*DelTopicsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_GetTopicsById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTopicsByIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetTopicsById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/GetTopicsById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetTopicsById(ctx, req.(*GetTopicsByIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_SearchTopics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchTopicsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).SearchTopics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/SearchTopics",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).SearchTopics(ctx, req.(*SearchTopicsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_AddUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddUsersReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).AddUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/AddUsers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).AddUsers(ctx, req.(*AddUsersReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UpdateUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateUsersReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UpdateUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/UpdateUsers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UpdateUsers(ctx, req.(*UpdateUsersReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_DelUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DelUsersReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).DelUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/DelUsers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).DelUsers(ctx, req.(*DelUsersReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_GetUsersById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUsersByIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetUsersById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/GetUsersById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetUsersById(ctx, req.(*GetUsersByIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_SearchUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchUsersReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).SearchUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/SearchUsers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).SearchUsers(ctx, req.(*SearchUsersReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -92,12 +870,108 @@ func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var User_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "user.User",
+	ServiceName: "user.user",
 	HandlerType: (*UserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "getUser",
-			Handler:    _User_GetUser_Handler,
+			MethodName: "AddCategories",
+			Handler:    _User_AddCategories_Handler,
+		},
+		{
+			MethodName: "UpdateCategories",
+			Handler:    _User_UpdateCategories_Handler,
+		},
+		{
+			MethodName: "DelCategories",
+			Handler:    _User_DelCategories_Handler,
+		},
+		{
+			MethodName: "GetCategoriesById",
+			Handler:    _User_GetCategoriesById_Handler,
+		},
+		{
+			MethodName: "SearchCategories",
+			Handler:    _User_SearchCategories_Handler,
+		},
+		{
+			MethodName: "AddLikes",
+			Handler:    _User_AddLikes_Handler,
+		},
+		{
+			MethodName: "UpdateLikes",
+			Handler:    _User_UpdateLikes_Handler,
+		},
+		{
+			MethodName: "DelLikes",
+			Handler:    _User_DelLikes_Handler,
+		},
+		{
+			MethodName: "GetLikesById",
+			Handler:    _User_GetLikesById_Handler,
+		},
+		{
+			MethodName: "SearchLikes",
+			Handler:    _User_SearchLikes_Handler,
+		},
+		{
+			MethodName: "AddLinks",
+			Handler:    _User_AddLinks_Handler,
+		},
+		{
+			MethodName: "UpdateLinks",
+			Handler:    _User_UpdateLinks_Handler,
+		},
+		{
+			MethodName: "DelLinks",
+			Handler:    _User_DelLinks_Handler,
+		},
+		{
+			MethodName: "GetLinksById",
+			Handler:    _User_GetLinksById_Handler,
+		},
+		{
+			MethodName: "SearchLinks",
+			Handler:    _User_SearchLinks_Handler,
+		},
+		{
+			MethodName: "AddTopics",
+			Handler:    _User_AddTopics_Handler,
+		},
+		{
+			MethodName: "UpdateTopics",
+			Handler:    _User_UpdateTopics_Handler,
+		},
+		{
+			MethodName: "DelTopics",
+			Handler:    _User_DelTopics_Handler,
+		},
+		{
+			MethodName: "GetTopicsById",
+			Handler:    _User_GetTopicsById_Handler,
+		},
+		{
+			MethodName: "SearchTopics",
+			Handler:    _User_SearchTopics_Handler,
+		},
+		{
+			MethodName: "AddUsers",
+			Handler:    _User_AddUsers_Handler,
+		},
+		{
+			MethodName: "UpdateUsers",
+			Handler:    _User_UpdateUsers_Handler,
+		},
+		{
+			MethodName: "DelUsers",
+			Handler:    _User_DelUsers_Handler,
+		},
+		{
+			MethodName: "GetUsersById",
+			Handler:    _User_GetUsersById_Handler,
+		},
+		{
+			MethodName: "SearchUsers",
+			Handler:    _User_SearchUsers_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1,9 +1,10 @@
-###
-GRPC localhost:5001/user.User/getUser
+### 根据 ID 获取用户信息
+GRPC localhost:5001/user.user/GetUsersById
 
 {
   "id": 1
 }
+
 
 
 

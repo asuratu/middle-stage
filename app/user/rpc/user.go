@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+
 	"middle/app/user/rpc/internal/config"
 	"middle/app/user/rpc/internal/server"
 	"middle/app/user/rpc/internal/svc"

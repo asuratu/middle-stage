@@ -1,0 +1,438 @@
+syntax = "proto3";
+
+option go_package ="./user";
+
+package user;
+
+// ------------------------------------ 
+// Messages
+// ------------------------------------ 
+
+//--------------------------------categories--------------------------------
+message Categories {
+  int64 id = 1; //id
+  string name = 2; //name
+  string description = 3; //description
+  int64 createdAt = 4; //createdAt
+  int64 updatedAt = 5; //updatedAt
+}
+
+message AddCategoriesReq {
+  string name = 1; //name
+  string description = 2; //description
+  int64 createdAt = 3; //createdAt
+  int64 updatedAt = 4; //updatedAt
+}
+
+message AddCategoriesResp {
+}
+
+message UpdateCategoriesReq {
+  int64 id = 1; //id
+  string name = 2; //name
+  string description = 3; //description
+  int64 createdAt = 4; //createdAt
+  int64 updatedAt = 5; //updatedAt
+}
+
+message UpdateCategoriesResp {
+}
+
+message DelCategoriesReq {
+  int64 id = 1; //id
+}
+
+message DelCategoriesResp {
+}
+
+message GetCategoriesByIdReq {
+  int64 id = 1; //id
+}
+
+message GetCategoriesByIdResp {
+  Categories categories = 1; //categories
+}
+
+message SearchCategoriesReq {
+  int64 page = 1; //page
+  int64 limit = 2; //limit
+  int64 id = 3; //id
+  string name = 4; //name
+  string description = 5; //description
+  int64 createdAt = 6; //createdAt
+  int64 updatedAt = 7; //updatedAt
+}
+
+message SearchCategoriesResp {
+  repeated Categories categories = 1; //categories
+}
+
+//--------------------------------likes--------------------------------
+message Likes {
+  int64 id = 1; //id
+  string name = 2; //name
+  string email = 3; //email
+  string phone = 4; //phone
+  string password = 5; //password
+  int64 createdAt = 6; //createdAt
+  int64 updatedAt = 7; //updatedAt
+}
+
+message AddLikesReq {
+  string name = 1; //name
+  string email = 2; //email
+  string phone = 3; //phone
+  string password = 4; //password
+  int64 createdAt = 5; //createdAt
+  int64 updatedAt = 6; //updatedAt
+}
+
+message AddLikesResp {
+}
+
+message UpdateLikesReq {
+  int64 id = 1; //id
+  string name = 2; //name
+  string email = 3; //email
+  string phone = 4; //phone
+  string password = 5; //password
+  int64 createdAt = 6; //createdAt
+  int64 updatedAt = 7; //updatedAt
+}
+
+message UpdateLikesResp {
+}
+
+message DelLikesReq {
+  int64 id = 1; //id
+}
+
+message DelLikesResp {
+}
+
+message GetLikesByIdReq {
+  int64 id = 1; //id
+}
+
+message GetLikesByIdResp {
+  Likes likes = 1; //likes
+}
+
+message SearchLikesReq {
+  int64 page = 1; //page
+  int64 limit = 2; //limit
+  int64 id = 3; //id
+  string name = 4; //name
+  string email = 5; //email
+  string phone = 6; //phone
+  string password = 7; //password
+  int64 createdAt = 8; //createdAt
+  int64 updatedAt = 9; //updatedAt
+}
+
+message SearchLikesResp {
+  repeated Likes likes = 1; //likes
+}
+
+//--------------------------------links--------------------------------
+message Links {
+  int64 id = 1; //id
+  string name = 2; //name
+  string url = 3; //url
+  int64 createdAt = 4; //createdAt
+  int64 updatedAt = 5; //updatedAt
+}
+
+message AddLinksReq {
+  string name = 1; //name
+  string url = 2; //url
+  int64 createdAt = 3; //createdAt
+  int64 updatedAt = 4; //updatedAt
+}
+
+message AddLinksResp {
+}
+
+message UpdateLinksReq {
+  int64 id = 1; //id
+  string name = 2; //name
+  string url = 3; //url
+  int64 createdAt = 4; //createdAt
+  int64 updatedAt = 5; //updatedAt
+}
+
+message UpdateLinksResp {
+}
+
+message DelLinksReq {
+  int64 id = 1; //id
+}
+
+message DelLinksResp {
+}
+
+message GetLinksByIdReq {
+  int64 id = 1; //id
+}
+
+message GetLinksByIdResp {
+  Links links = 1; //links
+}
+
+message SearchLinksReq {
+  int64 page = 1; //page
+  int64 limit = 2; //limit
+  int64 id = 3; //id
+  string name = 4; //name
+  string url = 5; //url
+  int64 createdAt = 6; //createdAt
+  int64 updatedAt = 7; //updatedAt
+}
+
+message SearchLinksResp {
+  repeated Links links = 1; //links
+}
+
+//--------------------------------migrations--------------------------------
+message Migrations {
+  int64 id = 1; //id
+  string migration = 2; //migration
+  int64 batch = 3; //batch
+}
+
+message AddMigrationsReq {
+  string migration = 1; //migration
+  int64 batch = 2; //batch
+}
+
+message AddMigrationsResp {
+}
+
+message UpdateMigrationsReq {
+  int64 id = 1; //id
+  string migration = 2; //migration
+  int64 batch = 3; //batch
+}
+
+message UpdateMigrationsResp {
+}
+
+message DelMigrationsReq {
+  int64 id = 1; //id
+}
+
+message DelMigrationsResp {
+}
+
+message GetMigrationsByIdReq {
+  int64 id = 1; //id
+}
+
+message GetMigrationsByIdResp {
+  Migrations migrations = 1; //migrations
+}
+
+message SearchMigrationsReq {
+  int64 page = 1; //page
+  int64 limit = 2; //limit
+  int64 id = 3; //id
+  string migration = 4; //migration
+  int64 batch = 5; //batch
+}
+
+message SearchMigrationsResp {
+  repeated Migrations migrations = 1; //migrations
+}
+
+//--------------------------------topics--------------------------------
+message Topics {
+  int64 id = 1; //id
+  string title = 2; //title
+  string body = 3; //body
+  int64 userId = 4; //userId
+  int64 categoryId = 5; //categoryId
+  int64 createdAt = 6; //createdAt
+  int64 updatedAt = 7; //updatedAt
+}
+
+message AddTopicsReq {
+  string title = 1; //title
+  string body = 2; //body
+  int64 userId = 3; //userId
+  int64 categoryId = 4; //categoryId
+  int64 createdAt = 5; //createdAt
+  int64 updatedAt = 6; //updatedAt
+}
+
+message AddTopicsResp {
+}
+
+message UpdateTopicsReq {
+  int64 id = 1; //id
+  string title = 2; //title
+  string body = 3; //body
+  int64 userId = 4; //userId
+  int64 categoryId = 5; //categoryId
+  int64 createdAt = 6; //createdAt
+  int64 updatedAt = 7; //updatedAt
+}
+
+message UpdateTopicsResp {
+}
+
+message DelTopicsReq {
+  int64 id = 1; //id
+}
+
+message DelTopicsResp {
+}
+
+message GetTopicsByIdReq {
+  int64 id = 1; //id
+}
+
+message GetTopicsByIdResp {
+  Topics topics = 1; //topics
+}
+
+message SearchTopicsReq {
+  int64 page = 1; //page
+  int64 limit = 2; //limit
+  int64 id = 3; //id
+  string title = 4; //title
+  string body = 5; //body
+  int64 userId = 6; //userId
+  int64 categoryId = 7; //categoryId
+  int64 createdAt = 8; //createdAt
+  int64 updatedAt = 9; //updatedAt
+}
+
+message SearchTopicsResp {
+  repeated Topics topics = 1; //topics
+}
+
+//--------------------------------users--------------------------------
+message Users {
+  int64 id = 1; //id
+  string name = 2; //name
+  string email = 3; //email
+  string phone = 4; //phone
+  string password = 5; //password
+  int64 createdAt = 6; //createdAt
+  int64 updatedAt = 7; //updatedAt
+  string city = 8; //city
+  string introduction = 9; //introduction
+  string avatar = 10; //avatar
+}
+
+message AddUsersReq {
+  string name = 1; //name
+  string email = 2; //email
+  string phone = 3; //phone
+  string password = 4; //password
+  int64 createdAt = 5; //createdAt
+  int64 updatedAt = 6; //updatedAt
+  string city = 7; //city
+  string introduction = 8; //introduction
+  string avatar = 9; //avatar
+}
+
+message AddUsersResp {
+}
+
+message UpdateUsersReq {
+  int64 id = 1; //id
+  string name = 2; //name
+  string email = 3; //email
+  string phone = 4; //phone
+  string password = 5; //password
+  int64 createdAt = 6; //createdAt
+  int64 updatedAt = 7; //updatedAt
+  string city = 8; //city
+  string introduction = 9; //introduction
+  string avatar = 10; //avatar
+}
+
+message UpdateUsersResp {
+}
+
+message DelUsersReq {
+  int64 id = 1; //id
+}
+
+message DelUsersResp {
+}
+
+message GetUsersByIdReq {
+  int64 id = 1; //id
+}
+
+message GetUsersByIdResp {
+  Users users = 1; //users
+}
+
+message SearchUsersReq {
+  int64 page = 1; //page
+  int64 limit = 2; //limit
+  int64 id = 3; //id
+  string name = 4; //name
+  string email = 5; //email
+  string phone = 6; //phone
+  string password = 7; //password
+  int64 createdAt = 8; //createdAt
+  int64 updatedAt = 9; //updatedAt
+  string city = 10; //city
+  string introduction = 11; //introduction
+  string avatar = 12; //avatar
+}
+
+message SearchUsersResp {
+  repeated Users users = 1; //users
+}
+
+
+
+// ------------------------------------ 
+// Rpc Func
+// ------------------------------------ 
+
+service user{ 
+
+	 //-----------------------categories----------------------- 
+	 rpc AddCategories(AddCategoriesReq) returns (AddCategoriesResp); 
+	 rpc UpdateCategories(UpdateCategoriesReq) returns (UpdateCategoriesResp); 
+	 rpc DelCategories(DelCategoriesReq) returns (DelCategoriesResp); 
+	 rpc GetCategoriesById(GetCategoriesByIdReq) returns (GetCategoriesByIdResp); 
+	 rpc SearchCategories(SearchCategoriesReq) returns (SearchCategoriesResp); 
+	 //-----------------------likes----------------------- 
+	 rpc AddLikes(AddLikesReq) returns (AddLikesResp); 
+	 rpc UpdateLikes(UpdateLikesReq) returns (UpdateLikesResp); 
+	 rpc DelLikes(DelLikesReq) returns (DelLikesResp); 
+	 rpc GetLikesById(GetLikesByIdReq) returns (GetLikesByIdResp); 
+	 rpc SearchLikes(SearchLikesReq) returns (SearchLikesResp); 
+	 //-----------------------links----------------------- 
+	 rpc AddLinks(AddLinksReq) returns (AddLinksResp); 
+	 rpc UpdateLinks(UpdateLinksReq) returns (UpdateLinksResp); 
+	 rpc DelLinks(DelLinksReq) returns (DelLinksResp); 
+	 rpc GetLinksById(GetLinksByIdReq) returns (GetLinksByIdResp); 
+	 rpc SearchLinks(SearchLinksReq) returns (SearchLinksResp); 
+	 //-----------------------migrations----------------------- 
+	 rpc AddMigrations(AddMigrationsReq) returns (AddMigrationsResp); 
+	 rpc UpdateMigrations(UpdateMigrationsReq) returns (UpdateMigrationsResp); 
+	 rpc DelMigrations(DelMigrationsReq) returns (DelMigrationsResp); 
+	 rpc GetMigrationsById(GetMigrationsByIdReq) returns (GetMigrationsByIdResp); 
+	 rpc SearchMigrations(SearchMigrationsReq) returns (SearchMigrationsResp); 
+	 //-----------------------topics----------------------- 
+	 rpc AddTopics(AddTopicsReq) returns (AddTopicsResp); 
+	 rpc UpdateTopics(UpdateTopicsReq) returns (UpdateTopicsResp); 
+	 rpc DelTopics(DelTopicsReq) returns (DelTopicsResp); 
+	 rpc GetTopicsById(GetTopicsByIdReq) returns (GetTopicsByIdResp); 
+	 rpc SearchTopics(SearchTopicsReq) returns (SearchTopicsResp); 
+	 //-----------------------users----------------------- 
+	 rpc AddUsers(AddUsersReq) returns (AddUsersResp); 
+	 rpc UpdateUsers(UpdateUsersReq) returns (UpdateUsersResp); 
+	 rpc DelUsers(DelUsersReq) returns (DelUsersResp); 
+	 rpc GetUsersById(GetUsersByIdReq) returns (GetUsersByIdResp); 
+	 rpc SearchUsers(SearchUsersReq) returns (SearchUsersResp); 
+
+}
