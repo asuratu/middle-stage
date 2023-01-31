@@ -4,6 +4,7 @@ var message map[uint32]string
 
 func init() {
 	message = make(map[uint32]string)
+	// 全局错误码
 	message[OK] = "SUCCESS"
 	message[ServerCommonError] = "服务器开小差啦,稍后再来试一试"
 	message[RequestParamError] = "参数错误"
@@ -11,6 +12,10 @@ func init() {
 	message[TokenGenerateError] = "生成token失败"
 	message[DbError] = "数据库繁忙,请稍后再试"
 	message[DbUpdateAffectedZeroError] = "更新数据影响行数为0"
+
+	// 用户模块
+	message[UserNotFound] = "用户不存在"
+	message[UserIsBlack] = "用户已被拉黑"
 }
 
 func MapErrMsg(errcode uint32) string {

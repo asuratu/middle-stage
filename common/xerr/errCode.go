@@ -13,4 +13,8 @@ const (
 	DbUpdateAffectedZeroError uint32 = 100006
 )
 
-//用户模块
+// 用户模块
+const (
+	UserNotFound uint32 = 200001
+	UserIsBlack  uint32 = 200002
+)
