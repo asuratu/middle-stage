@@ -17,6 +17,7 @@ public/*
 tpl/*
 
 #tmp
+app/user/rpc/tmp
 app/user/rpc/tmp/*
 
 
