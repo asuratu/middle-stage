@@ -18,3 +18,19 @@ UserRpcConf:
     Hosts:
       - 127.0.0.1:2379
     Key: user.rpc
+
+# 图形验证码配置
+CaptConfig:
+  Height: 80
+  Width: 240
+  Length: 6
+  MaxSkew: 0.7
+  DotCount: 80
+  # 过期时间, 单位是分钟
+  ExpireTime: 15
+  # dev 模式下的过期时间, 方便调试
+  DebugExpireTime: 10080
+  # 非生产环境，使用此 key 可跳过验证，方便测试
+  TestingKey: captcha_skip_test
+
+
