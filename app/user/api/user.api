@@ -7,20 +7,39 @@ info (
 	email: "455224159@qq.com"
 )
 
+// ============================> user v1 <============================
+
+//手机号是否存在
+type PhoneExistReq {
+	Phone string `json:"phone"`
+}
+type PhoneExistReply {
+	Exist bool `json:"exist"`
+}
+
+//邮箱是否存在
+type EmailExistReq {
+	Email string `json:"email"`
+}
+type EmailExistReply {
+	Exist bool `json:"exist"`
+}
+
 //注册请求
 type RegisterReq {
 	Username string `json:"username"`
-	Mobile   string `json:"mobile"` //基本一个手机号码就完事
+	Mobile   string `json:"mobile"`
 	Password string `json:"password"`
-	Smscode  string `json:"smscode"` //短信码
+	Smscode  string `json:"smscode"`
 }
 //登陆请求
 type LoginReq {
 	Username string `json:"username"`
 	Mobile   string `json:"mobile"`
 	Password string `json:"password"`
-	Smscode  string `json:"smscode"` //短信码
+	Smscode  string `json:"smscode"`
 }
+
 //返回用户信息
 type UserReply {
 	Auid     int64  `json:"auid"`
@@ -42,22 +61,43 @@ type JwtToken {
 	RefreshAfter int64  `json:"refreshAfter,omitempty"`
 }
 
+//============================> user v1 <============================
+//no need login
+@server(
+	prefix: userapi/v1
+	group: auth
+)
 service user-api {
-	@handler ping
-	post /user/ping
+	@handler phoneExist
+	post /auth/signup/phone/exist (PhoneExistReq) returns (PhoneExistReply)
 	
-	@handler register
-	post /user/register (RegisterReq)
-	
-	@handler login
-	post /user/login (LoginReq) returns (UserReply)
+	@handler emailExist
+	post /auth/signup/email/exist (EmailExistReq) returns (EmailExistReply)
 }
 
 @server(
+	prefix: userapi/v1
+	group: users
+)
+service user-api {
+	@handler ping
+	post /users/ping
+	
+	@handler register
+	post /users/register (RegisterReq)
+	
+	@handler login
+	post /users/login (LoginReq) returns (UserReply)
+}
+
+//need login
+@server(
+	prefix: userapi/v1
+	group: users
 	jwt: Auth
 	middleware: Usercheck
 )
 service user-api {
 	@handler userInfo
-	get /user/info  returns (UserReply)
+	get /users/info  returns (UserReply)
 }
