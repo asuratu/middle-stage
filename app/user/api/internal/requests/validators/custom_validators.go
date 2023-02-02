@@ -2,13 +2,15 @@
 package validators
 
 import (
-	"middle/pkg/captcha"
-	"middle/pkg/verifycode"
+	"middle/app/user/api/internal/svc"
+	"middle/app/user/api/pkg/captcha"
+	"middle/app/user/api/pkg/verifycode"
 )
 
 // ValidateCaptcha 自定义规则，验证『图片验证码』
-func ValidateCaptcha(captchaID, captchaAnswer string, errs map[string][]string) map[string][]string {
-	if ok := captcha.NewCaptcha().VerifyCaptcha(captchaID, captchaAnswer); !ok {
+func ValidateCaptcha(svcContext *svc.ServiceContext, captchaID, captchaAnswer string, errs map[string][]string) map[string][]string {
+	c := captcha.NewCaptcha(&svcContext.Config.CaptConfig, svcContext.Config.Mode, svcContext.Config.Name)
+	if ok := c.VerifyCaptcha(captchaID, captchaAnswer); !ok {
 		errs["captcha_answer"] = append(errs["captcha_answer"], "图片验证码错误")
 	}
 	return errs
@@ -23,8 +25,8 @@ func ValidatePasswordConfirm(password, passwordConfirm string, errs map[string][
 }
 
 // ValidateVerifyCode 自定义规则，验证『手机/邮箱验证码』
-func ValidateVerifyCode(key, answer string, errs map[string][]string) map[string][]string {
-	if ok := verifycode.NewVerifyCode().CheckAnswer(key, answer); !ok {
+func ValidateVerifyCode(svcContext *svc.ServiceContext, key, answer string, errs map[string][]string) map[string][]string {
+	if ok := verifycode.NewVerifyCode(svcContext.Config.Name).CheckAnswer(key, answer); !ok {
 		errs["verify_code"] = append(errs["verify_code"], "验证码错误")
 	}
 	return errs

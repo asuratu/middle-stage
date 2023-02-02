@@ -36,3 +36,38 @@ Log:
   Mode: file
   Path: ../../../public/logs/user/rpc
   KeepDays: 1
+
+# 图形验证码配置
+CaptConfig:
+  Height: 80
+  Width: 240
+  Length: 6
+  MaxSkew: 0.7
+  DotCount: 80
+  # 过期时间, 单位是秒
+  ExpireTime: 900
+  # dev 模式下的过期时间, 方便调试
+  DebugExpireTime: 604800
+  # 非生产环境，使用此 key 可跳过验证，方便测试
+  TestingKey: captcha_skip_test
+
+# 短信验证码配置
+Sms:
+  Aliyun:
+    TemplateCode: SMS_205000000
+
+# 邮箱验证码配置
+Email:
+  Smtp:
+    Host: localhost
+    Port: 1025
+    Username:
+    Password:
+  From:
+    Address: gohub@example.com
+    Name: Gohub
+
+# 验证码的配置
+VerifyCode:
+  CodeLength: 6
+  ExpireTime: 15

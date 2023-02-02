@@ -2,6 +2,7 @@ package svc
 
 import (
 	"errors"
+	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/core/syncx"
 	"middle/app/user/rpc/internal/config"
 	"middle/app/user/rpc/model"
@@ -15,7 +16,8 @@ import (
 type ServiceContext struct {
 	Config    config.Config
 	UserModel model.UsersModel
-	cache     cache.Cache
+	Cache     cache.Cache
+	Redis     *redis.Redis
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -29,14 +31,17 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 	// 初始化缓存
 	ca := cache.New(c.Cache, syncx.NewSingleFlight(), cache.NewStat("dc"), errors.New("cache not found"))
-	if err != nil {
-		logx.Error(err)
-		panic(err)
-	}
+
+	// 初始化redis
+	rs := redis.New(c.Redis.Host, func(r *redis.Redis) {
+		r.Type = c.Redis.Type
+		r.Pass = c.Redis.Pass
+	})
 
 	return &ServiceContext{
 		Config:    c,
 		UserModel: model.NewUsersModel(database.DB, c.Cache),
-		cache:     ca,
+		Cache:     ca,
+		Redis:     rs,
 	}
 }

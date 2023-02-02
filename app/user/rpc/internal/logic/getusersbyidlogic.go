@@ -26,7 +26,6 @@ func NewGetUsersByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetU
 }
 
 func (l *GetUsersByIdLogic) GetUsersById(in *user.GetUsersByIdReq) (*user.GetUsersByIdResp, error) {
-	logx.Debug("GetUsersByIdLogic GetUsersById in : %+v", in.Id)
 
 	in.Id = 22
 	// 获取 user 信息
