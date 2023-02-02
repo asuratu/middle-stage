@@ -4,7 +4,7 @@ package sms
 import (
 	"sync"
 
-	"middle/app/user/api/internal/svc"
+	"middle/app/user/rpc/internal/svc"
 	"middle/pkg/cast"
 )
 
@@ -19,13 +19,6 @@ type Message struct {
 // SMS 是我们发送短信的操作类
 type SMS struct {
 	Driver Driver
-}
-
-// ConfigSms 配置文件中的短信配置
-type ConfigSms struct {
-	Aliyun struct {
-		TemplateCode string
-	}
 }
 
 // once 单例模式

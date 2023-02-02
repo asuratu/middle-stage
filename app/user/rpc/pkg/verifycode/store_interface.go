@@ -2,7 +2,7 @@ package verifycode
 
 type Store interface {
 	// Set 保存验证码
-	Set(id string, value string) bool
+	Set(id string, value string) error
 
 	// Get 获取验证码
 	Get(id string, clear bool) string

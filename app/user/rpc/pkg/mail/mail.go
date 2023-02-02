@@ -2,7 +2,7 @@
 package mail
 
 import (
-	"middle/app/user/api/internal/svc"
+	"middle/app/user/rpc/internal/svc"
 	"middle/pkg/cast"
 	"sync"
 )
@@ -20,19 +20,6 @@ type Email struct {
 	Subject string
 	Text    []byte // Plaintext message (optional)
 	HTML    []byte // Html message (optional)
-}
-
-type ConfigEmail struct {
-	Smtp struct {
-		Host     string `json:",default=localhost"`
-		Port     string `json:",default=1025"`
-		Username string
-		Password string
-	}
-	From struct {
-		Address string `json:",default=gohub@example.com"`
-		Name    string `json:",default=Gohub"`
-	}
 }
 
 type Mailer struct {

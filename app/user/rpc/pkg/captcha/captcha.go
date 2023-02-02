@@ -3,6 +3,7 @@ package captcha
 
 import (
 	"github.com/zeromicro/go-zero/core/service"
+	"middle/app/user/rpc/internal/svc"
 	"sync"
 
 	"github.com/mojocn/base64Captcha"
@@ -10,21 +11,7 @@ import (
 
 type Captcha struct {
 	Base64Captcha *base64Captcha.Captcha
-	CaptConfig    *CaptConfig
-}
-
-// CaptConfig 验证码配置
-type CaptConfig struct {
-	ExpireTime      int64   // 验证码过期时间
-	DebugExpireTime int64   // 本地调试验证码过期时间
-	Height          int     // 宽
-	Width           int     // 高
-	Length          int     // 长度
-	MaxSkew         float64 // 数字的最大倾斜角度
-	DotCount        int     // 干扰点数量
-	TestingKey      string  // 测试用key
-	Mode            string  // 验证码模式, 不用单独配置，直接使用全局配置
-	ServiceName     string  // 服务名称, 不用单独配置，直接使用全局配置
+	svcCtx        *svc.ServiceContext
 }
 
 // once 确保 internalCaptcha 对象只初始化一次
@@ -34,18 +21,19 @@ var once sync.Once
 var internalCaptcha *Captcha
 
 // NewCaptcha 单例模式获取
-func NewCaptcha(captConfig *CaptConfig, mode, serverName string) *Captcha {
+func NewCaptcha(svcCtx *svc.ServiceContext) *Captcha {
 	once.Do(func() {
-		captConfig.Mode = mode
-		captConfig.ServiceName = serverName
+		captConfig := svcCtx.Config.CaptConfig
 
 		// 初始化 Captcha 对象
-		internalCaptcha = &Captcha{}
+		internalCaptcha = &Captcha{
+			svcCtx: svcCtx,
+		}
 
 		// 使用全局 Redis 对象，并配置存储 Key 的前缀
 		store := RedisStore{
-			KeyPrefix:  captConfig.ServiceName + ":captcha:",
-			CaptConfig: captConfig,
+			KeyPrefix: svcCtx.Config.Name + ":captcha:",
+			svcCtx:    svcCtx,
 		}
 
 		// 配置 base64Captcha 驱动信息
@@ -73,7 +61,7 @@ func (c *Captcha) GenerateCaptcha() (id string, b64s string, err error) {
 func (c *Captcha) VerifyCaptcha(id string, answer string) (match bool) {
 
 	// 方便本地和 API 自动测试
-	if !(c.CaptConfig.Mode == service.ProMode) && id == c.CaptConfig.TestingKey {
+	if !(c.svcCtx.Config.Mode == service.ProMode) && id == c.svcCtx.Config.CaptConfig.TestingKey {
 		return true
 	}
 	// 第三个参数是验证后是否删除，我们选择 false

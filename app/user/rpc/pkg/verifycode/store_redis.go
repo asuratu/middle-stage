@@ -1,32 +1,47 @@
 package verifycode
 
 import (
-	"time"
+	"errors"
+
+	"middle/app/user/rpc/internal/svc"
+
+	"github.com/zeromicro/go-zero/core/service"
 )
 
 // RedisStore 实现 verifycode.Store interface
 type RedisStore struct {
 	KeyPrefix string
+	svcCtx    *svc.ServiceContext
 }
 
 // Set 实现 verifycode.Store interface 的 Set 方法
-func (s *RedisStore) Set(key string, value string) bool {
+func (s *RedisStore) Set(key string, value string) error {
 
-	ExpireTime := time.Minute * time.Duration(config.GetInt64("verifycode.expire_time"))
+	ExpireTime := s.svcCtx.Config.VerifyCode.ExpireTime
 	// 本地环境方便调试
-	if app.IsLocal() {
-		ExpireTime = time.Minute * time.Duration(config.GetInt64("verifycode.debug_expire_time"))
+	if s.svcCtx.Config.Mode == service.DevMode {
+		ExpireTime = s.svcCtx.Config.VerifyCode.DebugExpireTime
 	}
 
-	return s.RedisClient.Set(s.KeyPrefix+key, value, ExpireTime)
+	// 使用 redis 存储验证码
+	if err := s.svcCtx.Redis.Setex(s.KeyPrefix+key, value, int(ExpireTime)); err != nil {
+		return errors.New("无法存储图片验证码答案")
+	}
+	return nil
 }
 
 // Get 实现 verifycode.Store interface 的 Get 方法
 func (s *RedisStore) Get(key string, clear bool) (value string) {
 	key = s.KeyPrefix + key
-	val := s.RedisClient.Get(key)
+	val, err := s.svcCtx.Redis.Get(key)
+	if err != nil {
+		return ""
+	}
 	if clear {
-		s.RedisClient.Del(key)
+		_, err = s.svcCtx.Redis.Del(key)
+		if err != nil {
+			return ""
+		}
 	}
 	return val
 }
