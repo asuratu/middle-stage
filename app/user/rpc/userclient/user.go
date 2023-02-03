@@ -13,24 +13,26 @@ import (
 )
 
 type (
-	AddUsersReq      = user.AddUsersReq
-	AddUsersResp     = user.AddUsersResp
-	DelUsersReq      = user.DelUsersReq
-	DelUsersResp     = user.DelUsersResp
-	GetUsersByIdReq  = user.GetUsersByIdReq
-	GetUsersByIdResp = user.GetUsersByIdResp
-	SearchUsersReq   = user.SearchUsersReq
-	SearchUsersResp  = user.SearchUsersResp
-	UpdateUsersReq   = user.UpdateUsersReq
-	UpdateUsersResp  = user.UpdateUsersResp
-	Users            = user.Users
+	AddUsersReq          = user.AddUsersReq
+	AddUsersResp         = user.AddUsersResp
+	DelUsersReq          = user.DelUsersReq
+	DelUsersResp         = user.DelUsersResp
+	GetUserResp          = user.GetUserResp
+	GetUsersByAccountReq = user.GetUsersByAccountReq
+	GetUsersByIdReq      = user.GetUsersByIdReq
+	SearchUsersReq       = user.SearchUsersReq
+	SearchUsersResp      = user.SearchUsersResp
+	UpdateUsersReq       = user.UpdateUsersReq
+	UpdateUsersResp      = user.UpdateUsersResp
+	Users                = user.Users
 
 	User interface {
 		// -----------------------users-----------------------
 		AddUsers(ctx context.Context, in *AddUsersReq, opts ...grpc.CallOption) (*AddUsersResp, error)
 		UpdateUsers(ctx context.Context, in *UpdateUsersReq, opts ...grpc.CallOption) (*UpdateUsersResp, error)
 		DelUsers(ctx context.Context, in *DelUsersReq, opts ...grpc.CallOption) (*DelUsersResp, error)
-		GetUsersById(ctx context.Context, in *GetUsersByIdReq, opts ...grpc.CallOption) (*GetUsersByIdResp, error)
+		GetUsersById(ctx context.Context, in *GetUsersByIdReq, opts ...grpc.CallOption) (*GetUserResp, error)
+		GetUsersByAccount(ctx context.Context, in *GetUsersByAccountReq, opts ...grpc.CallOption) (*GetUserResp, error)
 		SearchUsers(ctx context.Context, in *SearchUsersReq, opts ...grpc.CallOption) (*SearchUsersResp, error)
 	}
 
@@ -61,9 +63,14 @@ func (m *defaultUser) DelUsers(ctx context.Context, in *DelUsersReq, opts ...grp
 	return client.DelUsers(ctx, in, opts...)
 }
 
-func (m *defaultUser) GetUsersById(ctx context.Context, in *GetUsersByIdReq, opts ...grpc.CallOption) (*GetUsersByIdResp, error) {
+func (m *defaultUser) GetUsersById(ctx context.Context, in *GetUsersByIdReq, opts ...grpc.CallOption) (*GetUserResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.GetUsersById(ctx, in, opts...)
+}
+
+func (m *defaultUser) GetUsersByAccount(ctx context.Context, in *GetUsersByAccountReq, opts ...grpc.CallOption) (*GetUserResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.GetUsersByAccount(ctx, in, opts...)
 }
 
 func (m *defaultUser) SearchUsers(ctx context.Context, in *SearchUsersReq, opts ...grpc.CallOption) (*SearchUsersResp, error) {

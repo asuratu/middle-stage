@@ -3,10 +3,11 @@ package model
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/SpectatorNan/gorm-zero/gormc"
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"gorm.io/gorm"
-	"time"
 )
 
 var _ UsersModel = (*customUsersModel)(nil)
@@ -51,6 +52,23 @@ func (m *customUsersModel) FindOneWithExpire(ctx context.Context, id int64, expi
 	var resp Users
 	err := m.QueryWithExpireCtx(ctx, &resp, gormzeroUsersIdKey, expire, func(conn *gorm.DB, v interface{}) error {
 		return conn.Model(&Users{}).Where("`id` = ?", id).First(&resp).Error
+	})
+	switch err {
+	case nil:
+		return &resp, nil
+	case gormc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+// FindOneByField 根据 filed 查询
+func (m *defaultUsersModel) FindOneByField(ctx context.Context, filed, value string) (*Users, error) {
+	msUserUsersIdKey := fmt.Sprintf("%s%v", cacheMsUserUsersFiledPrefix, filed+value)
+	var resp Users
+	err := m.QueryCtx(ctx, &resp, msUserUsersIdKey, func(conn *gorm.DB, v interface{}) error {
+		return conn.Model(&Users{}).Where(fmt.Sprintf("`%s` = ?", filed), value).First(&resp).Error
 	})
 	switch err {
 	case nil:

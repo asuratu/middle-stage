@@ -38,9 +38,14 @@ func (s *UserServer) DelUsers(ctx context.Context, in *user.DelUsersReq) (*user.
 	return l.DelUsers(in)
 }
 
-func (s *UserServer) GetUsersById(ctx context.Context, in *user.GetUsersByIdReq) (*user.GetUsersByIdResp, error) {
+func (s *UserServer) GetUsersById(ctx context.Context, in *user.GetUsersByIdReq) (*user.GetUserResp, error) {
 	l := logic.NewGetUsersByIdLogic(ctx, s.svcCtx)
 	return l.GetUsersById(in)
+}
+
+func (s *UserServer) GetUsersByAccount(ctx context.Context, in *user.GetUsersByAccountReq) (*user.GetUserResp, error) {
+	l := logic.NewGetUsersByAccountLogic(ctx, s.svcCtx)
+	return l.GetUsersByAccount(in)
 }
 
 func (s *UserServer) SearchUsers(ctx context.Context, in *user.SearchUsersReq) (*user.SearchUsersResp, error) {

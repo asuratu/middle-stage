@@ -64,7 +64,12 @@ message GetUsersByIdReq {
   int64 id = 1; //id
 }
 
-message GetUsersByIdResp {
+message GetUsersByAccountReq {
+  string email = 1; // email
+  string phone = 2; // phone
+}
+
+message GetUserResp {
   Users users = 1; //users
 }
 
@@ -97,7 +102,8 @@ service user{
 	 rpc AddUsers(AddUsersReq) returns (AddUsersResp); 
 	 rpc UpdateUsers(UpdateUsersReq) returns (UpdateUsersResp); 
 	 rpc DelUsers(DelUsersReq) returns (DelUsersResp); 
-	 rpc GetUsersById(GetUsersByIdReq) returns (GetUsersByIdResp); 
-	 rpc SearchUsers(SearchUsersReq) returns (SearchUsersResp); 
+	 rpc GetUsersById(GetUsersByIdReq) returns (GetUserResp);
+	 rpc GetUsersByAccount(GetUsersByAccountReq) returns (GetUserResp);
+	 rpc SearchUsers(SearchUsersReq) returns (SearchUsersResp);
 
 }

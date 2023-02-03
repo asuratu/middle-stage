@@ -26,7 +26,8 @@ type UserClient interface {
 	AddUsers(ctx context.Context, in *AddUsersReq, opts ...grpc.CallOption) (*AddUsersResp, error)
 	UpdateUsers(ctx context.Context, in *UpdateUsersReq, opts ...grpc.CallOption) (*UpdateUsersResp, error)
 	DelUsers(ctx context.Context, in *DelUsersReq, opts ...grpc.CallOption) (*DelUsersResp, error)
-	GetUsersById(ctx context.Context, in *GetUsersByIdReq, opts ...grpc.CallOption) (*GetUsersByIdResp, error)
+	GetUsersById(ctx context.Context, in *GetUsersByIdReq, opts ...grpc.CallOption) (*GetUserResp, error)
+	GetUsersByAccount(ctx context.Context, in *GetUsersByAccountReq, opts ...grpc.CallOption) (*GetUserResp, error)
 	SearchUsers(ctx context.Context, in *SearchUsersReq, opts ...grpc.CallOption) (*SearchUsersResp, error)
 }
 
@@ -65,9 +66,18 @@ func (c *userClient) DelUsers(ctx context.Context, in *DelUsersReq, opts ...grpc
 	return out, nil
 }
 
-func (c *userClient) GetUsersById(ctx context.Context, in *GetUsersByIdReq, opts ...grpc.CallOption) (*GetUsersByIdResp, error) {
-	out := new(GetUsersByIdResp)
+func (c *userClient) GetUsersById(ctx context.Context, in *GetUsersByIdReq, opts ...grpc.CallOption) (*GetUserResp, error) {
+	out := new(GetUserResp)
 	err := c.cc.Invoke(ctx, "/user.user/GetUsersById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) GetUsersByAccount(ctx context.Context, in *GetUsersByAccountReq, opts ...grpc.CallOption) (*GetUserResp, error) {
+	out := new(GetUserResp)
+	err := c.cc.Invoke(ctx, "/user.user/GetUsersByAccount", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +101,8 @@ type UserServer interface {
 	AddUsers(context.Context, *AddUsersReq) (*AddUsersResp, error)
 	UpdateUsers(context.Context, *UpdateUsersReq) (*UpdateUsersResp, error)
 	DelUsers(context.Context, *DelUsersReq) (*DelUsersResp, error)
-	GetUsersById(context.Context, *GetUsersByIdReq) (*GetUsersByIdResp, error)
+	GetUsersById(context.Context, *GetUsersByIdReq) (*GetUserResp, error)
+	GetUsersByAccount(context.Context, *GetUsersByAccountReq) (*GetUserResp, error)
 	SearchUsers(context.Context, *SearchUsersReq) (*SearchUsersResp, error)
 	mustEmbedUnimplementedUserServer()
 }
@@ -109,8 +120,11 @@ func (UnimplementedUserServer) UpdateUsers(context.Context, *UpdateUsersReq) (*U
 func (UnimplementedUserServer) DelUsers(context.Context, *DelUsersReq) (*DelUsersResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DelUsers not implemented")
 }
-func (UnimplementedUserServer) GetUsersById(context.Context, *GetUsersByIdReq) (*GetUsersByIdResp, error) {
+func (UnimplementedUserServer) GetUsersById(context.Context, *GetUsersByIdReq) (*GetUserResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsersById not implemented")
+}
+func (UnimplementedUserServer) GetUsersByAccount(context.Context, *GetUsersByAccountReq) (*GetUserResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUsersByAccount not implemented")
 }
 func (UnimplementedUserServer) SearchUsers(context.Context, *SearchUsersReq) (*SearchUsersResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchUsers not implemented")
@@ -200,6 +214,24 @@ func _User_GetUsersById_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_GetUsersByAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUsersByAccountReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetUsersByAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.user/GetUsersByAccount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetUsersByAccount(ctx, req.(*GetUsersByAccountReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _User_SearchUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SearchUsersReq)
 	if err := dec(in); err != nil {
@@ -240,6 +272,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUsersById",
 			Handler:    _User_GetUsersById_Handler,
+		},
+		{
+			MethodName: "GetUsersByAccount",
+			Handler:    _User_GetUsersByAccount_Handler,
 		},
 		{
 			MethodName: "SearchUsers",

@@ -13,22 +13,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetUsersByIdLogic struct {
+type GetUsersByAccountLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewGetUsersByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUsersByIdLogic {
-	return &GetUsersByIdLogic{
+func NewGetUsersByAccountLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUsersByAccountLogic {
+	return &GetUsersByAccountLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *GetUsersByIdLogic) GetUsersById(in *user.GetUsersByIdReq) (*user.GetUserResp, error) {
-	in.Id = 22
+func (l *GetUsersByAccountLogic) GetUsersByAccount(in *user.GetUsersByAccountReq) (*user.GetUserResp, error) {
 	// 获取 user 信息
 	if u, err := l.svcCtx.UserModel.FindOne(l.ctx, in.Id); err != nil {
 		if err == model.ErrNotFound {

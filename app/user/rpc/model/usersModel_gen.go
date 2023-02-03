@@ -13,7 +13,8 @@ import (
 )
 
 var (
-	cacheMsUserUsersIdPrefix = "cache:msUser:users:id:"
+	cacheMsUserUsersIdPrefix    = "cache:msUser:users:id:"
+	cacheMsUserUsersFiledPrefix = "cache:msUser:users:filed:"
 )
 
 type (
