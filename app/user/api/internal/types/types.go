@@ -2,7 +2,7 @@
 package types
 
 type PhoneExistReq struct {
-	Phone string `json:"phone"`
+	Phone string `json:"phone" validate:"required,startswith=1,len=11"`
 }
 
 type PhoneExistReply struct {

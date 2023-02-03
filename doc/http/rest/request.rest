@@ -2,15 +2,10 @@
 POST {{userapi}}/users/ping
 Content-Type: application/json
 
-### User register
-POST {{userapi}}/users/update
+### check phone exist
+POST {{userapi}}/auth/signup/phone/exist
 Content-Type: application/json
 
 {
-  "id": 1,
-  "nickName": "RibonUpdate"
+  "phone": "150210394531"
 }
-
-### Delete user
-DELETE {{userapi}}/users/1
-Content-Type: application/json
