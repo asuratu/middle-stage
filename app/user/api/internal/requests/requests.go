@@ -4,17 +4,17 @@ package requests
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/thedevsaddam/govalidator"
-	"gohub/pkg/response"
 )
 
 // ValidatorFunc 验证函数类型
-type ValidatorFunc func(interface{}, *gin.Context) map[string][]string
+type ValidatorFunc func(interface{}, *gin1.Context) map[string][]string
 
 // Validate 控制器里调用示例：
-//        if ok := requests.Validate(c, &requests.UserSaveRequest{}, requests.UserSave); !ok {
-//            return
-//        }
-func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
+//
+//	if ok := requests.Validate(c, &requests.UserSaveRequest{}, requests.UserSave); !ok {
+//	    return
+//	}
+func Validate(c *gin1.Context, obj interface{}, handler ValidatorFunc) bool {
 
 	// 1. 解析请求，支持 JSON 数据、表单请求和 URL Query
 	if err := c.ShouldBind(obj); err != nil {

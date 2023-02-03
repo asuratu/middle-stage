@@ -2,7 +2,7 @@
 package mail
 
 import (
-	"middle/app/user/rpc/internal/svc"
+	"middle/app/user/rpc/internal/config"
 	"middle/pkg/cast"
 	"sync"
 )
@@ -24,22 +24,24 @@ type Email struct {
 
 type Mailer struct {
 	Driver Driver
+	Config map[string]string
 }
 
 var once sync.Once
 var internalMailer *Mailer
 
 // NewMailer 单例模式获取
-func NewMailer() *Mailer {
+func NewMailer(c config.Config) *Mailer {
 	once.Do(func() {
 		internalMailer = &Mailer{
 			Driver: &SMTP{},
+			Config: cast.ToStringMapString(c.Email.Smtp),
 		}
 	})
 
 	return internalMailer
 }
 
-func (mailer *Mailer) Send(svcContext *svc.ServiceContext, email Email) bool {
-	return mailer.Driver.Send(email, cast.ToStringMapString(svcContext.Config.Email.Smtp))
+func (mailer *Mailer) Send(email Email) bool {
+	return mailer.Driver.Send(email, mailer.Config)
 }
