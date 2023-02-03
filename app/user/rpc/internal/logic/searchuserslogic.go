@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"middle/app/user/rpc/internal/svc"
-	"middle/app/user/rpc/user"
+	"middle/app/user/rpc/types/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

@@ -10,6 +10,7 @@ require (
 	github.com/frankban/quicktest v1.11.3
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/gin-gonic/gin v1.8.2
+	github.com/go-playground/validator/v10 v10.11.2
 	github.com/iancoleman/strcase v0.2.0
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d
@@ -18,7 +19,7 @@ require (
 	github.com/shopspring/decimal v1.3.1
 	github.com/sony/sonyflake v1.1.0
 	github.com/spf13/cobra v1.6.1
-	github.com/zeromicro/go-zero v1.4.3
+	github.com/zeromicro/go-zero v1.4.2
 	golang.org/x/crypto v0.5.0
 	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
@@ -34,13 +35,11 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fatih/color v1.13.0 // indirect
-	github.com/felixge/fgprof v0.9.3 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
-	github.com/go-playground/validator/v10 v10.11.2 // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/goccy/go-json v0.9.11 // indirect
@@ -51,7 +50,6 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
-	github.com/google/pprof v0.0.0-20211214055906-6f57359322fd // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/gnostic v0.5.5 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0 // indirect

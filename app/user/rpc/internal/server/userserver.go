@@ -8,7 +8,7 @@ import (
 
 	"middle/app/user/rpc/internal/logic"
 	"middle/app/user/rpc/internal/svc"
-	"middle/app/user/rpc/user"
+	"middle/app/user/rpc/types/user"
 )
 
 type UserServer struct {
@@ -20,110 +20,6 @@ func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
 	return &UserServer{
 		svcCtx: svcCtx,
 	}
-}
-
-// -----------------------categories-----------------------
-func (s *UserServer) AddCategories(ctx context.Context, in *user.AddCategoriesReq) (*user.AddCategoriesResp, error) {
-	l := logic.NewAddCategoriesLogic(ctx, s.svcCtx)
-	return l.AddCategories(in)
-}
-
-func (s *UserServer) UpdateCategories(ctx context.Context, in *user.UpdateCategoriesReq) (*user.UpdateCategoriesResp, error) {
-	l := logic.NewUpdateCategoriesLogic(ctx, s.svcCtx)
-	return l.UpdateCategories(in)
-}
-
-func (s *UserServer) DelCategories(ctx context.Context, in *user.DelCategoriesReq) (*user.DelCategoriesResp, error) {
-	l := logic.NewDelCategoriesLogic(ctx, s.svcCtx)
-	return l.DelCategories(in)
-}
-
-func (s *UserServer) GetCategoriesById(ctx context.Context, in *user.GetCategoriesByIdReq) (*user.GetCategoriesByIdResp, error) {
-	l := logic.NewGetCategoriesByIdLogic(ctx, s.svcCtx)
-	return l.GetCategoriesById(in)
-}
-
-func (s *UserServer) SearchCategories(ctx context.Context, in *user.SearchCategoriesReq) (*user.SearchCategoriesResp, error) {
-	l := logic.NewSearchCategoriesLogic(ctx, s.svcCtx)
-	return l.SearchCategories(in)
-}
-
-// -----------------------likes-----------------------
-func (s *UserServer) AddLikes(ctx context.Context, in *user.AddLikesReq) (*user.AddLikesResp, error) {
-	l := logic.NewAddLikesLogic(ctx, s.svcCtx)
-	return l.AddLikes(in)
-}
-
-func (s *UserServer) UpdateLikes(ctx context.Context, in *user.UpdateLikesReq) (*user.UpdateLikesResp, error) {
-	l := logic.NewUpdateLikesLogic(ctx, s.svcCtx)
-	return l.UpdateLikes(in)
-}
-
-func (s *UserServer) DelLikes(ctx context.Context, in *user.DelLikesReq) (*user.DelLikesResp, error) {
-	l := logic.NewDelLikesLogic(ctx, s.svcCtx)
-	return l.DelLikes(in)
-}
-
-func (s *UserServer) GetLikesById(ctx context.Context, in *user.GetLikesByIdReq) (*user.GetLikesByIdResp, error) {
-	l := logic.NewGetLikesByIdLogic(ctx, s.svcCtx)
-	return l.GetLikesById(in)
-}
-
-func (s *UserServer) SearchLikes(ctx context.Context, in *user.SearchLikesReq) (*user.SearchLikesResp, error) {
-	l := logic.NewSearchLikesLogic(ctx, s.svcCtx)
-	return l.SearchLikes(in)
-}
-
-// -----------------------links-----------------------
-func (s *UserServer) AddLinks(ctx context.Context, in *user.AddLinksReq) (*user.AddLinksResp, error) {
-	l := logic.NewAddLinksLogic(ctx, s.svcCtx)
-	return l.AddLinks(in)
-}
-
-func (s *UserServer) UpdateLinks(ctx context.Context, in *user.UpdateLinksReq) (*user.UpdateLinksResp, error) {
-	l := logic.NewUpdateLinksLogic(ctx, s.svcCtx)
-	return l.UpdateLinks(in)
-}
-
-func (s *UserServer) DelLinks(ctx context.Context, in *user.DelLinksReq) (*user.DelLinksResp, error) {
-	l := logic.NewDelLinksLogic(ctx, s.svcCtx)
-	return l.DelLinks(in)
-}
-
-func (s *UserServer) GetLinksById(ctx context.Context, in *user.GetLinksByIdReq) (*user.GetLinksByIdResp, error) {
-	l := logic.NewGetLinksByIdLogic(ctx, s.svcCtx)
-	return l.GetLinksById(in)
-}
-
-func (s *UserServer) SearchLinks(ctx context.Context, in *user.SearchLinksReq) (*user.SearchLinksResp, error) {
-	l := logic.NewSearchLinksLogic(ctx, s.svcCtx)
-	return l.SearchLinks(in)
-}
-
-// -----------------------topics-----------------------
-func (s *UserServer) AddTopics(ctx context.Context, in *user.AddTopicsReq) (*user.AddTopicsResp, error) {
-	l := logic.NewAddTopicsLogic(ctx, s.svcCtx)
-	return l.AddTopics(in)
-}
-
-func (s *UserServer) UpdateTopics(ctx context.Context, in *user.UpdateTopicsReq) (*user.UpdateTopicsResp, error) {
-	l := logic.NewUpdateTopicsLogic(ctx, s.svcCtx)
-	return l.UpdateTopics(in)
-}
-
-func (s *UserServer) DelTopics(ctx context.Context, in *user.DelTopicsReq) (*user.DelTopicsResp, error) {
-	l := logic.NewDelTopicsLogic(ctx, s.svcCtx)
-	return l.DelTopics(in)
-}
-
-func (s *UserServer) GetTopicsById(ctx context.Context, in *user.GetTopicsByIdReq) (*user.GetTopicsByIdResp, error) {
-	l := logic.NewGetTopicsByIdLogic(ctx, s.svcCtx)
-	return l.GetTopicsById(in)
-}
-
-func (s *UserServer) SearchTopics(ctx context.Context, in *user.SearchTopicsReq) (*user.SearchTopicsResp, error) {
-	l := logic.NewSearchTopicsLogic(ctx, s.svcCtx)
-	return l.SearchTopics(in)
 }
 
 // -----------------------users-----------------------

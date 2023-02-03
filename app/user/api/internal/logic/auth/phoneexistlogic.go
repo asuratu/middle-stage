@@ -25,5 +25,6 @@ func NewPhoneExistLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PhoneE
 
 func (l *PhoneExistLogic) PhoneExist(req *types.PhoneExistReq) (resp *types.PhoneExistReply, err error) {
 	logx.Infof("phone exist: %s", req.Phone)
+
 	return
 }
