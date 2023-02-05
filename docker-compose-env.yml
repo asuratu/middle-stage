@@ -43,8 +43,8 @@ services:
 
   # asynqmon asynq延迟队列、定时队列的webui - Asynqmon asynq delay queue, timing queue's webUI
   asynqmon:
-#    image: hibiken/asynqmon:latest
-    image: tantobocah/asynqmon:latest # for mac m1
+    image: hibiken/asynqmon:latest
+#    image: tantobocah/asynqmon:latest # for mac m1
     container_name: asynqmon_stage
     ports:
       - "8980:8080"

@@ -2,16 +2,16 @@ package logic
 
 import (
 	"context"
-	"middle/app/user/rpc/model"
-	"middle/common/xerr"
-
 	"github.com/pkg/errors"
-
 	"middle/app/user/rpc/internal/svc"
-	"middle/app/user/rpc/types/user"
+	"middle/app/user/rpc/model"
+	"middle/app/user/rpc/user"
+	"middle/common/xerr"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
+
+var ErrInvalidParams = xerr.NewErrMsg("Invalid params")
 
 type GetUsersByAccountLogic struct {
 	ctx    context.Context
@@ -28,17 +28,37 @@ func NewGetUsersByAccountLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 func (l *GetUsersByAccountLogic) GetUsersByAccount(in *user.GetUsersByAccountReq) (*user.GetUserResp, error) {
-	// 获取 user 信息
-	if u, err := l.svcCtx.UserModel.FindOne(l.ctx, in.Id); err != nil {
-		if err == model.ErrNotFound {
-			return nil, errors.Wrapf(xerr.NewErrCode(xerr.UserNotFound), "User Database Exception user : %+v , err: %v", in.Id, err)
-		}
-		return nil, err
-	} else {
-		return &user.GetUserResp{
-			Users: &user.Users{
-				Id: u.Id,
-			},
-		}, nil
+
+	logx.Infof("GetUsersByAccountLogic.GetUsersByAccount in:%+v", in)
+
+	// phone and email is empty
+	if in.Phone == "" && in.Email == "" {
+		return nil, errors.Wrap(ErrInvalidParams, "phone and email is empty")
 	}
+
+	// phone 不为空, 通过 phone 查询
+	userModel := new(model.Users)
+	err := error(nil)
+	if in.Phone != "" {
+		userModel, err = l.svcCtx.UserModel.FindOneByField(l.ctx, "phone", in.Phone)
+		if err != nil {
+			return nil, errors.Wrapf(xerr.NewErrMsg("Failed to query the record"), "Failed to query the record  rpc GetUsersByAccount fail , phone : %s , err : %v", in.Phone, err)
+		}
+	}
+
+	// email 不为空, 通过 email 查询
+	if in.Email != "" {
+		userModel, err = l.svcCtx.UserModel.FindOneByField(l.ctx, "email", in.Email)
+		if err != nil {
+			return nil, errors.Wrapf(xerr.NewErrMsg("Failed to query the record"), "Failed to query the record  rpc GetUsersByAccount fail , email : %s , err : %v", in.Email, err)
+		}
+	}
+
+	// 返回结果
+	return &user.GetUserResp{
+		Users: &user.Users{
+			Id:   userModel.Id,
+			Name: userModel.Name,
+		},
+	}, nil
 }

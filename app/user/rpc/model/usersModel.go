@@ -26,6 +26,7 @@ type (
 
 	customUsersLogicModel interface {
 		FindOneWithExpire(ctx context.Context, id int64, expire time.Duration) (*Users, error)
+		FindOneByField(ctx context.Context, filed, value string) (*Users, error)
 	}
 )
 

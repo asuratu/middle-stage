@@ -33,9 +33,9 @@ Cache:
     Pass: G62m50oigInC30sf
 Log:
   ServiceName: user.rpc
-  Mode: file
-  Path: ../../../public/logs/user/rpc
-  KeepDays: 1
+#  Mode: file
+#  Path: ../../../public/logs/user/rpc
+#  KeepDays: 1
 
 # 图形验证码配置
 CaptConfig:

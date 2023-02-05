@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"middle/app/user/rpc/userclient"
 
 	"middle/app/user/api/internal/svc"
 	"middle/app/user/api/internal/types"
@@ -26,5 +27,15 @@ func NewPhoneExistLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PhoneE
 func (l *PhoneExistLogic) PhoneExist(req *types.PhoneExistReq) (resp *types.PhoneExistReply, err error) {
 	logx.Infof("phone exist: %s", req.Phone)
 
-	return
+	_, err = l.svcCtx.UserRpc.GetUsersByAccount(l.ctx, &userclient.GetUsersByAccountReq{
+		Phone: req.Phone,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.PhoneExistReply{
+		Exist: true,
+	}, nil
 }

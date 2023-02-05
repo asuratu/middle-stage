@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"middle/app/user/rpc/internal/svc"
-	"middle/app/user/rpc/types/user"
+	"middle/app/user/rpc/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,7 +24,6 @@ func NewAddUsersLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddUsers
 }
 
 // -----------------------users-----------------------
-
 func (l *AddUsersLogic) AddUsers(in *user.AddUsersReq) (*user.AddUsersResp, error) {
 	// todo: add your logic here and delete this line
 

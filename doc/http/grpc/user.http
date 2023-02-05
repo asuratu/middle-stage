@@ -5,6 +5,14 @@ GRPC localhost:5001/user.user/GetUsersById
   "id": 1
 }
 
+### check phone exist
+GRPC localhost:5001/user.user/GetUsersByAccount
+
+{
+    "phone": "19644241359",
+    "email": ""
+}
+
 
 
 
