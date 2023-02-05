@@ -42,7 +42,9 @@ func (l *GetUsersByAccountLogic) GetUsersByAccount(in *user.GetUsersByAccountReq
 	if in.Phone != "" {
 		userModel, err = l.svcCtx.UserModel.FindOneByField(l.ctx, "phone", in.Phone)
 		if err != nil {
-			return nil, errors.Wrapf(xerr.NewErrMsg("Failed to query the record"), "Failed to query the record  rpc GetUsersByAccount fail , phone : %s , err : %v", in.Phone, err)
+			//return nil, errors.Wrapf(xerr.NewErrMsg("Failed to query the record"), "Failed to query the record  rpc GetUsersByAccount fail , phone : %s , err : %v", in.Phone, err)
+
+			return nil, errors.Wrapf(xerr.NewErrCode(xerr.PhoneNotFound), "Failed to query the record  rpc GetUsersByAccount fail , phone : %s , err : %v", in.Phone, err)
 		}
 	}
 
@@ -50,7 +52,7 @@ func (l *GetUsersByAccountLogic) GetUsersByAccount(in *user.GetUsersByAccountReq
 	if in.Email != "" {
 		userModel, err = l.svcCtx.UserModel.FindOneByField(l.ctx, "email", in.Email)
 		if err != nil {
-			return nil, errors.Wrapf(xerr.NewErrMsg("Failed to query the record"), "Failed to query the record  rpc GetUsersByAccount fail , email : %s , err : %v", in.Email, err)
+			return nil, errors.Wrapf(xerr.NewErrCode(xerr.EmailNotFound), "Failed to query the record  rpc GetUsersByAccount fail , email : %s , err : %v", in.Email, err)
 		}
 	}
 
