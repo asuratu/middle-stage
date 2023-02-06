@@ -10,7 +10,7 @@ type PhoneExistReply struct {
 }
 
 type EmailExistReq struct {
-	Email string `json:"email"`
+	Email string `json:"email" validate:"required,email"`
 }
 
 type EmailExistReply struct {

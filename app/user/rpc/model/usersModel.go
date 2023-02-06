@@ -11,6 +11,7 @@ import (
 )
 
 var _ UsersModel = (*customUsersModel)(nil)
+Var _ UsersModel = (*customUsersModel)(nil)
 
 type (
 	// UsersModel is an interface to be customized, add more methods here,

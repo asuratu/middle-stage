@@ -19,7 +19,7 @@ type PhoneExistReply {
 
 //邮箱是否存在
 type EmailExistReq {
-	Email string `json:"email"`
+	Email string `json:"email" validate:"required,email"`
 }
 type EmailExistReply {
 	Exist bool `json:"exist"`

@@ -7,5 +7,13 @@ POST {{userapi}}/auth/signup/phone/exist
 Content-Type: application/json
 
 {
-  "phone": "19644241350"
+  "phone": "10954703106"
+}
+
+### check email exist
+POST {{userapi}}/auth/signup/eamil/exist
+Content-Type: application/json
+
+{
+  "email": "tVtXeHe@JyKEIpO.biz"
 }
