@@ -5,10 +5,20 @@
 # ./genModel.sh usercenter user_auth
 # 再将./genModel下的文件剪切到对应服务的model目录里面，记得改package
 
-#生成的表名
-table=$2
-#表生成的genmodel目录
-dir=./genModel
+# 生成的表名
+tables=$2
+# 表生成的genmodel目录
+modeldir=../../../app/$1/rpc/model
+# 自定义模板目录
+homedir=../../goctl
+# 是否使用缓存
+isCache=$3
+
+if [ "$isCache" = "true" ]; then
+    isCache=true
+else
+    isCache=false
+fi
 
 # 数据库配置
 host=127.0.0.1
@@ -17,8 +27,9 @@ dbname=ms_$1
 username=root
 passwd=PXDN93VRKUm8TeE7
 
+
 echo "开始创建库：$dbname 的表：$2"
-#goctl model mysql datasource -url="${username}:${passwd}@tcp(${host}:${port})/${dbname}" -table="${table}"  -dir="${dir}" -cache=true --style=goZero
-goctl model mysql datasource -url="${username}:${passwd}@tcp(${host}:${port})/${dbname}" -table="${table}"  -dir="{dir}" -cache=true --style=goZero --home ../../../tpc
+goctl model mysql datasource -url="${username}:${passwd}@tcp(${host}:${port})/${dbname}" -table="${tables}"  -dir="${modeldir}" --style=goZero --home="${homedir}" -cache=true
 echo "创建库：$dbname 的表：$2 完成"
+
 

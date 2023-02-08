@@ -1,23 +1,21 @@
 package config
 
 import (
-	"github.com/SpectatorNan/gorm-zero/gormc"
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/zrpc"
 )
 
-type App struct {
-	Url string
-}
-
 type Config struct {
+	// 框架配置
 	zrpc.RpcServerConf
-	Mysql gormc.Mysql
 	Cache cache.CacheConf
 	Redis redis.RedisConf
-	App   App
+	DB    struct {
+		DataSource string
+	}
 
+	// 业务配置
 	CaptConfig CaptConfig
 	Sms        SmsConfig
 	Email      EmailConfig

@@ -4,8 +4,8 @@ go 1.19
 
 require (
 	github.com/KenmyZhang/aliyun-communicate v0.0.0-20180308134849-7997edc57454
+	github.com/Masterminds/squirrel v1.5.3
 	github.com/SpectatorNan/gorm-zero v1.1.0
-	github.com/bxcodec/faker/v3 v3.8.1
 	github.com/disintegration/imaging v1.6.2
 	github.com/frankban/quicktest v1.11.3
 	github.com/gertd/go-pluralize v0.2.1
@@ -67,6 +67,8 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
+	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
+	github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-colorable v0.1.9 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect

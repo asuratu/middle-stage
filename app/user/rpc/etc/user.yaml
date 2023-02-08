@@ -2,26 +2,13 @@ Name: user.rpc
 ListenOn: 0.0.0.0:5001
 Mode: dev
 
-App:
-  Url: http://localhost:5001
-
 Etcd:
   Hosts:
   - 127.0.0.1:2379
   Key: user.rpc
 
-Mysql:
-  Path: "127.0.0.1"
-  Port: "3310"
-  Dbname: "ms_user"
-  Username: "root"
-  Password: "PXDN93VRKUm8TeE7"
-  MaxIdleConns: 10
-  MaxOpenConns: 10
-  LogMode: "dev"
-  LogZap: true
-  SlowThreshold: 1
-  Config: charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+DB:
+  DataSource: root:PXDN93VRKUm8TeE7@tcp(localhost:3310)/ms_user?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 
 Redis:
   Host: localhost:36379

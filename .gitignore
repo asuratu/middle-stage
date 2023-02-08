@@ -13,9 +13,6 @@ data/*
 #public
 public/*
 
-#tpl
-tpl/*
-
 #tmp
 app/user/rpc/tmp
 app/user/rpc/tmp/*
