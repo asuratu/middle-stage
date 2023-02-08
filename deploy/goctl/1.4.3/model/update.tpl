@@ -30,9 +30,12 @@ func (m *default{{.upperStartCamelObject}}Model) UpdateWithVersion(ctx context.C
     {{.keys}}
 	sqlResult,err =  m.ExecCtx(ctx,func(ctx context.Context,conn sqlx.SqlConn) (result sql.Result, err error) {
 	query := fmt.Sprintf("update %s set %s where {{.originalPrimaryKey}} = {{if .postgreSql}}$1{{else}}?{{end}} and version = ? ", m.table, {{.lowerStartCamelObject}}RowsWithPlaceHolder)
-
 	return conn.ExecCtx(ctx,query, {{.expressionValues}},oldVersion)
-	}, {{.keyValues}}){{else}}query := fmt.Sprintf("update %s set %s where {{.originalPrimaryKey}} = {{if .postgreSql}}$1{{else}}?{{end}} and version = ? ", m.table, {{.lowerStartCamelObject}}RowsWithPlaceHolder)
+	},
+	{{.keyValues}})
+	{{else}}
+	query := fmt.Sprintf("update %s set %s where {{.originalPrimaryKey}} = {{if .postgreSql}}$1{{else}}?{{end}} and version = ? ", m.table, {{.lowerStartCamelObject}}RowsWithPlaceHolder)
+	sqlResult,err  =  m.conn.ExecCtx(ctx,query, {{.expressionValues}},oldVersion)
 	{{end}}
 	if err != nil {
 		return err
@@ -47,6 +50,9 @@ func (m *default{{.upperStartCamelObject}}Model) UpdateWithVersion(ctx context.C
 
 	return nil
 }
+
+
+
 
 
 

@@ -29,7 +29,9 @@ passwd=PXDN93VRKUm8TeE7
 
 
 echo "开始创建库：$dbname 的表：$2"
-goctl model mysql datasource -url="${username}:${passwd}@tcp(${host}:${port})/${dbname}" -table="${tables}"  -dir="${modeldir}" --style=goZero --home="${homedir}" -cache=true
+# shellcheck disable=SC1083
+#goctl model mysql datasource -url="${username}:${passwd}@tcp(${host}:${port})/${dbname}" -table="${tables}"  -dir="${modeldir}" --style=goZero --home="${homedir}" {{if eq $isCache true}}-cache=true{{end}}
+goctl model mysql datasource -url="${username}:${passwd}@tcp(${host}:${port})/${dbname}" -table="${tables}"  -dir="${modeldir}" --style=goZero --home="${homedir}"
 echo "创建库：$dbname 的表：$2 完成"
 
 
