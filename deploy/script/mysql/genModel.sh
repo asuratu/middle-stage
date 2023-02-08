@@ -14,12 +14,6 @@ homedir=../../goctl
 # 是否使用缓存
 isCache=$3
 
-if [ "$isCache" = "true" ]; then
-    isCache=true
-else
-    isCache=false
-fi
-
 # 数据库配置
 host=127.0.0.1
 port=3310
@@ -27,11 +21,14 @@ dbname=ms_$1
 username=root
 passwd=PXDN93VRKUm8TeE7
 
-
 echo "开始创建库：$dbname 的表：$2"
-# shellcheck disable=SC1083
-#goctl model mysql datasource -url="${username}:${passwd}@tcp(${host}:${port})/${dbname}" -table="${tables}"  -dir="${modeldir}" --style=goZero --home="${homedir}" {{if eq $isCache true}}-cache=true{{end}}
-goctl model mysql datasource -url="${username}:${passwd}@tcp(${host}:${port})/${dbname}" -table="${tables}"  -dir="${modeldir}" --style=goZero --home="${homedir}"
+
+if [ "$isCache" = "true" ]; then
+    goctl model mysql datasource -url="${username}:${passwd}@tcp(${host}:${port})/${dbname}" -table="${tables}"  -dir="${modeldir}" --style=goZero --home="${homedir}" -cache=true
+else
+    goctl model mysql datasource -url="${username}:${passwd}@tcp(${host}:${port})/${dbname}" -table="${tables}"  -dir="${modeldir}" --style=goZero --home="${homedir}"
+fi
+
 echo "创建库：$dbname 的表：$2 完成"
 
 

@@ -9,22 +9,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetUsersByIdLogic struct {
+type SearchUserLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewGetUsersByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUsersByIdLogic {
-	return &GetUsersByIdLogic{
+func NewSearchUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SearchUserLogic {
+	return &SearchUserLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *GetUsersByIdLogic) GetUsersById(in *user.GetUsersByIdReq) (*user.GetUserResp, error) {
+func (l *SearchUserLogic) SearchUser(in *user.SearchUserReq) (*user.SearchUserResp, error) {
 	// todo: add your logic here and delete this line
 
-	return &user.GetUserResp{}, nil
+	return &user.SearchUserResp{}, nil
 }

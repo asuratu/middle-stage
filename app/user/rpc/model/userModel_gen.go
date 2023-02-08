@@ -13,6 +13,7 @@ import (
 	"middle/common/xerr"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
+	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/sqlc"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"github.com/zeromicro/go-zero/core/stringx"
@@ -23,6 +24,9 @@ var (
 	userRows                = strings.Join(userFieldNames, ",")
 	userRowsExpectAutoSet   = strings.Join(stringx.Remove(userFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), ",")
 	userRowsWithPlaceHolder = strings.Join(stringx.Remove(userFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
+
+	cacheMsUserUserIdPrefix     = "cache:msUser:user:id:"
+	cacheMsUserUserMobilePrefix = "cache:msUser:user:mobile:"
 )
 
 type (
@@ -37,7 +41,7 @@ type (
 	}
 
 	defaultUserModel struct {
-		conn  sqlx.SqlConn
+		sqlc.CachedConn
 		table string
 	}
 
@@ -57,24 +61,36 @@ type (
 	}
 )
 
-func newUserModel(conn sqlx.SqlConn) *defaultUserModel {
+func newUserModel(conn sqlx.SqlConn, c cache.CacheConf) *defaultUserModel {
 	return &defaultUserModel{
-		conn:  conn,
-		table: "`user`",
+		CachedConn: sqlc.NewConn(conn, c),
+		table:      "`user`",
 	}
 }
 
 func (m *defaultUserModel) Delete(ctx context.Context, id int64) error {
-	query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
-	_, err := m.conn.ExecCtx(ctx, query, id)
+	data, err := m.FindOne(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, id)
+	msUserUserMobileKey := fmt.Sprintf("%s%v", cacheMsUserUserMobilePrefix, data.Mobile)
+	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
+		return conn.ExecCtx(ctx, query, id)
+	}, msUserUserIdKey, msUserUserMobileKey)
 	return err
 }
 
 // FindOne 只查询未被软删除的数据
 func (m *defaultUserModel) FindOne(ctx context.Context, id int64) (*User, error) {
-	query := fmt.Sprintf("select %s from %s where `id` = ?  and del_state = ? limit 1", userRows, m.table)
+	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, id)
 	var resp User
-	err := m.conn.QueryRowCtx(ctx, &resp, query, id, globalkey.DelStateNo)
+	err := m.QueryRowCtx(ctx, &resp, msUserUserIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+		query := fmt.Sprintf("select %s from %s where `id` = ? and del_state = ? limit 1", userRows, m.table)
+		return conn.QueryRowCtx(ctx, v, query, id, globalkey.DelStateNo)
+	})
 	switch err {
 	case nil:
 		return &resp, nil
@@ -87,9 +103,12 @@ func (m *defaultUserModel) FindOne(ctx context.Context, id int64) (*User, error)
 
 // FindOneWithTrashed 查询所有数据, 包括被软删除的数据
 func (m *defaultUserModel) FindOneWithTrashed(ctx context.Context, id int64) (*User, error) {
-	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", userRows, m.table)
+	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, id)
 	var resp User
-	err := m.conn.QueryRowCtx(ctx, &resp, query, id)
+	err := m.QueryRowCtx(ctx, &resp, msUserUserIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", userRows, m.table)
+		return conn.QueryRowCtx(ctx, v, query, id)
+	})
 	switch err {
 	case nil:
 		return &resp, nil
@@ -101,9 +120,15 @@ func (m *defaultUserModel) FindOneWithTrashed(ctx context.Context, id int64) (*U
 }
 
 func (m *defaultUserModel) FindOneByMobile(ctx context.Context, mobile string) (*User, error) {
+	msUserUserMobileKey := fmt.Sprintf("%s%v", cacheMsUserUserMobilePrefix, mobile)
 	var resp User
-	query := fmt.Sprintf("select %s from %s where `mobile` = ?  and del_state = ? limit 1", userRows, m.table)
-	err := m.conn.QueryRowCtx(ctx, &resp, query, mobile, globalkey.DelStateNo)
+	err := m.QueryRowIndexCtx(ctx, &resp, msUserUserMobileKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+		query := fmt.Sprintf("select %s from %s where `mobile` = ? and del_state = ? limit 1", userRows, m.table)
+		if err := conn.QueryRowCtx(ctx, &resp, query, mobile, globalkey.DelStateNo); err != nil {
+			return nil, err
+		}
+		return resp.Id, nil
+	}, m.queryPrimary)
 	switch err {
 	case nil:
 		return &resp, nil
@@ -115,14 +140,27 @@ func (m *defaultUserModel) FindOneByMobile(ctx context.Context, mobile string) (
 }
 
 func (m *defaultUserModel) Insert(ctx context.Context, data *User) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.DeleteTime, data.DelState, data.Version, data.Mobile, data.Password, data.Nickname, data.Sex, data.Avatar, data.Info)
+	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, data.Id)
+	msUserUserMobileKey := fmt.Sprintf("%s%v", cacheMsUserUserMobilePrefix, data.Mobile)
+	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
+		return conn.ExecCtx(ctx, query, data.DeleteTime, data.DelState, data.Version, data.Mobile, data.Password, data.Nickname, data.Sex, data.Avatar, data.Info)
+	}, msUserUserIdKey, msUserUserMobileKey)
 	return ret, err
 }
 
 func (m *defaultUserModel) Update(ctx context.Context, newData *User) error {
-	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, newData.DeleteTime, newData.DelState, newData.Version, newData.Mobile, newData.Password, newData.Nickname, newData.Sex, newData.Avatar, newData.Info, newData.Id)
+	data, err := m.FindOne(ctx, newData.Id)
+	if err != nil {
+		return err
+	}
+
+	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, data.Id)
+	msUserUserMobileKey := fmt.Sprintf("%s%v", cacheMsUserUserMobilePrefix, data.Mobile)
+	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userRowsWithPlaceHolder)
+		return conn.ExecCtx(ctx, query, newData.DeleteTime, newData.DelState, newData.Version, newData.Mobile, newData.Password, newData.Nickname, newData.Sex, newData.Avatar, newData.Info, newData.Id)
+	}, msUserUserIdKey, msUserUserMobileKey)
 	return err
 }
 
@@ -133,8 +171,18 @@ func (m *defaultUserModel) UpdateWithVersion(ctx context.Context, newData *User)
 	var sqlResult sql.Result
 	var err error
 
-	query := fmt.Sprintf("update %s set %s where `id` = ? and version = ? ", m.table, userRowsWithPlaceHolder)
-	sqlResult, err = m.conn.ExecCtx(ctx, query, newData.DeleteTime, newData.DelState, newData.Version, newData.Mobile, newData.Password, newData.Nickname, newData.Sex, newData.Avatar, newData.Info, newData.Id, oldVersion)
+	data, err := m.FindOne(ctx, newData.Id)
+	if err != nil {
+		return err
+	}
+
+	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, data.Id)
+	msUserUserMobileKey := fmt.Sprintf("%s%v", cacheMsUserUserMobilePrefix, data.Mobile)
+	sqlResult, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+		query := fmt.Sprintf("update %s set %s where `id` = ? and version = ? ", m.table, userRowsWithPlaceHolder)
+		return conn.ExecCtx(ctx, query, newData.DeleteTime, newData.DelState, newData.Version, newData.Mobile, newData.Password, newData.Nickname, newData.Sex, newData.Avatar, newData.Info, newData.Id, oldVersion)
+	},
+		msUserUserIdKey, msUserUserMobileKey)
 
 	if err != nil {
 		return err
@@ -148,6 +196,14 @@ func (m *defaultUserModel) UpdateWithVersion(ctx context.Context, newData *User)
 	}
 
 	return nil
+}
+
+func (m *defaultUserModel) formatPrimary(primary interface{}) string {
+	return fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, primary)
+}
+func (m *defaultUserModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {
+	query := fmt.Sprintf("select %s from %s where `id` = ? and del_state = ? limit 1", userRows, m.table)
+	return conn.QueryRowCtx(ctx, v, query, primary, globalkey.DelStateNo)
 }
 
 func (m *defaultUserModel) tableName() string {

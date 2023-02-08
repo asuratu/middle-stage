@@ -9,6 +9,7 @@ import (
 
 	"github.com/Masterminds/squirrel"
 	"github.com/pkg/errors"
+	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
@@ -39,9 +40,9 @@ type (
 )
 
 // NewUserModel returns a model for the database table.
-func NewUserModel(conn sqlx.SqlConn) UserModel {
+func NewUserModel(conn sqlx.SqlConn, c cache.CacheConf) UserModel {
 	return &customUserModel{
-		defaultUserModel: newUserModel(conn),
+		defaultUserModel: newUserModel(conn, c),
 	}
 }
 
@@ -62,9 +63,7 @@ func (m *defaultUserModel) FindOneByQuery(ctx context.Context, rowBuilder squirr
 	}
 
 	var resp User
-
-	err = m.conn.QueryRowCtx(ctx, &resp, query, values...)
-
+	err = m.QueryRowNoCacheCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
 		return &resp, nil
@@ -81,9 +80,7 @@ func (m *defaultUserModel) FindSum(ctx context.Context, sumBuilder squirrel.Sele
 	}
 
 	var resp float64
-
-	err = m.conn.QueryRowCtx(ctx, &resp, query, values...)
-
+	err = m.QueryRowNoCacheCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
 		return resp, nil
@@ -100,9 +97,7 @@ func (m *defaultUserModel) FindCount(ctx context.Context, countBuilder squirrel.
 	}
 
 	var resp int64
-
-	err = m.conn.QueryRowCtx(ctx, &resp, query, values...)
-
+	err = m.QueryRowNoCacheCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
 		return resp, nil
@@ -125,9 +120,7 @@ func (m *defaultUserModel) FindAll(ctx context.Context, rowBuilder squirrel.Sele
 	}
 
 	var resp []*User
-
-	err = m.conn.QueryRowsCtx(ctx, &resp, query, values...)
-
+	err = m.QueryRowsNoCacheCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
 		return resp, nil
@@ -155,9 +148,7 @@ func (m *defaultUserModel) FindPageListByPage(ctx context.Context, rowBuilder sq
 	}
 
 	var resp []*User
-
-	err = m.conn.QueryRowsCtx(ctx, &resp, query, values...)
-
+	err = m.QueryRowsNoCacheCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
 		return resp, nil
@@ -178,9 +169,7 @@ func (m *defaultUserModel) FindPageListByIdDESC(ctx context.Context, rowBuilder 
 	}
 
 	var resp []*User
-
-	err = m.conn.QueryRowsCtx(ctx, &resp, query, values...)
-
+	err = m.QueryRowsNoCacheCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
 		return resp, nil
@@ -202,9 +191,7 @@ func (m *defaultUserModel) FindPageListByIdASC(ctx context.Context, rowBuilder s
 	}
 
 	var resp []*User
-
-	err = m.conn.QueryRowsCtx(ctx, &resp, query, values...)
-
+	err = m.QueryRowsNoCacheCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
 		return resp, nil
@@ -216,7 +203,7 @@ func (m *defaultUserModel) FindPageListByIdASC(ctx context.Context, rowBuilder s
 // export logic
 func (m *defaultUserModel) Trans(ctx context.Context, fn func(ctx context.Context, session sqlx.Session) error) error {
 
-	return m.conn.TransactCtx(ctx, func(ctx context.Context, session sqlx.Session) error {
+	return m.TransactCtx(ctx, func(ctx context.Context, session sqlx.Session) error {
 		return fn(ctx, session)
 	})
 

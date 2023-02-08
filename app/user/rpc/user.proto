@@ -8,102 +8,95 @@ package user;
 // Messages
 // ------------------------------------ 
 
-//--------------------------------users--------------------------------
-message Users {
+//--------------------------------用户表--------------------------------
+message User {
   int64 id = 1; //id
-  string name = 2; //name 1
-  string email = 3; //email
-  string phone = 4; //phone
+  int64 createTime = 2; //createTime
+  int64 updateTime = 3; //updateTime
+  string mobile = 4; //mobile
   string password = 5; //password
-  int64 createdAt = 6; //createdAt
-  int64 updatedAt = 7; //updatedAt
-  string city = 8; //city
-  string introduction = 9; //introduction
-  string avatar = 10; //avatar
+  string nickname = 6; //nickname
+  int64 sex = 7; //性别 0:男 1:女
+  string avatar = 8; //avatar
+  string info = 9; //info
 }
 
-message AddUsersReq {
-  string name = 1; //name
-  string email = 2; //email
-  string phone = 3; //phone
-  string password = 4; //password
-  int64 createdAt = 5; //createdAt
-  int64 updatedAt = 6; //updatedAt
-  string city = 7; //city
-  string introduction = 8; //introduction
-  string avatar = 9; //avatar
+message AddUserReq {
+  string mobile = 1; //手机号
+  string password = 2; //password
+  string nickname = 3; //nickname
+  int64 sex = 4; //性别 0:男 1:女
+  string avatar = 5; //avatar
+  string info = 6; //info
 }
 
-message AddUsersResp {
+message AddUserResp {
 }
 
-message UpdateUsersReq {
+message UpdateUserReq {
   int64 id = 1; //id
-  string name = 2; //name
-  string email = 3; //email
-  string phone = 4; //phone
-  string password = 5; //password
-  int64 createdAt = 6; //createdAt
-  int64 updatedAt = 7; //updatedAt
-  string city = 8; //city
-  string introduction = 9; //introduction
-  string avatar = 10; //avatar
+  string mobile = 2; //mobile
+  string password = 3; //password
+  string nickname = 4; //nickname
+  int64 sex = 5; //性别 0:男 1:女
+  string avatar = 6; //avatar
+  string info = 7; //info
 }
 
-message UpdateUsersResp {
+message UpdateUserResp {
 }
 
-message DelUsersReq {
+message DelUserReq {
   int64 id = 1; //id
 }
 
-message DelUsersResp {
+message DelUserResp {
 }
 
-message GetUsersByIdReq {
+message GetUserByIdReq {
   int64 id = 1; //id
 }
 
-message GetUsersByAccountReq {
-  string email = 1; // email
-  string phone = 2; // phone
+message GetUserByMobileReq {
+  int64 mobile = 1; //mobile1
 }
 
 message GetUserResp {
-  Users users = 1; //users
+  User user = 1; //user
 }
 
-message SearchUsersReq {
+message SearchUserReq {
   int64 page = 1; //page
   int64 limit = 2; //limit
   int64 id = 3; //id
-  string name = 4; //name
-  string email = 5; //email
-  string phone = 6; //phone
+  int64 createTime = 4; //createTime
+  int64 updateTime = 5; //updateTime
+  string mobile = 6; //mobile
   string password = 7; //password
-  int64 createdAt = 8; //createdAt
-  int64 updatedAt = 9; //updatedAt
-  string city = 10; //city
-  string introduction = 11; //introduction
-  string avatar = 12; //avatar
+  string nickname = 8; //nickname
+  int64 sex = 9; //性别 0:男 1:女
+  string avatar = 10; //avatar
+  string info = 11; //info
 }
 
-message SearchUsersResp {
-  repeated Users users = 1; //users
+message SearchUserResp {
+  repeated User user = 1; //user
 }
 
-// ------------------------------------
+
+
+// ------------------------------------ 
 // Rpc Func
 // ------------------------------------ 
 
 service user{ 
 
-	 //-----------------------users----------------------- 
-	 rpc AddUsers(AddUsersReq) returns (AddUsersResp); 
-	 rpc UpdateUsers(UpdateUsersReq) returns (UpdateUsersResp); 
-	 rpc DelUsers(DelUsersReq) returns (DelUsersResp); 
-	 rpc GetUsersById(GetUsersByIdReq) returns (GetUserResp);
-	 rpc GetUsersByAccount(GetUsersByAccountReq) returns (GetUserResp);
-	 rpc SearchUsers(SearchUsersReq) returns (SearchUsersResp);
+	 //-----------------------用户表----------------------- 
+	 rpc AddUser(AddUserReq) returns (AddUserResp); 
+	 rpc UpdateUser(UpdateUserReq) returns (UpdateUserResp); 
+	 rpc DelUser(DelUserReq) returns (DelUserResp); 
+	 rpc GetUserById(GetUserByIdReq) returns (GetUserResp);
+	 rpc GetUserByMobile(GetUserByIdReq) returns (GetUserResp);
+	 rpc SearchUser(SearchUserReq) returns (SearchUserResp);
 
 }

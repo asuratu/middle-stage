@@ -15,7 +15,7 @@ sql2pb:
 	@$(sql2pb) -go_package ./pb -host localhost -package user -password PXDN93VRKUm8TeE7 -port 3310 -schema ms_user -service_name user -user root > user.proto
 
 model:
-	@cd deploy/script/mysql && sh genModel.sh $(m) $(t)
+	@cd deploy/script/mysql && sh genModel.sh $(m) $(t) $(c)
 
 model.origin:
 	@cd deploy/script/mysql && sh genModelOrigin.sh $(m) $(t) $(c)
