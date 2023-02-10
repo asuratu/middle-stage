@@ -1,0 +1,247 @@
+syntax = "proto3";
+
+option go_package ="./user";
+
+package user;
+
+// ------------------------------------ 
+// Messages
+// ------------------------------------ 
+
+//--------------------------------category--------------------------------
+message Category {
+  int64 id = 1; //id
+  string name = 2; //name
+  string description = 3; //description
+  int64 createdAt = 4; //createdAt
+  int64 updatedAt = 5; //updatedAt
+}
+
+message AddCategoryReq {
+  string name = 1; //name
+  string description = 2; //description
+  int64 createdAt = 3; //createdAt
+  int64 updatedAt = 4; //updatedAt
+}
+
+message AddCategoryResp {
+}
+
+message UpdateCategoryReq {
+  int64 id = 1; //id
+  string name = 2; //name
+  string description = 3; //description
+  int64 createdAt = 4; //createdAt
+  int64 updatedAt = 5; //updatedAt
+}
+
+message UpdateCategoryResp {
+}
+
+message DelCategoryReq {
+  int64 id = 1; //id
+}
+
+message DelCategoryResp {
+}
+
+message GetCategoryByIdReq {
+  int64 id = 1; //id
+}
+
+message GetCategoryByIdResp {
+  Category category = 1; //category
+}
+
+message SearchCategoryReq {
+  int64 page = 1; //page
+  int64 limit = 2; //limit
+  int64 id = 3; //id
+  string name = 4; //name
+  string description = 5; //description
+  int64 createdAt = 6; //createdAt
+  int64 updatedAt = 7; //updatedAt
+}
+
+message SearchCategoryResp {
+  repeated Category category = 1; //category
+}
+
+//--------------------------------topic--------------------------------
+message Topic {
+  int64 id = 1; //id
+  string title = 2; //title
+  string body = 3; //body
+  int64 userId = 4; //userId
+  int64 categoryId = 5; //categoryId
+  int64 createdAt = 6; //createdAt
+  int64 updatedAt = 7; //updatedAt
+}
+
+message AddTopicReq {
+  string title = 1; //title
+  string body = 2; //body
+  int64 userId = 3; //userId
+  int64 categoryId = 4; //categoryId
+  int64 createdAt = 5; //createdAt
+  int64 updatedAt = 6; //updatedAt
+}
+
+message AddTopicResp {
+}
+
+message UpdateTopicReq {
+  int64 id = 1; //id
+  string title = 2; //title
+  string body = 3; //body
+  int64 userId = 4; //userId
+  int64 categoryId = 5; //categoryId
+  int64 createdAt = 6; //createdAt
+  int64 updatedAt = 7; //updatedAt
+}
+
+message UpdateTopicResp {
+}
+
+message DelTopicReq {
+  int64 id = 1; //id
+}
+
+message DelTopicResp {
+}
+
+message GetTopicByIdReq {
+  int64 id = 1; //id
+}
+
+message GetTopicByIdResp {
+  Topic topic = 1; //topic
+}
+
+message SearchTopicReq {
+  int64 page = 1; //page
+  int64 limit = 2; //limit
+  int64 id = 3; //id
+  string title = 4; //title
+  string body = 5; //body
+  int64 userId = 6; //userId
+  int64 categoryId = 7; //categoryId
+  int64 createdAt = 8; //createdAt
+  int64 updatedAt = 9; //updatedAt
+}
+
+message SearchTopicResp {
+  repeated Topic topic = 1; //topic
+}
+
+//--------------------------------user--------------------------------
+message User {
+  int64 id = 1; //id
+  string name = 2; //name
+  string email = 3; //email
+  string phone = 4; //phone
+  string password = 5; //password
+  int64 createdAt = 6; //createdAt
+  int64 updatedAt = 7; //updatedAt
+  string city = 8; //city
+  string introduction = 9; //introduction
+  string avatar = 10; //avatar
+}
+
+message AddUserReq {
+  string name = 1; //name
+  string email = 2; //email
+  string phone = 3; //phone
+  string password = 4; //password
+  int64 createdAt = 5; //createdAt
+  int64 updatedAt = 6; //updatedAt
+  string city = 7; //city
+  string introduction = 8; //introduction
+  string avatar = 9; //avatar
+}
+
+message AddUserResp {
+}
+
+message UpdateUserReq {
+  int64 id = 1; //id
+  string name = 2; //name
+  string email = 3; //email
+  string phone = 4; //phone
+  string password = 5; //password
+  int64 createdAt = 6; //createdAt
+  int64 updatedAt = 7; //updatedAt
+  string city = 8; //city
+  string introduction = 9; //introduction
+  string avatar = 10; //avatar
+}
+
+message UpdateUserResp {
+}
+
+message DelUserReq {
+  int64 id = 1; //id
+}
+
+message DelUserResp {
+}
+
+message GetUserByIdReq {
+  int64 id = 1; //id
+}
+
+message GetUserByMobileReq {
+  string mobile = 1; //mobile
+}
+
+message GetUserResp {
+  User user = 1; //user
+}
+
+message SearchUserReq {
+  int64 page = 1; //page
+  int64 limit = 2; //limit
+  int64 id = 3; //id
+  string name = 4; //name
+  string email = 5; //email
+  string phone = 6; //phone
+  string password = 7; //password
+  int64 createdAt = 8; //createdAt
+  int64 updatedAt = 9; //updatedAt
+  string city = 10; //city
+  string introduction = 11; //introduction
+  string avatar = 12; //avatar
+}
+
+message SearchUserResp {
+  repeated User user = 1; //user
+}
+
+
+// ------------------------------------ 
+// Rpc Func
+// ------------------------------------ 
+
+service usersvc{ 
+
+	 //-----------------------category----------------------- 
+	 rpc AddCategory(AddCategoryReq) returns (AddCategoryResp); 
+	 rpc UpdateCategory(UpdateCategoryReq) returns (UpdateCategoryResp); 
+	 rpc DelCategory(DelCategoryReq) returns (DelCategoryResp); 
+	 rpc GetCategoryById(GetCategoryByIdReq) returns (GetCategoryByIdResp); 
+	 rpc SearchCategory(SearchCategoryReq) returns (SearchCategoryResp); 
+	 //-----------------------topic----------------------- 
+	 rpc AddTopic(AddTopicReq) returns (AddTopicResp); 
+	 rpc UpdateTopic(UpdateTopicReq) returns (UpdateTopicResp); 
+	 rpc DelTopic(DelTopicReq) returns (DelTopicResp); 
+	 rpc GetTopicById(GetTopicByIdReq) returns (GetTopicByIdResp); 
+	 rpc SearchTopic(SearchTopicReq) returns (SearchTopicResp); 
+	 //-----------------------user----------------------- 
+	 rpc AddUser(AddUserReq) returns (AddUserResp); 
+	 rpc UpdateUser(UpdateUserReq) returns (UpdateUserResp); 
+	 rpc DelUser(DelUserReq) returns (DelUserResp); 
+	 rpc GetUserById(GetUserByIdReq) returns (GetUserResp);
+	 rpc GetUserByMobile(GetUserByMobileReq) returns (GetUserResp);
+	 rpc SearchUser(SearchUserReq) returns (SearchUserResp);
+
+}

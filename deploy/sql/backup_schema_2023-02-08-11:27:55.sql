@@ -1,4 +1,3 @@
-mysqldump: [Warning] Using a password on the command line interface can be insecure.
 -- MySQL dump 10.13  Distrib 8.0.31, for Linux (aarch64)
 --
 -- Host: localhost    Database: ms_user
@@ -17,22 +16,22 @@ mysqldump: [Warning] Using a password on the command line interface can be insec
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `categories`
+-- Table structure for table `categorys`
 --
 
-DROP TABLE IF EXISTS `categories`;
+DROP TABLE IF EXISTS `categorys`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `categories` (
+CREATE TABLE `categorys` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `created_at` datetime(3) DEFAULT NULL,
   `updated_at` datetime(3) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `idx_categories_updated_at` (`updated_at`),
-  KEY `idx_categories_name` (`name`),
-  KEY `idx_categories_created_at` (`created_at`)
+  KEY `idx_categorys_updated_at` (`updated_at`),
+  KEY `idx_categorys_name` (`name`),
+  KEY `idx_categorys_created_at` (`created_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -116,7 +115,7 @@ CREATE TABLE `topics` (
   KEY `idx_topics_category_id` (`category_id`),
   KEY `idx_topics_created_at` (`created_at`),
   KEY `idx_topics_updated_at` (`updated_at`),
-  CONSTRAINT `fk_topics_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
+  CONSTRAINT `fk_topics_category` FOREIGN KEY (`category_id`) REFERENCES `categorys` (`id`),
   CONSTRAINT `fk_topics_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -1,32 +1,20 @@
 /*
- Navicat Premium Data Transfer
-
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 80031
- Source Host           : localhost:3306
- Source Schema         : gohub
-
- Target Server Type    : MySQL
- Target Server Version : 80031
- File Encoding         : 65001
-
+ this file records the migrations that have been applied to the database
  Date: 16/01/2023 17:49:55
 */
 
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
+-- add columns (delete_time, del_state, version) to table user
+ALTER TABLE user ADD COLUMN delete_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE user ADD COLUMN del_state tinyint NOT NULL DEFAULT '0';
+ALTER TABLE user ADD COLUMN version bigint NOT NULL DEFAULT '0' COMMENT '版本号';
 
--- ----------------------------
--- Table structure for migrations
--- ----------------------------
-DROP TABLE IF EXISTS `migrations`;
-CREATE TABLE `migrations` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) NOT NULL,
-  `batch` bigint DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `migration` (`migration`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- add columns (delete_time, del_state, version) to table category
+ALTER TABLE category ADD COLUMN delete_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE category ADD COLUMN del_state tinyint NOT NULL DEFAULT '0';
+ALTER TABLE category ADD COLUMN version bigint NOT NULL DEFAULT '0' COMMENT '版本号';
 
-SET FOREIGN_KEY_CHECKS = 1;
+-- add columns (delete_time, del_state, version) to table topic
+ALTER TABLE topic ADD COLUMN delete_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE topic ADD COLUMN del_state tinyint NOT NULL DEFAULT '0';
+ALTER TABLE topic ADD COLUMN version bigint NOT NULL DEFAULT '0' COMMENT '版本号';
+

@@ -23,7 +23,7 @@ func NewAddUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddUserLo
 	}
 }
 
-// -----------------------用户表-----------------------
+// -----------------------user-----------------------
 func (l *AddUserLogic) AddUser(in *user.AddUserReq) (*user.AddUserResp, error) {
 	// todo: add your logic here and delete this line
 

@@ -1,16 +1,15 @@
 ### 根据 ID 获取用户信息
-GRPC localhost:5001/user.user/GetUsersById
+GRPC localhost:5001/user.usersvc/GetUsersById
 
 {
   "id": 1
 }
 
 ### check phone exist
-GRPC localhost:5001/user.user/GetUsersByAccount
+GRPC localhost:5001/user.usersvc/GetUserByMobile
 
 {
-    "phone": "19644241359",
-    "email": ""
+    "mobile": "19644241359"
 }
 
 

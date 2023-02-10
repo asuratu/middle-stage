@@ -2,9 +2,9 @@ package svc
 
 import (
 	"errors"
+	"middle/app/user/rpc/model"
 
 	"middle/app/user/rpc/internal/config"
-	"middle/app/user/rpc/model"
 
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/redis"

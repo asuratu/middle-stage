@@ -22,11 +22,10 @@ import (
 var (
 	userFieldNames          = builder.RawFieldNames(&User{})
 	userRows                = strings.Join(userFieldNames, ",")
-	userRowsExpectAutoSet   = strings.Join(stringx.Remove(userFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), ",")
-	userRowsWithPlaceHolder = strings.Join(stringx.Remove(userFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
+	userRowsExpectAutoSet   = strings.Join(stringx.Remove(userFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), ",")
+	userRowsWithPlaceHolder = strings.Join(stringx.Remove(userFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), "=?,") + "=?"
 
-	cacheMsUserUserIdPrefix     = "cache:msUser:user:id:"
-	cacheMsUserUserMobilePrefix = "cache:msUser:user:mobile:"
+	cacheMsUserUserIdPrefix = "cache:msUser:user:id:"
 )
 
 type (
@@ -34,7 +33,6 @@ type (
 		Insert(ctx context.Context, data *User) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*User, error)
 		FindOneWithTrashed(ctx context.Context, id int64) (*User, error)
-		FindOneByMobile(ctx context.Context, mobile string) (*User, error)
 		Update(ctx context.Context, data *User) error
 		UpdateWithVersion(ctx context.Context, data *User) error
 		Delete(ctx context.Context, id int64) error
@@ -46,18 +44,19 @@ type (
 	}
 
 	User struct {
-		Id         int64     `db:"id"`
-		CreateTime time.Time `db:"create_time"`
-		UpdateTime time.Time `db:"update_time"`
-		DeleteTime time.Time `db:"delete_time"`
-		DelState   int64     `db:"del_state"`
-		Version    int64     `db:"version"` // 版本号
-		Mobile     string    `db:"mobile"`
-		Password   string    `db:"password"`
-		Nickname   string    `db:"nickname"`
-		Sex        int64     `db:"sex"` // 性别 0:男 1:女
-		Avatar     string    `db:"avatar"`
-		Info       string    `db:"info"`
+		Id           int64          `db:"id"`
+		Name         string         `db:"name"`
+		Email        sql.NullString `db:"email"`
+		Phone        sql.NullString `db:"phone"`
+		Password     sql.NullString `db:"password"`
+		CreatedAt    sql.NullTime   `db:"created_at"`
+		UpdatedAt    sql.NullTime   `db:"updated_at"`
+		City         sql.NullString `db:"city"`
+		Introduction sql.NullString `db:"introduction"`
+		Avatar       sql.NullString `db:"avatar"`
+		DeleteTime   time.Time      `db:"delete_time"`
+		DelState     int64          `db:"del_state"`
+		Version      int64          `db:"version"` // 版本号
 	}
 )
 
@@ -69,17 +68,11 @@ func newUserModel(conn sqlx.SqlConn, c cache.CacheConf) *defaultUserModel {
 }
 
 func (m *defaultUserModel) Delete(ctx context.Context, id int64) error {
-	data, err := m.FindOne(ctx, id)
-	if err != nil {
-		return err
-	}
-
 	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, id)
-	msUserUserMobileKey := fmt.Sprintf("%s%v", cacheMsUserUserMobilePrefix, data.Mobile)
-	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
 		return conn.ExecCtx(ctx, query, id)
-	}, msUserUserIdKey, msUserUserMobileKey)
+	}, msUserUserIdKey)
 	return err
 }
 
@@ -119,70 +112,37 @@ func (m *defaultUserModel) FindOneWithTrashed(ctx context.Context, id int64) (*U
 	}
 }
 
-func (m *defaultUserModel) FindOneByMobile(ctx context.Context, mobile string) (*User, error) {
-	msUserUserMobileKey := fmt.Sprintf("%s%v", cacheMsUserUserMobilePrefix, mobile)
-	var resp User
-	err := m.QueryRowIndexCtx(ctx, &resp, msUserUserMobileKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
-		query := fmt.Sprintf("select %s from %s where `mobile` = ? and del_state = ? limit 1", userRows, m.table)
-		if err := conn.QueryRowCtx(ctx, &resp, query, mobile, globalkey.DelStateNo); err != nil {
-			return nil, err
-		}
-		return resp.Id, nil
-	}, m.queryPrimary)
-	switch err {
-	case nil:
-		return &resp, nil
-	case sqlc.ErrNotFound:
-		return nil, ErrNotFound
-	default:
-		return nil, err
-	}
-}
-
 func (m *defaultUserModel) Insert(ctx context.Context, data *User) (sql.Result, error) {
 	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, data.Id)
-	msUserUserMobileKey := fmt.Sprintf("%s%v", cacheMsUserUserMobilePrefix, data.Mobile)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
-		return conn.ExecCtx(ctx, query, data.DeleteTime, data.DelState, data.Version, data.Mobile, data.Password, data.Nickname, data.Sex, data.Avatar, data.Info)
-	}, msUserUserIdKey, msUserUserMobileKey)
+		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
+		return conn.ExecCtx(ctx, query, data.Name, data.Email, data.Phone, data.Password, data.City, data.Introduction, data.Avatar, data.DeleteTime, data.DelState, data.Version)
+	}, msUserUserIdKey)
 	return ret, err
 }
 
-func (m *defaultUserModel) Update(ctx context.Context, newData *User) error {
-	data, err := m.FindOne(ctx, newData.Id)
-	if err != nil {
-		return err
-	}
-
+func (m *defaultUserModel) Update(ctx context.Context, data *User) error {
 	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, data.Id)
-	msUserUserMobileKey := fmt.Sprintf("%s%v", cacheMsUserUserMobilePrefix, data.Mobile)
-	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userRowsWithPlaceHolder)
-		return conn.ExecCtx(ctx, query, newData.DeleteTime, newData.DelState, newData.Version, newData.Mobile, newData.Password, newData.Nickname, newData.Sex, newData.Avatar, newData.Info, newData.Id)
-	}, msUserUserIdKey, msUserUserMobileKey)
+		return conn.ExecCtx(ctx, query, data.Name, data.Email, data.Phone, data.Password, data.City, data.Introduction, data.Avatar, data.DeleteTime, data.DelState, data.Version, data.Id)
+	}, msUserUserIdKey)
 	return err
 }
 
-func (m *defaultUserModel) UpdateWithVersion(ctx context.Context, newData *User) error {
-	oldVersion := newData.Version
-	newData.Version += 1
+func (m *defaultUserModel) UpdateWithVersion(ctx context.Context, data *User) error {
+	oldVersion := data.Version
+	data.Version += 1
 
 	var sqlResult sql.Result
 	var err error
 
-	data, err := m.FindOne(ctx, newData.Id)
-	if err != nil {
-		return err
-	}
-
 	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, data.Id)
-	msUserUserMobileKey := fmt.Sprintf("%s%v", cacheMsUserUserMobilePrefix, data.Mobile)
 	sqlResult, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ? and version = ? ", m.table, userRowsWithPlaceHolder)
-		return conn.ExecCtx(ctx, query, newData.DeleteTime, newData.DelState, newData.Version, newData.Mobile, newData.Password, newData.Nickname, newData.Sex, newData.Avatar, newData.Info, newData.Id, oldVersion)
+		return conn.ExecCtx(ctx, query, data.Name, data.Email, data.Phone, data.Password, data.City, data.Introduction, data.Avatar, data.DeleteTime, data.DelState, data.Version, data.Id, oldVersion)
 	},
-		msUserUserIdKey, msUserUserMobileKey)
+		msUserUserIdKey)
 
 	if err != nil {
 		return err
