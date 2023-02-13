@@ -11,6 +11,7 @@ info (
 type PhoneExistReq {
 	Phone string `json:"phone" validate:"required,len=11"`
 }
+
 type PhoneExistReply {
 	Exist bool `json:"exist"`
 }
