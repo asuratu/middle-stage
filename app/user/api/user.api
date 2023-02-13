@@ -1,5 +1,3 @@
-syntax = "v1"
-
 info (
 	title: "user api"
 	desc: "用户系统"
@@ -11,54 +9,10 @@ info (
 
 //手机号是否存在
 type PhoneExistReq {
-	Phone string `json:"phone" validate:"required,startswith=1,len=11"`
+	Phone string `json:"phone" validate:"required,len=11"`
 }
 type PhoneExistReply {
 	Exist bool `json:"exist"`
-}
-
-//邮箱是否存在
-type EmailExistReq {
-	Email string `json:"email" validate:"required,email"`
-}
-type EmailExistReply {
-	Exist bool `json:"exist"`
-}
-
-//注册请求
-type RegisterReq {
-	Username string `json:"username"`
-	Mobile   string `json:"mobile"`
-	Password string `json:"password"`
-	Smscode  string `json:"smscode"`
-}
-//登陆请求
-type LoginReq {
-	Username string `json:"username"`
-	Mobile   string `json:"mobile"`
-	Password string `json:"password"`
-	Smscode  string `json:"smscode"`
-}
-
-//返回用户信息
-type UserReply {
-	Auid     int64  `json:"auid"`
-	Uid      int64  `json:"uid"`
-	Beid     int64  `json:"beid"`  //应用id
-	Ptyid    int64  `json:"ptyid"` //对应平台
-	Username string `json:"username"`
-	Mobile   string `json:"mobile"`
-	Nickname string `json:"nickname"`
-	Openid   string `json:"openid"`
-	Avator   string `json:"avator"`
-	Gender   string `json:"gender"`
-	JwtToken
-}
-
-type JwtToken {
-	AccessToken  string `json:"accessToken,omitempty"`
-	AccessExpire int64  `json:"accessExpire,omitempty"`
-	RefreshAfter int64  `json:"refreshAfter,omitempty"`
 }
 
 //============================> user v1 <============================
@@ -70,34 +24,4 @@ type JwtToken {
 service user-api {
 	@handler phoneExist
 	post /auth/signup/phone/exist (PhoneExistReq) returns (PhoneExistReply)
-	
-	@handler emailExist
-	post /auth/signup/email/exist (EmailExistReq) returns (EmailExistReply)
-}
-
-@server(
-	prefix: userapi/v1
-	group: users
-)
-service user-api {
-	@handler ping
-	post /users/ping
-	
-	@handler register
-	post /users/register (RegisterReq)
-	
-	@handler login
-	post /users/login (LoginReq) returns (UserReply)
-}
-
-//need login
-@server(
-	prefix: userapi/v1
-	group: users
-	jwt: Auth
-	middleware: Usercheck
-)
-service user-api {
-	@handler userInfo
-	get /users/info  returns (UserReply)
 }

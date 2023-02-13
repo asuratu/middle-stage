@@ -191,7 +191,7 @@ message GetUserByIdReq {
 }
 
 message GetUserByMobileReq {
-  string mobile = 1; //mobile
+  string phone = 1; //mobile
 }
 
 message GetUserResp {

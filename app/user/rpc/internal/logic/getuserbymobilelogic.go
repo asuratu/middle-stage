@@ -29,13 +29,13 @@ func NewGetUserByMobileLogic(ctx context.Context, svcCtx *svc.ServiceContext) *G
 
 func (l *GetUserByMobileLogic) GetUserByMobile(in *user.GetUserByMobileReq) (*user.GetUserResp, error) {
 	whereBuilder := l.svcCtx.UserModel.RowBuilder().Where(
-		"mobile = ?",
-		in.Mobile,
+		"phone = ?",
+		in.Phone,
 	)
 
 	userModel, err := l.svcCtx.UserModel.FindOneByQuery(l.ctx, whereBuilder)
 	if err != nil && err != model.ErrNotFound {
-		return nil, errors.Wrapf(xerr.NewErrMsg("get user record fail"), "get user record fail FindOneByQuery  err : %v , mobile:%s", err, in.Mobile)
+		return nil, errors.Wrapf(xerr.NewErrMsg("get user record fail"), "get user record fail FindOneByQuery  err : %v , phone:%s", err, in.Phone)
 	}
 
 	var resp user.GetUserResp

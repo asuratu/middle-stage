@@ -2,6 +2,12 @@ package logic
 
 import (
 	"context"
+	"middle/app/user/rpc/model"
+	"middle/common/xerr"
+
+	"github.com/jinzhu/copier"
+
+	"github.com/pkg/errors"
 
 	"middle/app/user/rpc/internal/svc"
 	"middle/app/user/rpc/user"
@@ -23,8 +29,18 @@ func NewGetUserByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 	}
 }
 
-func (l *GetUserByIdLogic) GetUserById(in *user.GetUserByIdReq) (*user.GetUserByIdResp, error) {
-	// todo: add your logic here and delete this line
+func (l *GetUserByIdLogic) GetUserById(in *user.GetUserByIdReq) (*user.GetUserResp, error) {
+	userModel, err := l.svcCtx.UserModel.FindOne(l.ctx, in.Id)
+	if err != nil && err != model.ErrNotFound {
+		return nil, errors.Wrapf(xerr.NewErrMsg("get user record fail"), "get user record fail FindOne err : %v , Id:%d", err, in.Id)
+	}
 
-	return &user.GetUserByIdResp{}, nil
+	resp := &user.User{}
+	if userModel != nil {
+		_ = copier.Copy(&resp, userModel)
+	}
+
+	return &user.GetUserResp{
+		User: resp,
+	}, nil
 }

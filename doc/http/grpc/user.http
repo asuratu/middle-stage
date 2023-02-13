@@ -1,5 +1,5 @@
 ### 根据 ID 获取用户信息
-GRPC localhost:5001/user.usersvc/GetUsersById
+GRPC localhost:5001/user.usersvc/GetUserById
 
 {
   "id": 1

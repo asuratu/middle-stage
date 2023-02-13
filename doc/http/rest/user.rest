@@ -1,7 +1,3 @@
-### Ping
-POST {{userapi}}/users/ping
-Content-Type: application/json
-
 ### check phone exist
 POST {{userapi}}/auth/signup/phone/exist
 Content-Type: application/json
