@@ -2,6 +2,8 @@ syntax = "proto3";
 
 option go_package ="./user";
 
+import "google/protobuf/empty.proto";
+
 package user;
 
 // ------------------------------------ 
@@ -213,8 +215,17 @@ message SearchUserReq {
   string avatar = 12; //avatar
 }
 
+message SendImageCaptchaReq{
+
+}
 message SearchUserResp {
   repeated User user = 1; //user
+}
+
+//--------------------------------auth--------------------------------
+message SendImageCaptchaResp {
+  string captchaId = 1; //captchaId
+  string captchaImage = 2; //captchaImage
 }
 
 
@@ -236,12 +247,16 @@ service usersvc{
 	 rpc DelTopic(DelTopicReq) returns (DelTopicResp); 
 	 rpc GetTopicById(GetTopicByIdReq) returns (GetTopicByIdResp); 
 	 rpc SearchTopic(SearchTopicReq) returns (SearchTopicResp); 
-	 //-----------------------user----------------------- 
-	 rpc AddUser(AddUserReq) returns (AddUserResp); 
+	 //-----------------------user-----------------------
+	 rpc AddUser(AddUserReq) returns (AddUserResp);
 	 rpc UpdateUser(UpdateUserReq) returns (UpdateUserResp); 
 	 rpc DelUser(DelUserReq) returns (DelUserResp); 
 	 rpc GetUserById(GetUserByIdReq) returns (GetUserResp);
 	 rpc GetUserByMobile(GetUserByMobileReq) returns (GetUserResp);
 	 rpc SearchUser(SearchUserReq) returns (SearchUserResp);
+   //-----------------------auth-----------------------
+//  rpc SendImageCaptcha(google.protobuf.Empty) returns (SendImageCaptchaResp);
+  // 发送图形验证码
+  rpc SendImageCaptcha(SendImageCaptchaReq) returns (SendImageCaptchaResp);
 
 }

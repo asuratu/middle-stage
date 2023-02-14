@@ -9,7 +9,7 @@ GRPC localhost:5001/user.usersvc/GetUserById
 GRPC localhost:5001/user.usersvc/GetUserByMobile
 
 {
-    "mobile": "19644241359"
+    "phone": "16936705661"
 }
 
 

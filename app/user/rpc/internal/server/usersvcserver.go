@@ -104,3 +104,9 @@ func (s *UsersvcServer) SearchUser(ctx context.Context, in *user.SearchUserReq) 
 	l := logic.NewSearchUserLogic(ctx, s.svcCtx)
 	return l.SearchUser(in)
 }
+
+// -----------------------auth-----------------------
+func (s *UsersvcServer) SendImageCaptcha(ctx context.Context, in *user.SendImageCaptchaReq) (*user.SendImageCaptchaResp, error) {
+	l := logic.NewSendImageCaptchaLogic(ctx, s.svcCtx)
+	return l.SendImageCaptcha(in)
+}

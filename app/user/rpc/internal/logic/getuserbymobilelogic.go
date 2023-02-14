@@ -38,10 +38,12 @@ func (l *GetUserByMobileLogic) GetUserByMobile(in *user.GetUserByMobileReq) (*us
 		return nil, errors.Wrapf(xerr.NewErrMsg("get user record fail"), "get user record fail FindOneByQuery  err : %v , phone:%s", err, in.Phone)
 	}
 
-	var resp user.GetUserResp
+	resp := &user.User{}
 	if userModel != nil {
-		_ = copier.Copy(&resp.User, userModel)
+		_ = copier.Copy(&resp, userModel)
 	}
 
-	return &resp, nil
+	return &user.GetUserResp{
+		User: resp,
+	}, nil
 }

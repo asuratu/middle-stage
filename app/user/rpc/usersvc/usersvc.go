@@ -13,40 +13,42 @@ import (
 )
 
 type (
-	AddCategoryReq      = user.AddCategoryReq
-	AddCategoryResp     = user.AddCategoryResp
-	AddTopicReq         = user.AddTopicReq
-	AddTopicResp        = user.AddTopicResp
-	AddUserReq          = user.AddUserReq
-	AddUserResp         = user.AddUserResp
-	Category            = user.Category
-	DelCategoryReq      = user.DelCategoryReq
-	DelCategoryResp     = user.DelCategoryResp
-	DelTopicReq         = user.DelTopicReq
-	DelTopicResp        = user.DelTopicResp
-	DelUserReq          = user.DelUserReq
-	DelUserResp         = user.DelUserResp
-	GetCategoryByIdReq  = user.GetCategoryByIdReq
-	GetCategoryByIdResp = user.GetCategoryByIdResp
-	GetTopicByIdReq     = user.GetTopicByIdReq
-	GetTopicByIdResp    = user.GetTopicByIdResp
-	GetUserByIdReq      = user.GetUserByIdReq
-	GetUserByMobileReq  = user.GetUserByMobileReq
-	GetUserResp         = user.GetUserResp
-	SearchCategoryReq   = user.SearchCategoryReq
-	SearchCategoryResp  = user.SearchCategoryResp
-	SearchTopicReq      = user.SearchTopicReq
-	SearchTopicResp     = user.SearchTopicResp
-	SearchUserReq       = user.SearchUserReq
-	SearchUserResp      = user.SearchUserResp
-	Topic               = user.Topic
-	UpdateCategoryReq   = user.UpdateCategoryReq
-	UpdateCategoryResp  = user.UpdateCategoryResp
-	UpdateTopicReq      = user.UpdateTopicReq
-	UpdateTopicResp     = user.UpdateTopicResp
-	UpdateUserReq       = user.UpdateUserReq
-	UpdateUserResp      = user.UpdateUserResp
-	User                = user.User
+	AddCategoryReq       = user.AddCategoryReq
+	AddCategoryResp      = user.AddCategoryResp
+	AddTopicReq          = user.AddTopicReq
+	AddTopicResp         = user.AddTopicResp
+	AddUserReq           = user.AddUserReq
+	AddUserResp          = user.AddUserResp
+	Category             = user.Category
+	DelCategoryReq       = user.DelCategoryReq
+	DelCategoryResp      = user.DelCategoryResp
+	DelTopicReq          = user.DelTopicReq
+	DelTopicResp         = user.DelTopicResp
+	DelUserReq           = user.DelUserReq
+	DelUserResp          = user.DelUserResp
+	GetCategoryByIdReq   = user.GetCategoryByIdReq
+	GetCategoryByIdResp  = user.GetCategoryByIdResp
+	GetTopicByIdReq      = user.GetTopicByIdReq
+	GetTopicByIdResp     = user.GetTopicByIdResp
+	GetUserByIdReq       = user.GetUserByIdReq
+	GetUserByMobileReq   = user.GetUserByMobileReq
+	GetUserResp          = user.GetUserResp
+	SearchCategoryReq    = user.SearchCategoryReq
+	SearchCategoryResp   = user.SearchCategoryResp
+	SearchTopicReq       = user.SearchTopicReq
+	SearchTopicResp      = user.SearchTopicResp
+	SearchUserReq        = user.SearchUserReq
+	SearchUserResp       = user.SearchUserResp
+	SendImageCaptchaReq  = user.SendImageCaptchaReq
+	SendImageCaptchaResp = user.SendImageCaptchaResp
+	Topic                = user.Topic
+	UpdateCategoryReq    = user.UpdateCategoryReq
+	UpdateCategoryResp   = user.UpdateCategoryResp
+	UpdateTopicReq       = user.UpdateTopicReq
+	UpdateTopicResp      = user.UpdateTopicResp
+	UpdateUserReq        = user.UpdateUserReq
+	UpdateUserResp       = user.UpdateUserResp
+	User                 = user.User
 
 	Usersvc interface {
 		// -----------------------category-----------------------
@@ -68,6 +70,8 @@ type (
 		GetUserById(ctx context.Context, in *GetUserByIdReq, opts ...grpc.CallOption) (*GetUserResp, error)
 		GetUserByMobile(ctx context.Context, in *GetUserByMobileReq, opts ...grpc.CallOption) (*GetUserResp, error)
 		SearchUser(ctx context.Context, in *SearchUserReq, opts ...grpc.CallOption) (*SearchUserResp, error)
+		// -----------------------auth-----------------------
+		SendImageCaptcha(ctx context.Context, in *SendImageCaptchaReq, opts ...grpc.CallOption) (*SendImageCaptchaResp, error)
 	}
 
 	defaultUsersvc struct {
@@ -162,4 +166,10 @@ func (m *defaultUsersvc) GetUserByMobile(ctx context.Context, in *GetUserByMobil
 func (m *defaultUsersvc) SearchUser(ctx context.Context, in *SearchUserReq, opts ...grpc.CallOption) (*SearchUserResp, error) {
 	client := user.NewUsersvcClient(m.cli.Conn())
 	return client.SearchUser(ctx, in, opts...)
+}
+
+// -----------------------auth-----------------------
+func (m *defaultUsersvc) SendImageCaptcha(ctx context.Context, in *SendImageCaptchaReq, opts ...grpc.CallOption) (*SendImageCaptchaResp, error) {
+	client := user.NewUsersvcClient(m.cli.Conn())
+	return client.SendImageCaptcha(ctx, in, opts...)
 }

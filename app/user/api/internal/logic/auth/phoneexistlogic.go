@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"middle/app/user/rpc/user"
 	"middle/app/user/rpc/usersvc"
 	"middle/common/xerr"
 
@@ -28,7 +29,8 @@ func NewPhoneExistLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PhoneE
 }
 
 func (l *PhoneExistLogic) PhoneExist(req *types.PhoneExistReq) (resp *types.PhoneExistReply, err error) {
-	_, err = l.svcCtx.UserRpc.GetUserByMobile(l.ctx, &usersvc.GetUserByMobileReq{
+	userRsp := &user.GetUserResp{}
+	userRsp, err = l.svcCtx.UserRpc.GetUserByMobile(l.ctx, &usersvc.GetUserByMobileReq{
 		Phone: req.Phone,
 	})
 
@@ -37,6 +39,6 @@ func (l *PhoneExistLogic) PhoneExist(req *types.PhoneExistReq) (resp *types.Phon
 	}
 
 	return &types.PhoneExistReply{
-		Exist: true,
+		Exist: userRsp.User.Id != 0,
 	}, nil
 }
