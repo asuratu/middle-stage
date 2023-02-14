@@ -42,10 +42,6 @@ type UsersvcClient interface {
 	GetUserByMobile(ctx context.Context, in *GetUserByMobileReq, opts ...grpc.CallOption) (*GetUserResp, error)
 	SearchUser(ctx context.Context, in *SearchUserReq, opts ...grpc.CallOption) (*SearchUserResp, error)
 	// -----------------------auth-----------------------
-	//
-	//	rpc SendImageCaptcha(google.protobuf.Empty) returns (SendImageCaptchaResp);
-	//
-	// 发送图形验证码
 	SendImageCaptcha(ctx context.Context, in *SendImageCaptchaReq, opts ...grpc.CallOption) (*SendImageCaptchaResp, error)
 }
 
@@ -234,10 +230,6 @@ type UsersvcServer interface {
 	GetUserByMobile(context.Context, *GetUserByMobileReq) (*GetUserResp, error)
 	SearchUser(context.Context, *SearchUserReq) (*SearchUserResp, error)
 	// -----------------------auth-----------------------
-	//
-	//	rpc SendImageCaptcha(google.protobuf.Empty) returns (SendImageCaptchaResp);
-	//
-	// 发送图形验证码
 	SendImageCaptcha(context.Context, *SendImageCaptchaReq) (*SendImageCaptchaResp, error)
 	mustEmbedUnimplementedUsersvcServer()
 }

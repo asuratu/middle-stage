@@ -2,8 +2,6 @@ syntax = "proto3";
 
 option go_package ="./user";
 
-import "google/protobuf/empty.proto";
-
 package user;
 
 // ------------------------------------ 
@@ -215,14 +213,13 @@ message SearchUserReq {
   string avatar = 12; //avatar
 }
 
-message SendImageCaptchaReq{
-
-}
 message SearchUserResp {
   repeated User user = 1; //user
 }
 
 //--------------------------------auth--------------------------------
+message SendImageCaptchaReq {
+}
 message SendImageCaptchaResp {
   string captchaId = 1; //captchaId
   string captchaImage = 2; //captchaImage
@@ -255,8 +252,6 @@ service usersvc{
 	 rpc GetUserByMobile(GetUserByMobileReq) returns (GetUserResp);
 	 rpc SearchUser(SearchUserReq) returns (SearchUserResp);
    //-----------------------auth-----------------------
-//  rpc SendImageCaptcha(google.protobuf.Empty) returns (SendImageCaptchaResp);
-  // 发送图形验证码
-  rpc SendImageCaptcha(SendImageCaptchaReq) returns (SendImageCaptchaResp);
+   rpc SendImageCaptcha(SendImageCaptchaReq) returns (SendImageCaptchaResp);
 
 }

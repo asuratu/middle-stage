@@ -12,6 +12,13 @@ GRPC localhost:5001/user.usersvc/GetUserByMobile
     "phone": "16936705661"
 }
 
+### 生成图形验证码
+GRPC localhost:5001/user.usersvc/SendImageCaptcha
+
+
+
+
+
 
 
 
