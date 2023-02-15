@@ -23,9 +23,9 @@ type CaptchaReply {
 
 //发送短信验证码
 type SendSmsCodeReq {
-	Phone         string `json:"phone,omitempty"`
-	CaptchaId     string `json:"captcha_id,omitempty" validate:"required"`
-	CaptchaAnswer string `json:"captcha_answer,omitempty" validate:"required"`
+	Phone         string `json:"phone,omitempty" v:"phone @required|length:11#请输入用户名称|用户名称长度非法"`
+	CaptchaId     string `json:"captcha_id,omitempty"`
+	CaptchaAnswer string `json:"captcha_answer,omitempty"`
 }
 type SendSmsCodeReply {
 	Success bool `json:"success"`
