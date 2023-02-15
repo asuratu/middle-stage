@@ -12,6 +12,7 @@ func init() {
 	message[TokenGenerateError] = "生成token失败"
 	message[DbError] = "数据库繁忙,请稍后再试"
 	message[DbUpdateAffectedZeroError] = "更新数据影响行数为0"
+	message[ParamValidateError] = "参数校验失败"
 
 	// 用户模块
 	message[UserNotFound] = "用户不存在"

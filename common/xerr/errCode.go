@@ -11,6 +11,7 @@ const (
 	TokenGenerateError        uint32 = 100004
 	DbError                   uint32 = 100005
 	DbUpdateAffectedZeroError uint32 = 100006
+	ParamValidateError        uint32 = 100007
 )
 
 // 用户模块

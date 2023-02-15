@@ -24,7 +24,7 @@ func SendSmsCodeHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		ctx := gctx.New()
 		if err := g.Validator().Data(req).Run(ctx); err != nil {
-			result.ParamErrorResult(r, w, err)
+			result.ValidateErrorResult(r, w, err)
 			return
 		}
 
