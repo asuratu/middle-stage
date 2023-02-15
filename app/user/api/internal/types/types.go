@@ -8,3 +8,8 @@ type PhoneExistReq struct {
 type PhoneExistReply struct {
 	Exist bool `json:"exist"`
 }
+
+type CaptchaReply struct {
+	CaptchaId    string `json:"captchaId"`
+	CaptchaImage string `json:"captchaImage"`
+}

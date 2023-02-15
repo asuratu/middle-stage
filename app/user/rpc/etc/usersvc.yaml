@@ -41,7 +41,10 @@ CaptConfig:
 # 短信验证码配置
 Sms:
   Aliyun:
-    TemplateCode: SMS_205000000
+    AccessKeyID: LTAI25QHWPt3SIrd
+    AccessKeySecret: akYiOq8sEdAkMWoH7UNprMIonXffn0
+    SignName: 花园集
+    TemplateCode: SMS_211780524
 
 # 邮箱验证码配置
 Email:

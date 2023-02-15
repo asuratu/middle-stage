@@ -18,6 +18,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/auth/signup/phone/exist",
 				Handler: auth.PhoneExistHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/auth/verify-codes/captcha",
+				Handler: auth.GenCaptchaHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/userapi/v1"),
 	)

@@ -3,7 +3,6 @@ package auth
 import (
 	"context"
 	"middle/app/user/rpc/user"
-	"middle/app/user/rpc/usersvc"
 	"middle/common/xerr"
 
 	"github.com/pkg/errors"
@@ -30,7 +29,7 @@ func NewPhoneExistLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PhoneE
 
 func (l *PhoneExistLogic) PhoneExist(req *types.PhoneExistReq) (resp *types.PhoneExistReply, err error) {
 	userRsp := &user.GetUserResp{}
-	userRsp, err = l.svcCtx.UserRpc.GetUserByMobile(l.ctx, &usersvc.GetUserByMobileReq{
+	userRsp, err = l.svcCtx.UserRpc.GetUserByMobile(l.ctx, &user.GetUserByMobileReq{
 		Phone: req.Phone,
 	})
 

@@ -41,6 +41,8 @@ type (
 	SearchUserResp       = user.SearchUserResp
 	SendImageCaptchaReq  = user.SendImageCaptchaReq
 	SendImageCaptchaResp = user.SendImageCaptchaResp
+	SendSmsCodeReq       = user.SendSmsCodeReq
+	SendSmsCodeResp      = user.SendSmsCodeResp
 	Topic                = user.Topic
 	UpdateCategoryReq    = user.UpdateCategoryReq
 	UpdateCategoryResp   = user.UpdateCategoryResp
@@ -72,6 +74,7 @@ type (
 		SearchUser(ctx context.Context, in *SearchUserReq, opts ...grpc.CallOption) (*SearchUserResp, error)
 		// -----------------------auth-----------------------
 		SendImageCaptcha(ctx context.Context, in *SendImageCaptchaReq, opts ...grpc.CallOption) (*SendImageCaptchaResp, error)
+		SendSmsCode(ctx context.Context, in *SendSmsCodeReq, opts ...grpc.CallOption) (*SendSmsCodeResp, error)
 	}
 
 	defaultUsersvc struct {
@@ -172,4 +175,9 @@ func (m *defaultUsersvc) SearchUser(ctx context.Context, in *SearchUserReq, opts
 func (m *defaultUsersvc) SendImageCaptcha(ctx context.Context, in *SendImageCaptchaReq, opts ...grpc.CallOption) (*SendImageCaptchaResp, error) {
 	client := user.NewUsersvcClient(m.cli.Conn())
 	return client.SendImageCaptcha(ctx, in, opts...)
+}
+
+func (m *defaultUsersvc) SendSmsCode(ctx context.Context, in *SendSmsCodeReq, opts ...grpc.CallOption) (*SendSmsCodeResp, error) {
+	client := user.NewUsersvcClient(m.cli.Conn())
+	return client.SendSmsCode(ctx, in, opts...)
 }

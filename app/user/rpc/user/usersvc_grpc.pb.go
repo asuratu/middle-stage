@@ -43,6 +43,7 @@ type UsersvcClient interface {
 	SearchUser(ctx context.Context, in *SearchUserReq, opts ...grpc.CallOption) (*SearchUserResp, error)
 	// -----------------------auth-----------------------
 	SendImageCaptcha(ctx context.Context, in *SendImageCaptchaReq, opts ...grpc.CallOption) (*SendImageCaptchaResp, error)
+	SendSmsCode(ctx context.Context, in *SendSmsCodeReq, opts ...grpc.CallOption) (*SendSmsCodeResp, error)
 }
 
 type usersvcClient struct {
@@ -206,6 +207,15 @@ func (c *usersvcClient) SendImageCaptcha(ctx context.Context, in *SendImageCaptc
 	return out, nil
 }
 
+func (c *usersvcClient) SendSmsCode(ctx context.Context, in *SendSmsCodeReq, opts ...grpc.CallOption) (*SendSmsCodeResp, error) {
+	out := new(SendSmsCodeResp)
+	err := c.cc.Invoke(ctx, "/user.usersvc/SendSmsCode", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UsersvcServer is the server API for Usersvc service.
 // All implementations must embed UnimplementedUsersvcServer
 // for forward compatibility
@@ -231,6 +241,7 @@ type UsersvcServer interface {
 	SearchUser(context.Context, *SearchUserReq) (*SearchUserResp, error)
 	// -----------------------auth-----------------------
 	SendImageCaptcha(context.Context, *SendImageCaptchaReq) (*SendImageCaptchaResp, error)
+	SendSmsCode(context.Context, *SendSmsCodeReq) (*SendSmsCodeResp, error)
 	mustEmbedUnimplementedUsersvcServer()
 }
 
@@ -288,6 +299,9 @@ func (UnimplementedUsersvcServer) SearchUser(context.Context, *SearchUserReq) (*
 }
 func (UnimplementedUsersvcServer) SendImageCaptcha(context.Context, *SendImageCaptchaReq) (*SendImageCaptchaResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendImageCaptcha not implemented")
+}
+func (UnimplementedUsersvcServer) SendSmsCode(context.Context, *SendSmsCodeReq) (*SendSmsCodeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendSmsCode not implemented")
 }
 func (UnimplementedUsersvcServer) mustEmbedUnimplementedUsersvcServer() {}
 
@@ -608,6 +622,24 @@ func _Usersvc_SendImageCaptcha_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Usersvc_SendSmsCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendSmsCodeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersvcServer).SendSmsCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.usersvc/SendSmsCode",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersvcServer).SendSmsCode(ctx, req.(*SendSmsCodeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Usersvc_ServiceDesc is the grpc.ServiceDesc for Usersvc service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -682,6 +714,10 @@ var Usersvc_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendImageCaptcha",
 			Handler:    _Usersvc_SendImageCaptcha_Handler,
+		},
+		{
+			MethodName: "SendSmsCode",
+			Handler:    _Usersvc_SendSmsCode_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -15,6 +15,12 @@ type PhoneExistReply {
 	Exist bool `json:"exist"`
 }
 
+//生成图形验证码
+type CaptchaReply {
+	CaptchaId    string `json:"captchaId"`
+	CaptchaImage string `json:"captchaImage"`
+}
+
 //============================> user v1 <============================
 //no need login
 @server(
@@ -22,6 +28,11 @@ type PhoneExistReply {
 	group: auth
 )
 service user-api {
+	@doc "手机号是否存在"
 	@handler phoneExist
 	post /auth/signup/phone/exist (PhoneExistReq) returns (PhoneExistReply)
+	
+	@doc "生成图形验证码"
+	@handler genCaptcha
+	get /auth/verify-codes/captcha returns (CaptchaReply)
 }

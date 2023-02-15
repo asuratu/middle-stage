@@ -110,3 +110,8 @@ func (s *UsersvcServer) SendImageCaptcha(ctx context.Context, in *user.SendImage
 	l := logic.NewSendImageCaptchaLogic(ctx, s.svcCtx)
 	return l.SendImageCaptcha(in)
 }
+
+func (s *UsersvcServer) SendSmsCode(ctx context.Context, in *user.SendSmsCodeReq) (*user.SendSmsCodeResp, error) {
+	l := logic.NewSendSmsCodeLogic(ctx, s.svcCtx)
+	return l.SendSmsCode(in)
+}

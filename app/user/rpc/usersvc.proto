@@ -218,12 +218,16 @@ message SearchUserResp {
 }
 
 //--------------------------------auth--------------------------------
-message SendImageCaptchaReq {
-}
+message SendImageCaptchaReq {}
 message SendImageCaptchaResp {
   string captchaId = 1; //captchaId
   string captchaImage = 2; //captchaImage
 }
+
+message SendSmsCodeReq {
+  string phone = 1; //phone
+}
+message SendSmsCodeResp {}
 
 
 // ------------------------------------ 
@@ -253,5 +257,6 @@ service usersvc{
 	 rpc SearchUser(SearchUserReq) returns (SearchUserResp);
    //-----------------------auth-----------------------
    rpc SendImageCaptcha(SendImageCaptchaReq) returns (SendImageCaptchaResp);
+   rpc SendSmsCode(SendSmsCodeReq) returns (SendSmsCodeResp);
 
 }
