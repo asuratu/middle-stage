@@ -21,6 +21,16 @@ type CaptchaReply {
 	CaptchaImage string `json:"captchaImage"`
 }
 
+//发送短信验证码
+type SendSmsCodeReq {
+	Phone         string `json:"phone,omitempty" validate:"required,len=11"`
+	CaptchaId     string `json:"captcha_id,omitempty" validate:"required"`
+	CaptchaAnswer string `json:"captcha_answer,omitempty" validate:"required"`
+}
+type SendSmsCodeReply {
+	Success bool `json:"success"`
+}
+
 //============================> user v1 <============================
 //no need login
 @server(
@@ -31,8 +41,10 @@ service user-api {
 	@doc "手机号是否存在"
 	@handler phoneExist
 	post /auth/signup/phone/exist (PhoneExistReq) returns (PhoneExistReply)
-	
 	@doc "生成图形验证码"
 	@handler genCaptcha
 	get /auth/verify-codes/captcha returns (CaptchaReply)
+	@doc "发送短信验证码"
+	@handler sendSmsCode
+	post /auth/verify-codes/sms (SendSmsCodeReq) returns (SendSmsCodeReply)
 }

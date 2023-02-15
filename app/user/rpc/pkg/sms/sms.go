@@ -2,8 +2,9 @@
 package sms
 
 import (
-	"middle/app/user/rpc/internal/config"
 	"sync"
+
+	"middle/app/user/rpc/internal/config"
 )
 
 // Message 是短信的结构体

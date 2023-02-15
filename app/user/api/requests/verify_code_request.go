@@ -1,29 +1,15 @@
 package requests
 
 import (
-	"gohub/app/requests/validators"
-	"gohub/pkg/captcha"
-
 	"github.com/gin-gonic/gin"
 	"github.com/thedevsaddam/govalidator"
+
+	"middle/app/user/api/requests/validators"
+	"middle/app/user/rpc/pkg/captcha"
 )
-
-type VerifyCodePhoneRequest struct {
-	CaptchaID     string `json:"captcha_id,omitempty" valid:"captcha_id"`
-	CaptchaAnswer string `json:"captcha_answer,omitempty" valid:"captcha_answer"`
-
-	Phone string `json:"phone,omitempty" valid:"phone"`
-}
 
 // VerifyCodePhone 验证表单，返回长度等于零即通过
 func VerifyCodePhone(data interface{}, c *gin.Context) map[string][]string {
-
-	// 1. 定制认证规则
-	rules := govalidator.MapData{
-		"phone":          []string{"required", "digits:11"},
-		"captcha_id":     []string{"required"},
-		"captcha_answer": []string{"required", "digits:6"},
-	}
 
 	// 2. 定制错误消息
 	messages := govalidator.MapData{

@@ -23,6 +23,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/auth/verify-codes/captcha",
 				Handler: auth.GenCaptchaHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/auth/verify-codes/sms",
+				Handler: auth.SendSmsCodeHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/userapi/v1"),
 	)

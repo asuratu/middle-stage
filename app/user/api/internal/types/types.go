@@ -13,3 +13,13 @@ type CaptchaReply struct {
 	CaptchaId    string `json:"captchaId"`
 	CaptchaImage string `json:"captchaImage"`
 }
+
+type SendSmsCodeReq struct {
+	Phone         string `json:"phone,omitempty" validate:"required,len=11"`
+	CaptchaId     string `json:"captcha_id,omitempty" validate:"required"`
+	CaptchaAnswer string `json:"captcha_answer,omitempty" validate:"required"`
+}
+
+type SendSmsCodeReply struct {
+	Success bool `json:"success"`
+}

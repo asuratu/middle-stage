@@ -3,18 +3,17 @@ package verifycode
 
 import (
 	"fmt"
-	"middle/app/user/rpc/internal/config"
 	"strings"
 	"sync"
 
-	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/core/stores/redis"
-
+	"middle/app/user/rpc/internal/config"
 	"middle/app/user/rpc/pkg/mail"
 	"middle/app/user/rpc/pkg/sms"
 	"middle/pkg/helpers"
 
+	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/service"
+	"github.com/zeromicro/go-zero/core/stores/redis"
 )
 
 type VerifyCode struct {
