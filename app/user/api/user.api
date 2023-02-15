@@ -23,7 +23,7 @@ type CaptchaReply {
 
 //发送短信验证码
 type SendSmsCodeReq {
-	Phone         string `json:"phone,omitempty" validate:"required,len=11"`
+	Phone         string `json:"phone,omitempty"`
 	CaptchaId     string `json:"captcha_id,omitempty" validate:"required"`
 	CaptchaAnswer string `json:"captcha_answer,omitempty" validate:"required"`
 }

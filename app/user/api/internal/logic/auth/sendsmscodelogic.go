@@ -2,11 +2,12 @@ package auth
 
 import (
 	"context"
-	"middle/app/user/api/requests"
 
 	"middle/app/user/api/internal/svc"
 	"middle/app/user/api/internal/types"
 
+	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -25,10 +26,10 @@ func NewSendSmsCodeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SendS
 }
 
 func (l *SendSmsCodeLogic) SendSmsCode(req *types.SendSmsCodeReq) (resp *types.SendSmsCodeReply, err error) {
-	// 1. 验证表单
-	if ok := requests.Validate(c, req, requests.VerifyCodePhone); !ok {
-		return
-	}
+	ctx := gctx.New()
+	err = g.Validator().Data(req).Run(ctx)
+	if err != nil {
 
+	}
 	return
 }
