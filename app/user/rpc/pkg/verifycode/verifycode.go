@@ -3,11 +3,12 @@ package verifycode
 
 import (
 	"fmt"
-	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/core/stores/redis"
 	"middle/app/user/rpc/internal/config"
 	"strings"
 	"sync"
+
+	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/stores/redis"
 
 	"middle/app/user/rpc/pkg/mail"
 	"middle/app/user/rpc/pkg/sms"
@@ -34,6 +35,7 @@ func NewVerifyCode(c config.Config, r *redis.Redis) *VerifyCode {
 				Config:    c,
 				Redis:     r,
 			},
+			Config: c,
 		}
 	})
 
@@ -44,7 +46,6 @@ func NewVerifyCode(c config.Config, r *redis.Redis) *VerifyCode {
 //
 //	verifycode.NewVerifyCode().SendSMS(request.Phone)
 func (vc *VerifyCode) SendSMS(phone string) bool {
-
 	// 生成验证码
 	code := vc.generateVerifyCode(phone)
 
@@ -113,8 +114,6 @@ func (vc *VerifyCode) generateVerifyCode(key string) string {
 	if vc.Config.Mode == service.DevMode {
 		code = vc.Config.VerifyCode.DebugCode
 	}
-
-	logx.Errorf("验证码 : 生成验证码 %+v", map[string]string{key: code})
 
 	// 将验证码及 KEY（邮箱或手机号）存放到 Redis 中并设置过期时间
 	_ = vc.Store.Set(key, code)

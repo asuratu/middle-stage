@@ -15,6 +15,15 @@ GRPC localhost:5001/user.usersvc/GetUserByMobile
 ### 生成图形验证码
 GRPC localhost:5001/user.usersvc/SendImageCaptcha
 
+### 发送短信验证码
+GRPC localhost:5001/user.usersvc/SendSmsCode
+
+# 000 开头的为测试手机号, 对应的验证码为 123456
+{
+    "phone": "00021039435"
+}
+
+
 
 
 

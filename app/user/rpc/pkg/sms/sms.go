@@ -4,8 +4,6 @@ package sms
 import (
 	"middle/app/user/rpc/internal/config"
 	"sync"
-
-	"middle/pkg/cast"
 )
 
 // Message 是短信的结构体
@@ -33,7 +31,11 @@ func NewSMS(c config.Config) *SMS {
 	once.Do(func() {
 		internalSMS = &SMS{
 			Driver: &Aliyun{},
-			Config: cast.ToStringMapString(c.Sms.Aliyun),
+			Config: map[string]string{
+				"access_key_id":     c.Sms.Aliyun.AccessKeyID,
+				"access_key_secret": c.Sms.Aliyun.AccessKeySecret,
+				"sign_name":         c.Sms.Aliyun.SignName,
+			},
 		}
 	})
 

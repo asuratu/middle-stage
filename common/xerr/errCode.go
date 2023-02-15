@@ -19,4 +19,5 @@ const (
 	UserIsBlack   uint32 = 200002
 	PhoneNotFound uint32 = 200003
 	EmailNotFound uint32 = 200004
+	SendSmsError  uint32 = 200005
 )

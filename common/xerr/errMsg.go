@@ -3,35 +3,36 @@ package xerr
 var message map[uint32]string
 
 func init() {
-    message = make(map[uint32]string)
-    // 全局错误码
-    message[OK] = "SUCCESS"
-    message[ServerCommonError] = "服务器开小差啦,稍后再来试一试"
-    message[RequestParamError] = "参数错误"
-    message[TokenExpireError] = "token失效，请重新登陆"
-    message[TokenGenerateError] = "生成token失败"
-    message[DbError] = "数据库繁忙,请稍后再试"
-    message[DbUpdateAffectedZeroError] = "更新数据影响行数为0"
+	message = make(map[uint32]string)
+	// 全局错误码
+	message[OK] = "SUCCESS"
+	message[ServerCommonError] = "服务器开小差啦,稍后再来试一试"
+	message[RequestParamError] = "参数错误"
+	message[TokenExpireError] = "token失效，请重新登陆"
+	message[TokenGenerateError] = "生成token失败"
+	message[DbError] = "数据库繁忙,请稍后再试"
+	message[DbUpdateAffectedZeroError] = "更新数据影响行数为0"
 
-    // 用户模块
-    message[UserNotFound] = "用户不存在"
-    message[UserIsBlack] = "用户已被拉黑"
-    message[PhoneNotFound] = "手机号不存在"
-    message[EmailNotFound] = "邮箱不存在"
+	// 用户模块
+	message[UserNotFound] = "用户不存在"
+	message[UserIsBlack] = "用户已被拉黑"
+	message[PhoneNotFound] = "手机号不存在"
+	message[EmailNotFound] = "邮箱不存在"
+	message[SendSmsError] = "发送短信失败"
 }
 
 func MapErrMsg(errcode uint32) string {
-    if msg, ok := message[errcode]; ok {
-        return msg
-    } else {
-        return "服务器开小差啦,稍后再来试一试1"
-    }
+	if msg, ok := message[errcode]; ok {
+		return msg
+	} else {
+		return "服务器开小差啦,稍后再来试一试1"
+	}
 }
 
 func IsCodeErr(errcode uint32) bool {
-    if _, ok := message[errcode]; ok {
-        return true
-    } else {
-        return false
-    }
+	if _, ok := message[errcode]; ok {
+		return true
+	} else {
+		return false
+	}
 }

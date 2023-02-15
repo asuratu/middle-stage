@@ -2,6 +2,10 @@ package logic
 
 import (
 	"context"
+	"middle/app/user/rpc/pkg/verifycode"
+	"middle/common/xerr"
+
+	"github.com/pkg/errors"
 
 	"middle/app/user/rpc/internal/svc"
 	"middle/app/user/rpc/user"
@@ -24,6 +28,8 @@ func NewSendSmsCodeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SendS
 }
 
 func (l *SendSmsCodeLogic) SendSmsCode(in *user.SendSmsCodeReq) (*user.SendSmsCodeResp, error) {
-
+	if ok := verifycode.NewVerifyCode(l.svcCtx.Config, l.svcCtx.Redis).SendSMS(in.Phone); !ok {
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.SendSmsError), "phone: %s", in.Phone)
+	}
 	return &user.SendSmsCodeResp{}, nil
 }
