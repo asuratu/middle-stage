@@ -6,6 +6,8 @@ import (
 	"middle/app/user/api/internal/types"
 	"net/http"
 
+	"github.com/zeromicro/go-zero/core/logx"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gctx"
 
@@ -24,6 +26,7 @@ func SendSmsCodeHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		ctx := gctx.New()
 		if err := g.Validator().Data(req).Run(ctx); err != nil {
+			logx.Infof("req******* %+v", req)
 			result.ValidateErrorResult(r, w, err)
 			return
 		}

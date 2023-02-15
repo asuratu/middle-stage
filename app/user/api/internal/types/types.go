@@ -15,7 +15,7 @@ type CaptchaReply struct {
 }
 
 type SendSmsCodeReq struct {
-	Phone         string `json:"phone,omitempty" v:"phone @required|length:11#请输入用户名称|用户名称长度非法"`
+	Phone         string `json:"phone,omitempty" v:"phone @required|size:11#请输入手机号|手机号称长度非法"`
 	CaptchaId     string `json:"captcha_id,omitempty"`
 	CaptchaAnswer string `json:"captcha_answer,omitempty"`
 }
