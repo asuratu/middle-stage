@@ -4,9 +4,9 @@ option go_package ="./user";
 
 package user;
 
-// ------------------------------------ 
+// ------------------------------------
 // Messages
-// ------------------------------------ 
+// ------------------------------------
 
 //--------------------------------category--------------------------------
 message Category {
@@ -220,8 +220,8 @@ message SearchUserResp {
 //--------------------------------auth--------------------------------
 message SendImageCaptchaReq {}
 message SendImageCaptchaResp {
-  string captchaId = 1; //captchaId
-  string captchaImage = 2; //captchaImage
+  string captchaId = 1;
+  string captchaImage = 2;
 }
 
 message SendSmsCodeReq {
@@ -229,34 +229,42 @@ message SendSmsCodeReq {
 }
 message SendSmsCodeResp {}
 
+message VerifyCaptchaReq {
+  string captchaId = 1;
+  string captchaImage = 2;
+}
+message VerifyCaptchaResp {
+  bool isOk = 1;
+}
 
-// ------------------------------------ 
+
+// ------------------------------------
 // Rpc Func
-// ------------------------------------ 
+// ------------------------------------
 
-service usersvc{ 
+service usersvc{
 
-	 //-----------------------category----------------------- 
-	 rpc AddCategory(AddCategoryReq) returns (AddCategoryResp); 
-	 rpc UpdateCategory(UpdateCategoryReq) returns (UpdateCategoryResp); 
-	 rpc DelCategory(DelCategoryReq) returns (DelCategoryResp); 
-	 rpc GetCategoryById(GetCategoryByIdReq) returns (GetCategoryByIdResp); 
-	 rpc SearchCategory(SearchCategoryReq) returns (SearchCategoryResp); 
-	 //-----------------------topic----------------------- 
-	 rpc AddTopic(AddTopicReq) returns (AddTopicResp); 
-	 rpc UpdateTopic(UpdateTopicReq) returns (UpdateTopicResp); 
-	 rpc DelTopic(DelTopicReq) returns (DelTopicResp); 
-	 rpc GetTopicById(GetTopicByIdReq) returns (GetTopicByIdResp); 
-	 rpc SearchTopic(SearchTopicReq) returns (SearchTopicResp); 
+	 //-----------------------category-----------------------
+	 rpc AddCategory(AddCategoryReq) returns (AddCategoryResp);
+	 rpc UpdateCategory(UpdateCategoryReq) returns (UpdateCategoryResp);
+	 rpc DelCategory(DelCategoryReq) returns (DelCategoryResp);
+	 rpc GetCategoryById(GetCategoryByIdReq) returns (GetCategoryByIdResp);
+	 rpc SearchCategory(SearchCategoryReq) returns (SearchCategoryResp);
+	 //-----------------------topic-----------------------
+	 rpc AddTopic(AddTopicReq) returns (AddTopicResp);
+	 rpc UpdateTopic(UpdateTopicReq) returns (UpdateTopicResp);
+	 rpc DelTopic(DelTopicReq) returns (DelTopicResp);
+	 rpc GetTopicById(GetTopicByIdReq) returns (GetTopicByIdResp);
+	 rpc SearchTopic(SearchTopicReq) returns (SearchTopicResp);
 	 //-----------------------user-----------------------
 	 rpc AddUser(AddUserReq) returns (AddUserResp);
-	 rpc UpdateUser(UpdateUserReq) returns (UpdateUserResp); 
-	 rpc DelUser(DelUserReq) returns (DelUserResp); 
+	 rpc UpdateUser(UpdateUserReq) returns (UpdateUserResp);
+	 rpc DelUser(DelUserReq) returns (DelUserResp);
 	 rpc GetUserById(GetUserByIdReq) returns (GetUserResp);
 	 rpc GetUserByMobile(GetUserByMobileReq) returns (GetUserResp);
 	 rpc SearchUser(SearchUserReq) returns (SearchUserResp);
-   //-----------------------auth-----------------------
-   rpc SendImageCaptcha(SendImageCaptchaReq) returns (SendImageCaptchaResp);
-   rpc SendSmsCode(SendSmsCodeReq) returns (SendSmsCodeResp);
-
+     //-----------------------auth-----------------------
+     rpc SendImageCaptcha(SendImageCaptchaReq) returns (SendImageCaptchaResp);
+     rpc VerifyCaptcha(VerifyCaptchaReq) returns (VerifyCaptchaResp);
+     rpc SendSmsCode(SendSmsCodeReq) returns (SendSmsCodeResp);
 }

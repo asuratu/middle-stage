@@ -5,7 +5,7 @@ GRPC localhost:5001/user.usersvc/GetUserById
   "id": 1
 }
 
-### check phone exist
+### 检查手机号是否已注册
 GRPC localhost:5001/user.usersvc/GetUserByMobile
 
 {
@@ -14,6 +14,14 @@ GRPC localhost:5001/user.usersvc/GetUserByMobile
 
 ### 生成图形验证码
 GRPC localhost:5001/user.usersvc/SendImageCaptcha
+
+### 验证图形验证码
+GRPC localhost:5001/user.usersvc/VerifyCaptcha
+
+{
+    "captchaId": "captcha_skip_test",
+    "captchaImage": "123456"
+}
 
 ### 发送短信验证码
 GRPC localhost:5001/user.usersvc/SendSmsCode

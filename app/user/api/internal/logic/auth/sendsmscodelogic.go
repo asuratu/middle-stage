@@ -6,8 +6,6 @@ import (
 	"middle/app/user/api/internal/svc"
 	"middle/app/user/api/internal/types"
 
-	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -26,10 +24,9 @@ func NewSendSmsCodeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SendS
 }
 
 func (l *SendSmsCodeLogic) SendSmsCode(req *types.SendSmsCodeReq) (resp *types.SendSmsCodeReply, err error) {
-	ctx := gctx.New()
-	err = g.Validator().Data(req).Run(ctx)
-	if err != nil {
+	// 1. 校验图形验证码
 
-	}
+	// 2. 发送短信验证码
+
 	return
 }

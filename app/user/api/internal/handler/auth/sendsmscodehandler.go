@@ -1,18 +1,15 @@
 package auth
 
 import (
+	"net/http"
+
 	"middle/app/user/api/internal/logic/auth"
 	"middle/app/user/api/internal/svc"
 	"middle/app/user/api/internal/types"
-	"net/http"
-
-	"github.com/zeromicro/go-zero/core/logx"
+	"middle/common/result"
 
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gctx"
-
-	"middle/common/result"
-
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
@@ -26,7 +23,6 @@ func SendSmsCodeHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		ctx := gctx.New()
 		if err := g.Validator().Data(req).Run(ctx); err != nil {
-			logx.Infof("req******* %+v", req)
 			result.ValidateErrorResult(r, w, err)
 			return
 		}

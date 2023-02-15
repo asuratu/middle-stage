@@ -88,10 +88,9 @@ func ParamErrorResult(r *http.Request, w http.ResponseWriter, err error) {
 // ValidateErrorResult http 参数校验不合法返回
 func ValidateErrorResult(r *http.Request, w http.ResponseWriter, err error) {
 	errStr := err.Error()
-	// 使用 ; 分割错误信息, 取第一个
 	if index := strings.Index(errStr, ";"); index > 0 {
 		errStr = errStr[:index]
 	}
 	errMsg := fmt.Sprintf("%s, %s", xerr.MapErrMsg(xerr.ParamValidateError), errStr)
-	httpx.WriteJson(w, http.StatusBadRequest, Error(xerr.RequestParamError, errMsg))
+	httpx.WriteJson(w, http.StatusBadRequest, Error(xerr.ParamValidateError, errMsg))
 }
