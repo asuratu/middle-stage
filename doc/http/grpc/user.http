@@ -48,13 +48,8 @@ GRPC localhost:5001/user.usersvc/Register
 GRPC localhost:5001/user.usersvc/Login
 
 {
-  "name": "",
-  "email": "",
   "phone": "00021039435",
-  "password": "123456",
-  "city": "苏州",
-  "introduction": "this is a test user",
-  "avatar": "http://img-shanghai.huayuanji.com/uploads/2022/04/15/aff67eb4653e3c077bc4418fdb4af393.jpg"
+  "password": "123456"
 }
 
 
