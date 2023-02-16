@@ -45,7 +45,7 @@ GRPC localhost:5001/user.usersvc/Register
 }
 
 ### 登录
-GRPC localhost:5001/user.usersvc/Login
+GRPC localhost:5001/user.usersvc/LoginByPhone
 
 {
   "phone": "00021039435",

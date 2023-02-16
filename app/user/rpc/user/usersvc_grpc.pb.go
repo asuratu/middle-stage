@@ -35,7 +35,7 @@ type UsersvcClient interface {
 	GetTopicById(ctx context.Context, in *GetTopicByIdReq, opts ...grpc.CallOption) (*GetTopicByIdResp, error)
 	SearchTopic(ctx context.Context, in *SearchTopicReq, opts ...grpc.CallOption) (*SearchTopicResp, error)
 	// -----------------------user-----------------------
-	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*TokenResp, error)
+	LoginByPhone(ctx context.Context, in *LoginByPhoneReq, opts ...grpc.CallOption) (*TokenResp, error)
 	Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*TokenResp, error)
 	GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*TokenResp, error)
 	UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error)
@@ -147,9 +147,9 @@ func (c *usersvcClient) SearchTopic(ctx context.Context, in *SearchTopicReq, opt
 	return out, nil
 }
 
-func (c *usersvcClient) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*TokenResp, error) {
+func (c *usersvcClient) LoginByPhone(ctx context.Context, in *LoginByPhoneReq, opts ...grpc.CallOption) (*TokenResp, error) {
 	out := new(TokenResp)
-	err := c.cc.Invoke(ctx, "/user.usersvc/Login", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/user.usersvc/LoginByPhone", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -263,7 +263,7 @@ type UsersvcServer interface {
 	GetTopicById(context.Context, *GetTopicByIdReq) (*GetTopicByIdResp, error)
 	SearchTopic(context.Context, *SearchTopicReq) (*SearchTopicResp, error)
 	// -----------------------user-----------------------
-	Login(context.Context, *LoginReq) (*TokenResp, error)
+	LoginByPhone(context.Context, *LoginByPhoneReq) (*TokenResp, error)
 	Register(context.Context, *RegisterReq) (*TokenResp, error)
 	GenerateToken(context.Context, *GenerateTokenReq) (*TokenResp, error)
 	UpdateUser(context.Context, *UpdateUserReq) (*UpdateUserResp, error)
@@ -312,8 +312,8 @@ func (UnimplementedUsersvcServer) GetTopicById(context.Context, *GetTopicByIdReq
 func (UnimplementedUsersvcServer) SearchTopic(context.Context, *SearchTopicReq) (*SearchTopicResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchTopic not implemented")
 }
-func (UnimplementedUsersvcServer) Login(context.Context, *LoginReq) (*TokenResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+func (UnimplementedUsersvcServer) LoginByPhone(context.Context, *LoginByPhoneReq) (*TokenResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginByPhone not implemented")
 }
 func (UnimplementedUsersvcServer) Register(context.Context, *RegisterReq) (*TokenResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
@@ -538,20 +538,20 @@ func _Usersvc_SearchTopic_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Usersvc_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginReq)
+func _Usersvc_LoginByPhone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginByPhoneReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UsersvcServer).Login(ctx, in)
+		return srv.(UsersvcServer).LoginByPhone(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.usersvc/Login",
+		FullMethod: "/user.usersvc/LoginByPhone",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersvcServer).Login(ctx, req.(*LoginReq))
+		return srv.(UsersvcServer).LoginByPhone(ctx, req.(*LoginByPhoneReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -784,8 +784,8 @@ var Usersvc_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Usersvc_SearchTopic_Handler,
 		},
 		{
-			MethodName: "Login",
-			Handler:    _Usersvc_Login_Handler,
+			MethodName: "LoginByPhone",
+			Handler:    _Usersvc_LoginByPhone_Handler,
 		},
 		{
 			MethodName: "Register",

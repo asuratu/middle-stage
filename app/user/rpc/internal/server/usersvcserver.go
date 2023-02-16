@@ -75,9 +75,9 @@ func (s *UsersvcServer) SearchTopic(ctx context.Context, in *user.SearchTopicReq
 }
 
 // -----------------------user-----------------------
-func (s *UsersvcServer) Login(ctx context.Context, in *user.LoginReq) (*user.TokenResp, error) {
-	l := logic.NewLoginLogic(ctx, s.svcCtx)
-	return l.Login(in)
+func (s *UsersvcServer) LoginByPhone(ctx context.Context, in *user.LoginByPhoneReq) (*user.TokenResp, error) {
+	l := logic.NewLoginByPhoneLogic(ctx, s.svcCtx)
+	return l.LoginByPhone(in)
 }
 
 func (s *UsersvcServer) Register(ctx context.Context, in *user.RegisterReq) (*user.TokenResp, error) {

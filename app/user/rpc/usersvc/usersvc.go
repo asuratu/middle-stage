@@ -32,7 +32,7 @@ type (
 	GetUserByIdReq       = user.GetUserByIdReq
 	GetUserByMobileReq   = user.GetUserByMobileReq
 	GetUserResp          = user.GetUserResp
-	LoginReq             = user.LoginReq
+	LoginByPhoneReq      = user.LoginByPhoneReq
 	RegisterReq          = user.RegisterReq
 	SearchCategoryReq    = user.SearchCategoryReq
 	SearchCategoryResp   = user.SearchCategoryResp
@@ -70,7 +70,7 @@ type (
 		GetTopicById(ctx context.Context, in *GetTopicByIdReq, opts ...grpc.CallOption) (*GetTopicByIdResp, error)
 		SearchTopic(ctx context.Context, in *SearchTopicReq, opts ...grpc.CallOption) (*SearchTopicResp, error)
 		// -----------------------user-----------------------
-		Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*TokenResp, error)
+		LoginByPhone(ctx context.Context, in *LoginByPhoneReq, opts ...grpc.CallOption) (*TokenResp, error)
 		Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*TokenResp, error)
 		GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*TokenResp, error)
 		UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error)
@@ -148,9 +148,9 @@ func (m *defaultUsersvc) SearchTopic(ctx context.Context, in *SearchTopicReq, op
 }
 
 // -----------------------user-----------------------
-func (m *defaultUsersvc) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*TokenResp, error) {
+func (m *defaultUsersvc) LoginByPhone(ctx context.Context, in *LoginByPhoneReq, opts ...grpc.CallOption) (*TokenResp, error) {
 	client := user.NewUsersvcClient(m.cli.Conn())
-	return client.Login(ctx, in, opts...)
+	return client.LoginByPhone(ctx, in, opts...)
 }
 
 func (m *defaultUsersvc) Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*TokenResp, error) {

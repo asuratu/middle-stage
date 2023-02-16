@@ -16,11 +16,13 @@ const (
 
 // 用户模块
 const (
-	UserNotFound      uint32 = 200001
-	UserIsBlack       uint32 = 200002
-	PhoneNotFound     uint32 = 200003
-	EmailNotFound     uint32 = 200004
-	SendSmsError      uint32 = 200005
-	GraphCaptchaError uint32 = 200006
-	PhoneRegistered   uint32 = 200007
+	UserNotFound       uint32 = 200001
+	UserIsBlack        uint32 = 200002
+	PhoneNotFound      uint32 = 200003
+	EmailNotFound      uint32 = 200004
+	SendSmsError       uint32 = 200005
+	GraphCaptchaError  uint32 = 200006
+	PhoneRegistered    uint32 = 200007
+	PhoneNotRegistered uint32 = 200008
+	PasswordError      uint32 = 200009
 )

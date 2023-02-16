@@ -162,7 +162,7 @@ message RegisterReq {
   string introduction = 8; //introduction
   string avatar = 9; //头像
 }
-message LoginReq {
+message LoginByPhoneReq {
   string phone = 1;
   string  password = 2;
 }
@@ -264,7 +264,7 @@ service usersvc{
 	 rpc GetTopicById(GetTopicByIdReq) returns (GetTopicByIdResp);
 	 rpc SearchTopic(SearchTopicReq) returns (SearchTopicResp);
 	 //-----------------------user-----------------------
-   rpc Login(LoginReq) returns(tokenResp);
+   rpc LoginByPhone(LoginByPhoneReq) returns(tokenResp);
    rpc Register(RegisterReq) returns(tokenResp);
    rpc GenerateToken(GenerateTokenReq) returns(tokenResp);
 

@@ -22,6 +22,8 @@ func init() {
 	message[SendSmsError] = "发送短信失败"
 	message[GraphCaptchaError] = "图形验证码错误"
 	message[PhoneRegistered] = "手机号已注册"
+	message[PhoneNotRegistered] = "手机号未注册"
+	message[PasswordError] = "密码错误"
 }
 
 func MapErrMsg(errcode uint32) string {

@@ -8,6 +8,7 @@ import (
 	"middle/app/user/rpc/user"
 	"middle/common/tool"
 	"middle/common/xerr"
+	"middle/pkg/hash"
 
 	"github.com/golang-module/carbon/v2"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
@@ -55,7 +56,7 @@ func (l *RegisterLogic) Register(in *user.RegisterReq) (*user.TokenResp, error) 
 		}
 		userModel.Name = in.Name
 		if len(in.Password) > 0 {
-			userModel.Password = sql.NullString{String: tool.Md5ByString(in.Password), Valid: true}
+			userModel.Password = sql.NullString{String: hash.BcryptHash(in.Password), Valid: true}
 		}
 		userModel.City = sql.NullString{String: in.City, Valid: true}
 		userModel.Introduction = sql.NullString{String: in.Introduction, Valid: true}
