@@ -14,7 +14,7 @@ type Config struct {
 	DB    struct {
 		DataSource string
 	}
-
+	JwtAuth JwtConfig
 	// 业务配置
 	CaptConfig CaptConfig
 	Sms        SmsConfig

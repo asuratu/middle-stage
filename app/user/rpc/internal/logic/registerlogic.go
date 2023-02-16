@@ -2,9 +2,15 @@ package logic
 
 import (
 	"context"
+	"database/sql"
 	"middle/app/user/rpc/internal/svc"
+	"middle/app/user/rpc/model"
 	"middle/app/user/rpc/user"
+	"middle/common/tool"
 	"middle/common/xerr"
+
+	"github.com/golang-module/carbon/v2"
+	"github.com/zeromicro/go-zero/core/stores/sqlx"
 
 	"github.com/pkg/errors"
 
@@ -27,13 +33,61 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 
 func (l *RegisterLogic) Register(in *user.RegisterReq) (*user.TokenResp, error) {
 	getUserByMobileLogic := NewGetUserByMobileLogic(l.ctx, l.svcCtx)
-	_, err := getUserByMobileLogic.GetUserByMobile(&user.GetUserByMobileReq{
+	userModel, err := getUserByMobileLogic.GetUserByMobile(&user.GetUserByMobileReq{
 		Phone: in.Phone,
 	})
+	if err != nil {
+		return nil, err
+	}
 	// 用户存在
-	if err == nil {
+	if userModel != nil && userModel.User.Id > 0 {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.PhoneRegistered), "phone:%s", in.Phone)
 	}
 
-	return &user.TokenResp{}, nil
+	var userId int64
+	if err := l.svcCtx.UserModel.Trans(l.ctx, func(ctx context.Context, session sqlx.Session) error {
+		// 组装数据
+		logx.Infof("--------in:%+v", in)
+		userModel := new(model.User)
+		userModel.Phone = sql.NullString{String: in.Phone, Valid: true}
+		if len(in.Name) == 0 {
+			in.Name = tool.Krand(8, tool.KC_RAND_KIND_ALL)
+		}
+		userModel.Name = in.Name
+		if len(in.Password) > 0 {
+			userModel.Password = sql.NullString{String: tool.Md5ByString(in.Password), Valid: true}
+		}
+		userModel.City = sql.NullString{String: in.City, Valid: true}
+		userModel.Introduction = sql.NullString{String: in.Introduction, Valid: true}
+		userModel.DeleteTime = carbon.Now().ToStdTime() // 2020-08-05 13:14:15
+		userModel.CreatedAt = sql.NullTime{Time: carbon.Now().ToStdTime(), Valid: true}
+		userModel.UpdatedAt = sql.NullTime{Time: carbon.Now().ToStdTime(), Valid: true}
+		insertResult, err := l.svcCtx.UserModel.Insert(ctx, session, userModel)
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.DbError), "Register db user Insert err:%v,user:%+v", err, userModel)
+		}
+		lastId, err := insertResult.LastInsertId()
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.DbError), "Register db user insertResult.LastInsertId err:%v,user:%+v", err, userModel)
+		}
+		userId = lastId
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	// 生成token
+	generateTokenLogic := NewGenerateTokenLogic(l.ctx, l.svcCtx)
+	tokenResp, err := generateTokenLogic.GenerateToken(&user.GenerateTokenReq{
+		UserId: userId,
+	})
+	if err != nil {
+		return nil, errors.Wrapf(ErrGenerateTokenError, "GenerateToken userId : %d", userId)
+	}
+
+	return &user.TokenResp{
+		AccessToken:  tokenResp.AccessToken,
+		AccessExpire: tokenResp.AccessExpire,
+		RefreshAfter: tokenResp.RefreshAfter,
+	}, nil
 }

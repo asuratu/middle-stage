@@ -264,9 +264,9 @@ service usersvc{
 	 rpc GetTopicById(GetTopicByIdReq) returns (GetTopicByIdResp);
 	 rpc SearchTopic(SearchTopicReq) returns (SearchTopicResp);
 	 //-----------------------user-----------------------
-   rpc login(LoginReq) returns(tokenResp);
-   rpc register(RegisterReq) returns(tokenResp);
-   rpc generateToken(GenerateTokenReq) returns(tokenResp);
+   rpc Login(LoginReq) returns(tokenResp);
+   rpc Register(RegisterReq) returns(tokenResp);
+   rpc GenerateToken(GenerateTokenReq) returns(tokenResp);
 
 	 rpc UpdateUser(UpdateUserReq) returns (UpdateUserResp);
 	 rpc DelUser(DelUserReq) returns (DelUserResp);
