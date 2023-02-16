@@ -24,7 +24,7 @@ type (
 		RowBuilder() squirrel.SelectBuilder
 		CountBuilder(field string) squirrel.SelectBuilder
 		SumBuilder(field string) squirrel.SelectBuilder
-		DeleteSoft(ctx context.Context, data *User) error
+		DeleteSoft(ctx context.Context, session sqlx.Session, data *User) error
 		FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*User, error)
 		FindSum(ctx context.Context, sumBuilder squirrel.SelectBuilder) (float64, error)
 		FindCount(ctx context.Context, countBuilder squirrel.SelectBuilder) (int64, error)
@@ -46,10 +46,10 @@ func NewUserModel(conn sqlx.SqlConn, c cache.CacheConf) UserModel {
 	}
 }
 
-func (m *defaultUserModel) DeleteSoft(ctx context.Context, data *User) error {
+func (m *defaultUserModel) DeleteSoft(ctx context.Context, session sqlx.Session, data *User) error {
 	data.DelState = globalkey.DelStateYes
 	data.DeleteTime = time.Now()
-	if err := m.UpdateWithVersion(ctx, data); err != nil {
+	if err := m.UpdateWithVersion(ctx, session, data); err != nil {
 		return errors.Wrapf(xerr.NewErrMsg("删除数据失败"), "UserModel delete err : %+v", err)
 	}
 	return nil
@@ -178,7 +178,7 @@ func (m *defaultUserModel) FindPageListByIdDESC(ctx context.Context, rowBuilder 
 	}
 }
 
-// 按照id升序分页查询数据，不支持排序
+// FindPageListByIdASC 按照id升序分页查询数据，不支持排序
 func (m *defaultUserModel) FindPageListByIdASC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMaxId, pageSize int64) ([]*User, error) {
 
 	if preMaxId > 0 {
@@ -209,17 +209,17 @@ func (m *defaultUserModel) Trans(ctx context.Context, fn func(ctx context.Contex
 
 }
 
-// export logic
+// RowBuilder export logic
 func (m *defaultUserModel) RowBuilder() squirrel.SelectBuilder {
 	return squirrel.Select(userRows).From(m.table)
 }
 
-// export logic
+// CountBuilder export logic
 func (m *defaultUserModel) CountBuilder(field string) squirrel.SelectBuilder {
 	return squirrel.Select("COUNT(" + field + ")").From(m.table)
 }
 
-// export logic
+// SumBuilder export logic
 func (m *defaultUserModel) SumBuilder(field string) squirrel.SelectBuilder {
 	return squirrel.Select("IFNULL(SUM(" + field + "),0)").From(m.table)
 }

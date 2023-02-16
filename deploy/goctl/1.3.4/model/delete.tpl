@@ -16,6 +16,7 @@ func (m *default{{.upperStartCamelObject}}Model) Delete(ctx context.Context, ses
 	_,err:= session.ExecCtx(ctx,query, {{.lowerStartCamelPrimaryKey}})
 		return err
 	}
-	_,err:=m.conn.ExecCtx(ctx, query, {{.lowerStartCamelPrimaryKey}}){{end}}
+	_,err:=m.conn.ExecCtx(ctx, query, {{.lowerStartCamelPrimaryKey}})
+	{{end}}
 	return err
 }

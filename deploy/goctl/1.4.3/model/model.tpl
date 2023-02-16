@@ -37,7 +37,7 @@ type (
 		RowBuilder() squirrel.SelectBuilder
 		CountBuilder(field string) squirrel.SelectBuilder
 		SumBuilder(field string) squirrel.SelectBuilder
-		DeleteSoft(ctx context.Context, data *{{.upperStartCamelObject}}) error
+		DeleteSoft(ctx context.Context, session sqlx.Session, data *{{.upperStartCamelObject}}) error
 		FindOneByQuery(ctx context.Context,rowBuilder squirrel.SelectBuilder) (*{{.upperStartCamelObject}},error)
 		FindSum(ctx context.Context,sumBuilder squirrel.SelectBuilder) (float64,error)
 		FindCount(ctx context.Context,countBuilder squirrel.SelectBuilder) (int64,error)
@@ -60,10 +60,10 @@ func New{{.upperStartCamelObject}}Model(conn sqlx.SqlConn{{if .withCache}}, c ca
 	}
 }
 
-func (m *default{{.upperStartCamelObject}}Model) DeleteSoft(ctx context.Context, data *{{.upperStartCamelObject}}) error {
+func (m *default{{.upperStartCamelObject}}Model) DeleteSoft(ctx context.Context, session sqlx.Session, data *{{.upperStartCamelObject}}) error {
 	data.DelState = globalkey.DelStateYes
 	data.DeleteTime = time.Now()
-	if err:= m.UpdateWithVersion(ctx, data);err!= nil{
+	if err:= m.UpdateWithVersion(ctx, session, data);err!= nil{
 		return errors.Wrapf(xerr.NewErrMsg("删除数据失败"),"{{.upperStartCamelObject}}Model delete err : %+v",err)
 	}
 	return nil
@@ -205,7 +205,7 @@ func (m *default{{.upperStartCamelObject}}Model) FindPageListByIdDESC(ctx contex
 	}
 }
 
-//按照id升序分页查询数据，不支持排序
+// FindPageListByIdASC 按照id升序分页查询数据，不支持排序
 func (m *default{{.upperStartCamelObject}}Model) FindPageListByIdASC(ctx context.Context,rowBuilder squirrel.SelectBuilder,preMaxId ,pageSize int64) ([]*{{.upperStartCamelObject}},error)  {
 
 	if preMaxId > 0 {
@@ -242,17 +242,17 @@ func (m *default{{.upperStartCamelObject}}Model) Trans(ctx context.Context, fn f
 	{{end}}
 }
 
-// export logic
+// RowBuilder export logic
 func (m *default{{.upperStartCamelObject}}Model) RowBuilder() squirrel.SelectBuilder {
 	return squirrel.Select({{.lowerStartCamelObject}}Rows).From(m.table)
 }
 
-// export logic
+// CountBuilder export logic
 func (m *default{{.upperStartCamelObject}}Model) CountBuilder(field string) squirrel.SelectBuilder {
 	return squirrel.Select("COUNT("+field+")").From(m.table)
 }
 
-// export logic
+// SumBuilder export logic
 func (m *default{{.upperStartCamelObject}}Model) SumBuilder(field string) squirrel.SelectBuilder {
 	return squirrel.Select("IFNULL(SUM("+field+"),0)").From(m.table)
 }

@@ -30,12 +30,12 @@ var (
 
 type (
 	userModel interface {
-		Insert(ctx context.Context, data *User) (sql.Result, error)
+		Insert(ctx context.Context, session sqlx.Session, data *User) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*User, error)
 		FindOneWithTrashed(ctx context.Context, id int64) (*User, error)
-		Update(ctx context.Context, data *User) error
-		UpdateWithVersion(ctx context.Context, data *User) error
-		Delete(ctx context.Context, id int64) error
+		Update(ctx context.Context, session sqlx.Session, data *User) error
+		UpdateWithVersion(ctx context.Context, session sqlx.Session, data *User) error
+		Delete(ctx context.Context, session sqlx.Session, id int64) error
 	}
 
 	defaultUserModel struct {
@@ -67,11 +67,15 @@ func newUserModel(conn sqlx.SqlConn, c cache.CacheConf) *defaultUserModel {
 	}
 }
 
-func (m *defaultUserModel) Delete(ctx context.Context, id int64) error {
+func (m *defaultUserModel) Delete(ctx context.Context, session sqlx.Session, id int64) error {
 	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, id)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
-		return conn.ExecCtx(ctx, query, id)
+		if session != nil {
+			return session.ExecCtx(ctx, query, id)
+		} else {
+			return conn.ExecCtx(ctx, query, id)
+		}
 	}, msUserUserIdKey)
 	return err
 }
@@ -112,25 +116,36 @@ func (m *defaultUserModel) FindOneWithTrashed(ctx context.Context, id int64) (*U
 	}
 }
 
-func (m *defaultUserModel) Insert(ctx context.Context, data *User) (sql.Result, error) {
+func (m *defaultUserModel) Insert(ctx context.Context, session sqlx.Session, data *User) (sql.Result, error) {
+
 	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, data.Id)
-	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+	return m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
-		return conn.ExecCtx(ctx, query, data.Name, data.Email, data.Phone, data.Password, data.City, data.Introduction, data.Avatar, data.DeleteTime, data.DelState, data.Version)
+		if session != nil {
+			return session.ExecCtx(ctx, query, data.Name, data.Email, data.Phone, data.Password, data.City, data.Introduction, data.Avatar, data.DeleteTime, data.DelState, data.Version)
+		} else {
+			return conn.ExecCtx(ctx, query, data.Name, data.Email, data.Phone, data.Password, data.City, data.Introduction, data.Avatar, data.DeleteTime, data.DelState, data.Version)
+		}
 	}, msUserUserIdKey)
-	return ret, err
+
 }
 
-func (m *defaultUserModel) Update(ctx context.Context, data *User) error {
+func (m *defaultUserModel) Update(ctx context.Context, session sqlx.Session, data *User) error {
+
 	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, data.Id)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userRowsWithPlaceHolder)
-		return conn.ExecCtx(ctx, query, data.Name, data.Email, data.Phone, data.Password, data.City, data.Introduction, data.Avatar, data.DeleteTime, data.DelState, data.Version, data.Id)
+		if session != nil {
+			return session.ExecCtx(ctx, query, data.Name, data.Email, data.Phone, data.Password, data.City, data.Introduction, data.Avatar, data.DeleteTime, data.DelState, data.Version, data.Id)
+		} else {
+			return conn.ExecCtx(ctx, query, data.Name, data.Email, data.Phone, data.Password, data.City, data.Introduction, data.Avatar, data.DeleteTime, data.DelState, data.Version, data.Id)
+		}
 	}, msUserUserIdKey)
+
 	return err
 }
 
-func (m *defaultUserModel) UpdateWithVersion(ctx context.Context, data *User) error {
+func (m *defaultUserModel) UpdateWithVersion(ctx context.Context, session sqlx.Session, data *User) error {
 	oldVersion := data.Version
 	data.Version += 1
 
@@ -140,7 +155,11 @@ func (m *defaultUserModel) UpdateWithVersion(ctx context.Context, data *User) er
 	msUserUserIdKey := fmt.Sprintf("%s%v", cacheMsUserUserIdPrefix, data.Id)
 	sqlResult, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ? and version = ? ", m.table, userRowsWithPlaceHolder)
-		return conn.ExecCtx(ctx, query, data.Name, data.Email, data.Phone, data.Password, data.City, data.Introduction, data.Avatar, data.DeleteTime, data.DelState, data.Version, data.Id, oldVersion)
+		if session != nil {
+			return session.ExecCtx(ctx, query, data.Name, data.Email, data.Phone, data.Password, data.City, data.Introduction, data.Avatar, data.DeleteTime, data.DelState, data.Version, data.Id, oldVersion)
+		} else {
+			return conn.ExecCtx(ctx, query, data.Name, data.Email, data.Phone, data.Password, data.City, data.Introduction, data.Avatar, data.DeleteTime, data.DelState, data.Version, data.Id, oldVersion)
+		}
 	},
 		msUserUserIdKey)
 
