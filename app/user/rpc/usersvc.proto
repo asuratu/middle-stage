@@ -263,8 +263,8 @@ service usersvc{
 	 rpc GetUserById(GetUserByIdReq) returns (GetUserResp);
 	 rpc GetUserByMobile(GetUserByMobileReq) returns (GetUserResp);
 	 rpc SearchUser(SearchUserReq) returns (SearchUserResp);
-     //-----------------------auth-----------------------
-     rpc SendImageCaptcha(SendImageCaptchaReq) returns (SendImageCaptchaResp);
-     rpc VerifyCaptcha(VerifyCaptchaReq) returns (VerifyCaptchaResp);
-     rpc SendSmsCode(SendSmsCodeReq) returns (SendSmsCodeResp);
+   //-----------------------auth-----------------------
+   rpc SendImageCaptcha(SendImageCaptchaReq) returns (SendImageCaptchaResp);
+   rpc VerifyCaptcha(VerifyCaptchaReq) returns (VerifyCaptchaResp);
+   rpc SendSmsCode(SendSmsCodeReq) returns (SendSmsCodeResp);
 }
