@@ -35,7 +35,9 @@ type UsersvcClient interface {
 	GetTopicById(ctx context.Context, in *GetTopicByIdReq, opts ...grpc.CallOption) (*GetTopicByIdResp, error)
 	SearchTopic(ctx context.Context, in *SearchTopicReq, opts ...grpc.CallOption) (*SearchTopicResp, error)
 	// -----------------------user-----------------------
-	AddUser(ctx context.Context, in *AddUserReq, opts ...grpc.CallOption) (*AddUserResp, error)
+	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*TokenResp, error)
+	Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*TokenResp, error)
+	GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*TokenResp, error)
 	UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error)
 	DelUser(ctx context.Context, in *DelUserReq, opts ...grpc.CallOption) (*DelUserResp, error)
 	GetUserById(ctx context.Context, in *GetUserByIdReq, opts ...grpc.CallOption) (*GetUserResp, error)
@@ -145,9 +147,27 @@ func (c *usersvcClient) SearchTopic(ctx context.Context, in *SearchTopicReq, opt
 	return out, nil
 }
 
-func (c *usersvcClient) AddUser(ctx context.Context, in *AddUserReq, opts ...grpc.CallOption) (*AddUserResp, error) {
-	out := new(AddUserResp)
-	err := c.cc.Invoke(ctx, "/user.usersvc/AddUser", in, out, opts...)
+func (c *usersvcClient) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*TokenResp, error) {
+	out := new(TokenResp)
+	err := c.cc.Invoke(ctx, "/user.usersvc/login", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersvcClient) Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*TokenResp, error) {
+	out := new(TokenResp)
+	err := c.cc.Invoke(ctx, "/user.usersvc/register", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersvcClient) GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*TokenResp, error) {
+	out := new(TokenResp)
+	err := c.cc.Invoke(ctx, "/user.usersvc/generateToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +263,9 @@ type UsersvcServer interface {
 	GetTopicById(context.Context, *GetTopicByIdReq) (*GetTopicByIdResp, error)
 	SearchTopic(context.Context, *SearchTopicReq) (*SearchTopicResp, error)
 	// -----------------------user-----------------------
-	AddUser(context.Context, *AddUserReq) (*AddUserResp, error)
+	Login(context.Context, *LoginReq) (*TokenResp, error)
+	Register(context.Context, *RegisterReq) (*TokenResp, error)
+	GenerateToken(context.Context, *GenerateTokenReq) (*TokenResp, error)
 	UpdateUser(context.Context, *UpdateUserReq) (*UpdateUserResp, error)
 	DelUser(context.Context, *DelUserReq) (*DelUserResp, error)
 	GetUserById(context.Context, *GetUserByIdReq) (*GetUserResp, error)
@@ -290,8 +312,14 @@ func (UnimplementedUsersvcServer) GetTopicById(context.Context, *GetTopicByIdReq
 func (UnimplementedUsersvcServer) SearchTopic(context.Context, *SearchTopicReq) (*SearchTopicResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchTopic not implemented")
 }
-func (UnimplementedUsersvcServer) AddUser(context.Context, *AddUserReq) (*AddUserResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddUser not implemented")
+func (UnimplementedUsersvcServer) Login(context.Context, *LoginReq) (*TokenResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedUsersvcServer) Register(context.Context, *RegisterReq) (*TokenResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
+}
+func (UnimplementedUsersvcServer) GenerateToken(context.Context, *GenerateTokenReq) (*TokenResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateToken not implemented")
 }
 func (UnimplementedUsersvcServer) UpdateUser(context.Context, *UpdateUserReq) (*UpdateUserResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
@@ -510,20 +538,56 @@ func _Usersvc_SearchTopic_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Usersvc_AddUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddUserReq)
+func _Usersvc_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UsersvcServer).AddUser(ctx, in)
+		return srv.(UsersvcServer).Login(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.usersvc/AddUser",
+		FullMethod: "/user.usersvc/login",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersvcServer).AddUser(ctx, req.(*AddUserReq))
+		return srv.(UsersvcServer).Login(ctx, req.(*LoginReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Usersvc_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersvcServer).Register(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.usersvc/register",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersvcServer).Register(ctx, req.(*RegisterReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Usersvc_GenerateToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateTokenReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersvcServer).GenerateToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.usersvc/generateToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersvcServer).GenerateToken(ctx, req.(*GenerateTokenReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -720,8 +784,16 @@ var Usersvc_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Usersvc_SearchTopic_Handler,
 		},
 		{
-			MethodName: "AddUser",
-			Handler:    _Usersvc_AddUser_Handler,
+			MethodName: "login",
+			Handler:    _Usersvc_Login_Handler,
+		},
+		{
+			MethodName: "register",
+			Handler:    _Usersvc_Register_Handler,
+		},
+		{
+			MethodName: "generateToken",
+			Handler:    _Usersvc_GenerateToken_Handler,
 		},
 		{
 			MethodName: "UpdateUser",

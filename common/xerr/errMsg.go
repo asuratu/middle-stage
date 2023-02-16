@@ -21,6 +21,7 @@ func init() {
 	message[EmailNotFound] = "邮箱不存在"
 	message[SendSmsError] = "发送短信失败"
 	message[GraphCaptchaError] = "图形验证码错误"
+	message[PhoneRegistered] = "手机号已注册"
 }
 
 func MapErrMsg(errcode uint32) string {

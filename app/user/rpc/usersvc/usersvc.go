@@ -17,8 +17,6 @@ type (
 	AddCategoryResp      = user.AddCategoryResp
 	AddTopicReq          = user.AddTopicReq
 	AddTopicResp         = user.AddTopicResp
-	AddUserReq           = user.AddUserReq
-	AddUserResp          = user.AddUserResp
 	Category             = user.Category
 	DelCategoryReq       = user.DelCategoryReq
 	DelCategoryResp      = user.DelCategoryResp
@@ -26,6 +24,7 @@ type (
 	DelTopicResp         = user.DelTopicResp
 	DelUserReq           = user.DelUserReq
 	DelUserResp          = user.DelUserResp
+	GenerateTokenReq     = user.GenerateTokenReq
 	GetCategoryByIdReq   = user.GetCategoryByIdReq
 	GetCategoryByIdResp  = user.GetCategoryByIdResp
 	GetTopicByIdReq      = user.GetTopicByIdReq
@@ -33,6 +32,8 @@ type (
 	GetUserByIdReq       = user.GetUserByIdReq
 	GetUserByMobileReq   = user.GetUserByMobileReq
 	GetUserResp          = user.GetUserResp
+	LoginReq             = user.LoginReq
+	RegisterReq          = user.RegisterReq
 	SearchCategoryReq    = user.SearchCategoryReq
 	SearchCategoryResp   = user.SearchCategoryResp
 	SearchTopicReq       = user.SearchTopicReq
@@ -43,6 +44,7 @@ type (
 	SendImageCaptchaResp = user.SendImageCaptchaResp
 	SendSmsCodeReq       = user.SendSmsCodeReq
 	SendSmsCodeResp      = user.SendSmsCodeResp
+	TokenResp            = user.TokenResp
 	Topic                = user.Topic
 	UpdateCategoryReq    = user.UpdateCategoryReq
 	UpdateCategoryResp   = user.UpdateCategoryResp
@@ -68,7 +70,9 @@ type (
 		GetTopicById(ctx context.Context, in *GetTopicByIdReq, opts ...grpc.CallOption) (*GetTopicByIdResp, error)
 		SearchTopic(ctx context.Context, in *SearchTopicReq, opts ...grpc.CallOption) (*SearchTopicResp, error)
 		// -----------------------user-----------------------
-		AddUser(ctx context.Context, in *AddUserReq, opts ...grpc.CallOption) (*AddUserResp, error)
+		Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*TokenResp, error)
+		Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*TokenResp, error)
+		GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*TokenResp, error)
 		UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error)
 		DelUser(ctx context.Context, in *DelUserReq, opts ...grpc.CallOption) (*DelUserResp, error)
 		GetUserById(ctx context.Context, in *GetUserByIdReq, opts ...grpc.CallOption) (*GetUserResp, error)
@@ -144,9 +148,19 @@ func (m *defaultUsersvc) SearchTopic(ctx context.Context, in *SearchTopicReq, op
 }
 
 // -----------------------user-----------------------
-func (m *defaultUsersvc) AddUser(ctx context.Context, in *AddUserReq, opts ...grpc.CallOption) (*AddUserResp, error) {
+func (m *defaultUsersvc) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*TokenResp, error) {
 	client := user.NewUsersvcClient(m.cli.Conn())
-	return client.AddUser(ctx, in, opts...)
+	return client.Login(ctx, in, opts...)
+}
+
+func (m *defaultUsersvc) Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*TokenResp, error) {
+	client := user.NewUsersvcClient(m.cli.Conn())
+	return client.Register(ctx, in, opts...)
+}
+
+func (m *defaultUsersvc) GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*TokenResp, error) {
+	client := user.NewUsersvcClient(m.cli.Conn())
+	return client.GenerateToken(ctx, in, opts...)
 }
 
 func (m *defaultUsersvc) UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error) {

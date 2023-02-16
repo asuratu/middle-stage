@@ -22,4 +22,5 @@ const (
 	EmailNotFound     uint32 = 200004
 	SendSmsError      uint32 = 200005
 	GraphCaptchaError uint32 = 200006
+	PhoneRegistered   uint32 = 200007
 )

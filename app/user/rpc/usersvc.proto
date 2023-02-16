@@ -148,19 +148,26 @@ message User {
   string avatar = 10; //avatar
 }
 
-message AddUserReq {
+message tokenResp {
+  string accessToken = 1;
+  int64  accessExpire = 2;
+  int64  refreshAfter = 3;
+}
+message RegisterReq {
   string name = 1; //name
   string email = 2; //email
-  string phone = 3; //phone
+  string phone = 3; //手机号
   string password = 4; //password
-  int64 createdAt = 5; //createdAt
-  int64 updatedAt = 6; //updatedAt
   string city = 7; //city
   string introduction = 8; //introduction
-  string avatar = 9; //avatar
+  string avatar = 9; //头像
 }
-
-message AddUserResp {
+message LoginReq {
+  string phone = 1;
+  string  password = 2;
+}
+message GenerateTokenReq {
+  int64 userId = 1;
 }
 
 message UpdateUserReq {
@@ -257,7 +264,10 @@ service usersvc{
 	 rpc GetTopicById(GetTopicByIdReq) returns (GetTopicByIdResp);
 	 rpc SearchTopic(SearchTopicReq) returns (SearchTopicResp);
 	 //-----------------------user-----------------------
-	 rpc AddUser(AddUserReq) returns (AddUserResp);
+   rpc login(LoginReq) returns(tokenResp);
+   rpc register(RegisterReq) returns(tokenResp);
+   rpc generateToken(GenerateTokenReq) returns(tokenResp);
+
 	 rpc UpdateUser(UpdateUserReq) returns (UpdateUserResp);
 	 rpc DelUser(DelUserReq) returns (DelUserResp);
 	 rpc GetUserById(GetUserByIdReq) returns (GetUserResp);

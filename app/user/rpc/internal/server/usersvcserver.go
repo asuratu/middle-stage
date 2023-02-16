@@ -75,9 +75,19 @@ func (s *UsersvcServer) SearchTopic(ctx context.Context, in *user.SearchTopicReq
 }
 
 // -----------------------user-----------------------
-func (s *UsersvcServer) AddUser(ctx context.Context, in *user.AddUserReq) (*user.AddUserResp, error) {
-	l := logic.NewAddUserLogic(ctx, s.svcCtx)
-	return l.AddUser(in)
+func (s *UsersvcServer) Login(ctx context.Context, in *user.LoginReq) (*user.TokenResp, error) {
+	l := logic.NewLoginLogic(ctx, s.svcCtx)
+	return l.Login(in)
+}
+
+func (s *UsersvcServer) Register(ctx context.Context, in *user.RegisterReq) (*user.TokenResp, error) {
+	l := logic.NewRegisterLogic(ctx, s.svcCtx)
+	return l.Register(in)
+}
+
+func (s *UsersvcServer) GenerateToken(ctx context.Context, in *user.GenerateTokenReq) (*user.TokenResp, error) {
+	l := logic.NewGenerateTokenLogic(ctx, s.svcCtx)
+	return l.GenerateToken(in)
 }
 
 func (s *UsersvcServer) UpdateUser(ctx context.Context, in *user.UpdateUserReq) (*user.UpdateUserResp, error) {
