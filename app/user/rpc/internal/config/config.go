@@ -16,6 +16,7 @@ type Config struct {
 	}
 	JwtAuth JwtConfig
 	// 业务配置
+	App        AppConfig
 	CaptConfig CaptConfig
 	Sms        SmsConfig
 	Email      EmailConfig

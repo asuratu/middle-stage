@@ -41,7 +41,7 @@ func (l *LoginByPhoneLogic) LoginByPhone(in *user.LoginByPhoneReq) (*user.TokenR
 	}
 
 	// 检查密码
-	if !hash.BcryptCheck(in.Phone, userModel.User.Password) {
+	if !hash.BcryptCheck(in.Password, userModel.User.Password) {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.PasswordError), "phone:%s", in.Phone)
 	}
 
