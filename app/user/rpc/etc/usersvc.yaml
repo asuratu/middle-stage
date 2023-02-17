@@ -45,7 +45,7 @@ CaptConfig:
 # 短信验证码配置
 Sms:
   Aliyun:
-    AccessKeyID: 11
+    AccessKeyID:
     AccessKeySecret:
     SignName:
     TemplateCode:
