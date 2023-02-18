@@ -38,6 +38,7 @@ type UsersvcClient interface {
 	LoginByPhone(ctx context.Context, in *LoginByPhoneReq, opts ...grpc.CallOption) (*TokenResp, error)
 	Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*TokenResp, error)
 	GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*TokenResp, error)
+	RefreshToken(ctx context.Context, in *RefreshTokenReq, opts ...grpc.CallOption) (*TokenResp, error)
 	UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error)
 	DelUser(ctx context.Context, in *DelUserReq, opts ...grpc.CallOption) (*DelUserResp, error)
 	GetUserById(ctx context.Context, in *GetUserByIdReq, opts ...grpc.CallOption) (*GetUserResp, error)
@@ -174,6 +175,15 @@ func (c *usersvcClient) GenerateToken(ctx context.Context, in *GenerateTokenReq,
 	return out, nil
 }
 
+func (c *usersvcClient) RefreshToken(ctx context.Context, in *RefreshTokenReq, opts ...grpc.CallOption) (*TokenResp, error) {
+	out := new(TokenResp)
+	err := c.cc.Invoke(ctx, "/user.usersvc/RefreshToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *usersvcClient) UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error) {
 	out := new(UpdateUserResp)
 	err := c.cc.Invoke(ctx, "/user.usersvc/UpdateUser", in, out, opts...)
@@ -266,6 +276,7 @@ type UsersvcServer interface {
 	LoginByPhone(context.Context, *LoginByPhoneReq) (*TokenResp, error)
 	Register(context.Context, *RegisterReq) (*TokenResp, error)
 	GenerateToken(context.Context, *GenerateTokenReq) (*TokenResp, error)
+	RefreshToken(context.Context, *RefreshTokenReq) (*TokenResp, error)
 	UpdateUser(context.Context, *UpdateUserReq) (*UpdateUserResp, error)
 	DelUser(context.Context, *DelUserReq) (*DelUserResp, error)
 	GetUserById(context.Context, *GetUserByIdReq) (*GetUserResp, error)
@@ -320,6 +331,9 @@ func (UnimplementedUsersvcServer) Register(context.Context, *RegisterReq) (*Toke
 }
 func (UnimplementedUsersvcServer) GenerateToken(context.Context, *GenerateTokenReq) (*TokenResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateToken not implemented")
+}
+func (UnimplementedUsersvcServer) RefreshToken(context.Context, *RefreshTokenReq) (*TokenResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
 }
 func (UnimplementedUsersvcServer) UpdateUser(context.Context, *UpdateUserReq) (*UpdateUserResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
@@ -592,6 +606,24 @@ func _Usersvc_GenerateToken_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Usersvc_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RefreshTokenReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersvcServer).RefreshToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.usersvc/RefreshToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersvcServer).RefreshToken(ctx, req.(*RefreshTokenReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Usersvc_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateUserReq)
 	if err := dec(in); err != nil {
@@ -794,6 +826,10 @@ var Usersvc_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GenerateToken",
 			Handler:    _Usersvc_GenerateToken_Handler,
+		},
+		{
+			MethodName: "RefreshToken",
+			Handler:    _Usersvc_RefreshToken_Handler,
 		},
 		{
 			MethodName: "UpdateUser",

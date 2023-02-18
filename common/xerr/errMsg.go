@@ -25,6 +25,7 @@ func init() {
 	message[PhoneNotRegistered] = "手机号未注册"
 	message[PasswordError] = "密码错误"
 	message[ErrGenerateTokenError] = "生成token失败"
+	message[RefreshTokenError] = "刷新token失败"
 }
 
 func MapErrMsg(errcode uint32) string {

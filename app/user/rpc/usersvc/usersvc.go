@@ -33,6 +33,7 @@ type (
 	GetUserByMobileReq   = user.GetUserByMobileReq
 	GetUserResp          = user.GetUserResp
 	LoginByPhoneReq      = user.LoginByPhoneReq
+	RefreshTokenReq      = user.RefreshTokenReq
 	RegisterReq          = user.RegisterReq
 	SearchCategoryReq    = user.SearchCategoryReq
 	SearchCategoryResp   = user.SearchCategoryResp
@@ -73,6 +74,7 @@ type (
 		LoginByPhone(ctx context.Context, in *LoginByPhoneReq, opts ...grpc.CallOption) (*TokenResp, error)
 		Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*TokenResp, error)
 		GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*TokenResp, error)
+		RefreshToken(ctx context.Context, in *RefreshTokenReq, opts ...grpc.CallOption) (*TokenResp, error)
 		UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error)
 		DelUser(ctx context.Context, in *DelUserReq, opts ...grpc.CallOption) (*DelUserResp, error)
 		GetUserById(ctx context.Context, in *GetUserByIdReq, opts ...grpc.CallOption) (*GetUserResp, error)
@@ -161,6 +163,11 @@ func (m *defaultUsersvc) Register(ctx context.Context, in *RegisterReq, opts ...
 func (m *defaultUsersvc) GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*TokenResp, error) {
 	client := user.NewUsersvcClient(m.cli.Conn())
 	return client.GenerateToken(ctx, in, opts...)
+}
+
+func (m *defaultUsersvc) RefreshToken(ctx context.Context, in *RefreshTokenReq, opts ...grpc.CallOption) (*TokenResp, error) {
+	client := user.NewUsersvcClient(m.cli.Conn())
+	return client.RefreshToken(ctx, in, opts...)
 }
 
 func (m *defaultUsersvc) UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error) {

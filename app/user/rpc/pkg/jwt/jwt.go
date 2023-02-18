@@ -71,7 +71,7 @@ func (jwt *JWT) parseTokenString(tokenString string) (*jwtpkg.Token, error) {
 }
 
 // RefreshToken 更新 Token，用以提供 refresh token 接口
-func (jwt *JWT) RefreshToken(tokenStr string) (string, error) {
+func (jwt *JWT) RefreshToken(tokenStr string) (*TokenRsp, error) {
 	// 2. 调用 jwt 库解析用户传参的 Token
 	token, err := jwt.parseTokenString(tokenStr)
 
@@ -80,7 +80,7 @@ func (jwt *JWT) RefreshToken(tokenStr string) (string, error) {
 		validationErr, ok := err.(*jwtpkg.ValidationError)
 		// 满足 refresh 的条件：只是单一的报错 ValidationErrorExpired
 		if !ok || validationErr.Errors != jwtpkg.ValidationErrorExpired {
-			return "", err
+			return nil, err
 		}
 	}
 
@@ -92,10 +92,22 @@ func (jwt *JWT) RefreshToken(tokenStr string) (string, error) {
 	if claims.IssuedAt.Time.Unix() > x {
 		// 修改过期时间
 		claims.RegisteredClaims.ExpiresAt = jwtpkg.NewNumericDate(jwt.expireAtTime())
-		return jwt.createToken(*claims)
+
+		// 2. 根据 claims 生成token对象
+		token, err := jwt.createToken(*claims)
+		if err != nil {
+			logx.Error(err)
+			return nil, err
+		}
+
+		return &TokenRsp{
+			Token:               token,
+			ExpireAtTime:        claims.RegisteredClaims.ExpiresAt.Unix(),
+			RefreshExpireAtTime: claims.RegisteredClaims.ExpiresAt.Add(jwt.MaxRefresh).Unix(),
+		}, nil
 	}
 
-	return "", ErrTokenExpiredMaxRefresh
+	return nil, ErrTokenExpiredMaxRefresh
 }
 
 // IssueToken 生成  Token，在登录成功时调用

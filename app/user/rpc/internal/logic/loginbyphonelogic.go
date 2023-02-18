@@ -35,6 +35,7 @@ func (l *LoginByPhoneLogic) LoginByPhone(in *user.LoginByPhoneReq) (*user.TokenR
 	if err != nil {
 		return nil, err
 	}
+
 	// 用户不存在
 	if userModel == nil || userModel.User.Id == 0 {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.PhoneNotRegistered), "phone:%s", in.Phone)

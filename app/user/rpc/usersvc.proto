@@ -171,6 +171,10 @@ message GenerateTokenReq {
   string userName = 2;
 }
 
+message RefreshTokenReq {
+  string token = 1;
+}
+
 message UpdateUserReq {
   int64 id = 1; //id
   string name = 2; //name
@@ -251,31 +255,32 @@ message VerifyCaptchaResp {
 // ------------------------------------
 
 service usersvc{
+    //-----------------------category-----------------------
+    rpc AddCategory(AddCategoryReq) returns (AddCategoryResp);
+    rpc UpdateCategory(UpdateCategoryReq) returns (UpdateCategoryResp);
+    rpc DelCategory(DelCategoryReq) returns (DelCategoryResp);
+    rpc GetCategoryById(GetCategoryByIdReq) returns (GetCategoryByIdResp);
+    rpc SearchCategory(SearchCategoryReq) returns (SearchCategoryResp);
+    //-----------------------topic-----------------------
+    rpc AddTopic(AddTopicReq) returns (AddTopicResp);
+    rpc UpdateTopic(UpdateTopicReq) returns (UpdateTopicResp);
+    rpc DelTopic(DelTopicReq) returns (DelTopicResp);
+    rpc GetTopicById(GetTopicByIdReq) returns (GetTopicByIdResp);
+    rpc SearchTopic(SearchTopicReq) returns (SearchTopicResp);
+    //-----------------------user-----------------------
+    rpc LoginByPhone(LoginByPhoneReq) returns(tokenResp);
+    rpc Register(RegisterReq) returns(tokenResp);
+    rpc GenerateToken(GenerateTokenReq) returns(tokenResp);
+    rpc RefreshToken(RefreshTokenReq) returns(tokenResp);
 
-	 //-----------------------category-----------------------
-	 rpc AddCategory(AddCategoryReq) returns (AddCategoryResp);
-	 rpc UpdateCategory(UpdateCategoryReq) returns (UpdateCategoryResp);
-	 rpc DelCategory(DelCategoryReq) returns (DelCategoryResp);
-	 rpc GetCategoryById(GetCategoryByIdReq) returns (GetCategoryByIdResp);
-	 rpc SearchCategory(SearchCategoryReq) returns (SearchCategoryResp);
-	 //-----------------------topic-----------------------
-	 rpc AddTopic(AddTopicReq) returns (AddTopicResp);
-	 rpc UpdateTopic(UpdateTopicReq) returns (UpdateTopicResp);
-	 rpc DelTopic(DelTopicReq) returns (DelTopicResp);
-	 rpc GetTopicById(GetTopicByIdReq) returns (GetTopicByIdResp);
-	 rpc SearchTopic(SearchTopicReq) returns (SearchTopicResp);
-	 //-----------------------user-----------------------
-   rpc LoginByPhone(LoginByPhoneReq) returns(tokenResp);
-   rpc Register(RegisterReq) returns(tokenResp);
-   rpc GenerateToken(GenerateTokenReq) returns(tokenResp);
+    rpc UpdateUser(UpdateUserReq) returns (UpdateUserResp);
+    rpc DelUser(DelUserReq) returns (DelUserResp);
+    rpc GetUserById(GetUserByIdReq) returns (GetUserResp);
+    rpc GetUserByMobile(GetUserByMobileReq) returns (GetUserResp);
+    rpc SearchUser(SearchUserReq) returns (SearchUserResp);
 
-	 rpc UpdateUser(UpdateUserReq) returns (UpdateUserResp);
-	 rpc DelUser(DelUserReq) returns (DelUserResp);
-	 rpc GetUserById(GetUserByIdReq) returns (GetUserResp);
-	 rpc GetUserByMobile(GetUserByMobileReq) returns (GetUserResp);
-	 rpc SearchUser(SearchUserReq) returns (SearchUserResp);
-   //-----------------------auth-----------------------
-   rpc SendImageCaptcha(SendImageCaptchaReq) returns (SendImageCaptchaResp);
-   rpc VerifyCaptcha(VerifyCaptchaReq) returns (VerifyCaptchaResp);
-   rpc SendSmsCode(SendSmsCodeReq) returns (SendSmsCodeResp);
+    //-----------------------auth-----------------------
+    rpc SendImageCaptcha(SendImageCaptchaReq) returns (SendImageCaptchaResp);
+    rpc VerifyCaptcha(VerifyCaptchaReq) returns (VerifyCaptchaResp);
+    rpc SendSmsCode(SendSmsCodeReq) returns (SendSmsCodeResp);
 }

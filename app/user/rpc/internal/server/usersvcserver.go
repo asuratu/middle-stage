@@ -90,6 +90,11 @@ func (s *UsersvcServer) GenerateToken(ctx context.Context, in *user.GenerateToke
 	return l.GenerateToken(in)
 }
 
+func (s *UsersvcServer) RefreshToken(ctx context.Context, in *user.RefreshTokenReq) (*user.TokenResp, error) {
+	l := logic.NewRefreshTokenLogic(ctx, s.svcCtx)
+	return l.RefreshToken(in)
+}
+
 func (s *UsersvcServer) UpdateUser(ctx context.Context, in *user.UpdateUserReq) (*user.UpdateUserResp, error) {
 	l := logic.NewUpdateUserLogic(ctx, s.svcCtx)
 	return l.UpdateUser(in)

@@ -26,4 +26,5 @@ const (
 	PhoneNotRegistered    uint32 = 200008
 	PasswordError         uint32 = 200009
 	ErrGenerateTokenError uint32 = 200010
+	RefreshTokenError     uint32 = 200011
 )
