@@ -168,6 +168,7 @@ message LoginByPhoneReq {
 }
 message GenerateTokenReq {
   int64 userId = 1;
+  string userName = 2;
 }
 
 message UpdateUserReq {

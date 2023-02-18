@@ -5,6 +5,7 @@ import (
 	"errors"
 	"middle/app/user/rpc/internal/config"
 	"middle/pkg/app"
+	"strconv"
 	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -26,6 +27,8 @@ type JWT struct {
 
 	// 刷新 Token 的最大过期时间
 	MaxRefresh time.Duration
+
+	Config config.Config
 }
 
 // CustomClaims 自定义载荷
@@ -46,10 +49,17 @@ type CustomClaims struct {
 	jwtpkg.RegisteredClaims
 }
 
+type TokenRsp struct {
+	Token               string `json:"token"`
+	ExpireAtTime        int64  `json:"expire_at_time"`
+	RefreshExpireAtTime int64  `json:"refresh_expire_at_time"`
+}
+
 func NewJWT(c config.Config) *JWT {
 	return &JWT{
 		SignKey:    []byte(c.JwtAuth.AccessSecret),
 		MaxRefresh: time.Duration(c.JwtAuth.RefreshExpire) * time.Minute,
+		Config:     c,
 	}
 }
 
@@ -61,7 +71,7 @@ func (jwt *JWT) parseTokenString(tokenString string) (*jwtpkg.Token, error) {
 }
 
 // RefreshToken 更新 Token，用以提供 refresh token 接口
-func (jwt *JWT) RefreshToken(c config.Config, tokenStr string) (string, error) {
+func (jwt *JWT) RefreshToken(tokenStr string) (string, error) {
 	// 2. 调用 jwt 库解析用户传参的 Token
 	token, err := jwt.parseTokenString(tokenStr)
 
@@ -81,7 +91,7 @@ func (jwt *JWT) RefreshToken(c config.Config, tokenStr string) (string, error) {
 	x := app.TimeNowInTimezone().Add(-jwt.MaxRefresh).Unix()
 	if claims.IssuedAt.Time.Unix() > x {
 		// 修改过期时间
-		claims.RegisteredClaims.ExpiresAt = jwtpkg.NewNumericDate(jwt.expireAtTime(c))
+		claims.RegisteredClaims.ExpiresAt = jwtpkg.NewNumericDate(jwt.expireAtTime())
 		return jwt.createToken(*claims)
 	}
 
@@ -89,12 +99,12 @@ func (jwt *JWT) RefreshToken(c config.Config, tokenStr string) (string, error) {
 }
 
 // IssueToken 生成  Token，在登录成功时调用
-func (jwt *JWT) IssueToken(c config.Config, userID string, userName string) string {
-
+func (jwt *JWT) IssueToken(userID int64, userName string) (*TokenRsp, error) {
+	c := jwt.Config
 	// 1. 构造用户 claims 信息(负荷)
-	expireAtTime := jwt.expireAtTime(c)
+	expireAtTime := jwt.expireAtTime()
 	claims := CustomClaims{
-		userID,
+		strconv.FormatInt(userID, 10),
 		userName,
 		expireAtTime.Unix(),
 		jwtpkg.RegisteredClaims{
@@ -109,10 +119,14 @@ func (jwt *JWT) IssueToken(c config.Config, userID string, userName string) stri
 	token, err := jwt.createToken(claims)
 	if err != nil {
 		logx.Error(err)
-		return ""
+		return nil, err
 	}
 
-	return token
+	return &TokenRsp{
+		Token:               token,
+		ExpireAtTime:        expireAtTime.Unix(),
+		RefreshExpireAtTime: expireAtTime.Add(jwt.MaxRefresh).Unix(),
+	}, nil
 }
 
 // createToken 创建 Token，内部使用，外部请调用 IssueToken
@@ -123,9 +137,9 @@ func (jwt *JWT) createToken(claims CustomClaims) (string, error) {
 }
 
 // expireAtTime 过期时间
-func (jwt *JWT) expireAtTime(c config.Config) time.Time {
+func (jwt *JWT) expireAtTime() time.Time {
 	timeNow := app.TimeNowInTimezone()
-
+	c := jwt.Config
 	var expireTime int64
 	// 如果是开发环境，使用 debug 的过期时间
 	if c.Mode == service.DevMode || c.Mode == service.TestMode {

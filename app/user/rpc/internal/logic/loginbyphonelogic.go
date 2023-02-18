@@ -47,12 +47,9 @@ func (l *LoginByPhoneLogic) LoginByPhone(in *user.LoginByPhoneReq) (*user.TokenR
 
 	// 生成token
 	generateTokenLogic := NewGenerateTokenLogic(l.ctx, l.svcCtx)
-	tokenResp, err := generateTokenLogic.GenerateToken(&user.GenerateTokenReq{
+	tokenResp, _ := generateTokenLogic.GenerateToken(&user.GenerateTokenReq{
 		UserId: userModel.User.Id,
 	})
-	if err != nil {
-		return nil, errors.Wrapf(ErrGenerateTokenError, "GenerateToken userId : %d", userModel.User.Id)
-	}
 
 	return &user.TokenResp{
 		AccessToken:  tokenResp.AccessToken,

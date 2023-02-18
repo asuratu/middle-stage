@@ -79,12 +79,9 @@ func (l *RegisterLogic) Register(in *user.RegisterReq) (*user.TokenResp, error) 
 
 	// 生成token
 	generateTokenLogic := NewGenerateTokenLogic(l.ctx, l.svcCtx)
-	tokenResp, err := generateTokenLogic.GenerateToken(&user.GenerateTokenReq{
+	tokenResp, _ := generateTokenLogic.GenerateToken(&user.GenerateTokenReq{
 		UserId: userId,
 	})
-	if err != nil {
-		return nil, errors.Wrapf(ErrGenerateTokenError, "GenerateToken userId : %d", userId)
-	}
 
 	return &user.TokenResp{
 		AccessToken:  tokenResp.AccessToken,
