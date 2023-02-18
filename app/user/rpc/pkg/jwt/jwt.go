@@ -72,10 +72,10 @@ func (jwt *JWT) parseTokenString(tokenString string) (*jwtpkg.Token, error) {
 
 // RefreshToken 更新 Token，用以提供 refresh token 接口
 func (jwt *JWT) RefreshToken(tokenStr string) (*TokenRsp, error) {
-	// 2. 调用 jwt 库解析用户传参的 Token
+	// 1. 调用 jwt 库解析用户传参的 Token
 	token, err := jwt.parseTokenString(tokenStr)
 
-	// 3. 解析出错，未报错证明是合法的 Token（甚至未到过期时间）
+	// 2. 解析出错，未报错证明是合法的 Token（甚至未到过期时间）
 	if err != nil {
 		validationErr, ok := err.(*jwtpkg.ValidationError)
 		// 满足 refresh 的条件：只是单一的报错 ValidationErrorExpired
@@ -84,16 +84,16 @@ func (jwt *JWT) RefreshToken(tokenStr string) (*TokenRsp, error) {
 		}
 	}
 
-	// 4. 解析 CustomClaims 的数据
+	// 3. 解析 CustomClaims 的数据
 	claims := token.Claims.(*CustomClaims)
 
-	// 5. 检查是否过了『最大允许刷新的时间』
+	// 4. 检查是否过了『最大允许刷新的时间』
 	x := app.TimeNowInTimezone().Add(-jwt.MaxRefresh).Unix()
 	if claims.IssuedAt.Time.Unix() > x {
-		// 修改过期时间
+		// 4.1 修改过期时间
 		claims.RegisteredClaims.ExpiresAt = jwtpkg.NewNumericDate(jwt.expireAtTime())
 
-		// 2. 根据 claims 生成token对象
+		// 4.2 根据 claims 生成token对象
 		token, err := jwt.createToken(*claims)
 		if err != nil {
 			logx.Error(err)
@@ -151,6 +151,7 @@ func (jwt *JWT) createToken(claims CustomClaims) (string, error) {
 // expireAtTime 过期时间
 func (jwt *JWT) expireAtTime() time.Time {
 	timeNow := app.TimeNowInTimezone()
+
 	c := jwt.Config
 	var expireTime int64
 	// 如果是开发环境，使用 debug 的过期时间
@@ -160,6 +161,6 @@ func (jwt *JWT) expireAtTime() time.Time {
 		expireTime = c.JwtAuth.AccessExpire
 	}
 
-	expire := time.Duration(expireTime) * time.Minute
+	expire := time.Duration(expireTime) * time.Second
 	return timeNow.Add(expire)
 }
