@@ -9,10 +9,26 @@ info (
 
 //手机号是否存在
 type PhoneExistReq {
-	Phone string `json:"phone" validate:"required,len=11"`
+	Phone string `json:"phone,omitempty" v:"phone @required|size:11#请输入手机号|手机号称长度非法"`
 }
 type PhoneExistReply {
 	Exist bool `json:"exist"`
+}
+
+//使用手机号注册
+type SignupByPhoneReq {
+	Name         string `json:"name"`
+	Phone        string `json:"phone,omitempty" v:"phone @required|size:11#请输入手机号|手机号称长度非法"`
+	Password     string `json:"password"`
+	City         string `json:"city"`
+	Introduction string `json:"introduction"`
+	Avatar       string `json:"avatar"`
+	SmsCode      string `json:"sms_code"`
+}
+type TokenReply {
+	AccessToken  string `json:"access_token"`
+	AccessExpire int64  `json:"access_expire"`
+	RefreshAfter int64  `json:"refresh_after"`
 }
 
 //生成图形验证码
@@ -41,10 +57,14 @@ service user-api {
 	@doc "手机号是否存在"
 	@handler phoneExist
 	post /auth/signup/phone/exist (PhoneExistReq) returns (PhoneExistReply)
+	@doc "使用手机号注册"
+	@handler signupByPhone
+	post /auth/signup/phone/register (SignupByPhoneReq) returns (TokenReply)
 	@doc "生成图形验证码"
 	@handler genCaptcha
 	get /auth/verify-codes/captcha returns (CaptchaReply)
 	@doc "发送短信验证码"
 	@handler sendSmsCode
 	post /auth/verify-codes/sms (SendSmsCodeReq) returns (SendSmsCodeReply)
+	
 }

@@ -26,6 +26,7 @@ func init() {
 	message[PasswordError] = "密码错误"
 	message[ErrGenerateTokenError] = "生成token失败"
 	message[RefreshTokenError] = "刷新token失败"
+	message[VerifyCodeError] = "验证码错误"
 }
 
 func MapErrMsg(errcode uint32) string {

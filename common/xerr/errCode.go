@@ -27,4 +27,5 @@ const (
 	PasswordError         uint32 = 200009
 	ErrGenerateTokenError uint32 = 200010
 	RefreshTokenError     uint32 = 200011
+	VerifyCodeError       uint32 = 200012
 )

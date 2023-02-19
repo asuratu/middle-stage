@@ -31,6 +31,14 @@ GRPC localhost:5001/user.usersvc/SendSmsCode
     "phone": "00021039435"
 }
 
+### 验证短信验证码
+GRPC localhost:5001/user.usersvc/VerifySmsCode
+
+{
+    "phone": "00021039435",
+    "smsCode": "123456"
+}
+
 ### 注册用户
 GRPC localhost:5001/user.usersvc/Register
 

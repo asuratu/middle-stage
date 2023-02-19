@@ -135,3 +135,8 @@ func (s *UsersvcServer) SendSmsCode(ctx context.Context, in *user.SendSmsCodeReq
 	l := logic.NewSendSmsCodeLogic(ctx, s.svcCtx)
 	return l.SendSmsCode(in)
 }
+
+func (s *UsersvcServer) VerifySmsCode(ctx context.Context, in *user.VerifySmsCodeReq) (*user.VerifySmsCodeResp, error) {
+	l := logic.NewVerifySmsCodeLogic(ctx, s.svcCtx)
+	return l.VerifySmsCode(in)
+}

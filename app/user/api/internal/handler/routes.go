@@ -19,6 +19,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: auth.PhoneExistHandler(serverCtx),
 			},
 			{
+				Method:  http.MethodPost,
+				Path:    "/auth/signup/phone/register",
+				Handler: auth.SignupByPhoneHandler(serverCtx),
+			},
+			{
 				Method:  http.MethodGet,
 				Path:    "/auth/verify-codes/captcha",
 				Handler: auth.GenCaptchaHandler(serverCtx),

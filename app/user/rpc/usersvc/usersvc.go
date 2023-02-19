@@ -56,6 +56,8 @@ type (
 	User                 = user.User
 	VerifyCaptchaReq     = user.VerifyCaptchaReq
 	VerifyCaptchaResp    = user.VerifyCaptchaResp
+	VerifySmsCodeReq     = user.VerifySmsCodeReq
+	VerifySmsCodeResp    = user.VerifySmsCodeResp
 
 	Usersvc interface {
 		// -----------------------category-----------------------
@@ -84,6 +86,7 @@ type (
 		SendImageCaptcha(ctx context.Context, in *SendImageCaptchaReq, opts ...grpc.CallOption) (*SendImageCaptchaResp, error)
 		VerifyCaptcha(ctx context.Context, in *VerifyCaptchaReq, opts ...grpc.CallOption) (*VerifyCaptchaResp, error)
 		SendSmsCode(ctx context.Context, in *SendSmsCodeReq, opts ...grpc.CallOption) (*SendSmsCodeResp, error)
+		VerifySmsCode(ctx context.Context, in *VerifySmsCodeReq, opts ...grpc.CallOption) (*VerifySmsCodeResp, error)
 	}
 
 	defaultUsersvc struct {
@@ -209,4 +212,9 @@ func (m *defaultUsersvc) VerifyCaptcha(ctx context.Context, in *VerifyCaptchaReq
 func (m *defaultUsersvc) SendSmsCode(ctx context.Context, in *SendSmsCodeReq, opts ...grpc.CallOption) (*SendSmsCodeResp, error) {
 	client := user.NewUsersvcClient(m.cli.Conn())
 	return client.SendSmsCode(ctx, in, opts...)
+}
+
+func (m *defaultUsersvc) VerifySmsCode(ctx context.Context, in *VerifySmsCodeReq, opts ...grpc.CallOption) (*VerifySmsCodeResp, error) {
+	client := user.NewUsersvcClient(m.cli.Conn())
+	return client.VerifySmsCode(ctx, in, opts...)
 }

@@ -249,6 +249,13 @@ message VerifyCaptchaResp {
   bool isOk = 1;
 }
 
+message VerifySmsCodeReq {
+  string phone = 1;
+  string smsCode = 2;
+}
+message VerifySmsCodeResp {
+  bool isOk = 1;
+}
 
 // ------------------------------------
 // Rpc Func
@@ -283,4 +290,6 @@ service usersvc{
     rpc SendImageCaptcha(SendImageCaptchaReq) returns (SendImageCaptchaResp);
     rpc VerifyCaptcha(VerifyCaptchaReq) returns (VerifyCaptchaResp);
     rpc SendSmsCode(SendSmsCodeReq) returns (SendSmsCodeResp);
+    rpc VerifySmsCode(VerifySmsCodeReq) returns (VerifySmsCodeResp);
+
 }
