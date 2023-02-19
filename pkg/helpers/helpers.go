@@ -87,3 +87,8 @@ func StringToNullString(s string) sql.NullString {
 func RandomMobile() string {
 	return fmt.Sprintf("1%s", RandomNumber(10))
 }
+
+// CostTime 计算耗时, 单位为毫秒
+func CostTime(start time.Time) int64 {
+	return time.Since(start).Milliseconds()
+}

@@ -43,9 +43,9 @@ GRPC localhost:5001/user.usersvc/VerifySmsCode
 GRPC localhost:5001/user.usersvc/Register
 
 {
-  "name": "",
+  "name": "test2183",
   "email": "",
-  "phone": "00021039435",
+  "phone": "00021039414",
   "password": "123456",
   "city": "苏州",
   "introduction": "this is a test user",
@@ -56,7 +56,7 @@ GRPC localhost:5001/user.usersvc/Register
 GRPC localhost:5001/user.usersvc/LoginByPhone
 
 {
-  "phone": "00021039435",
+  "phone": "00021039410",
   "password": "123456"
 }
 

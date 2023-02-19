@@ -2,10 +2,7 @@ package model
 
 import (
 	"context"
-	"fmt"
 	"time"
-
-	"github.com/zeromicro/go-zero/core/stores/sqlc"
 
 	"middle/common/globalkey"
 	"middle/common/xerr"
@@ -16,10 +13,7 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
-var (
-	_                  UserModel = (*customUserModel)(nil)
-	cacheMsPhonePrefix           = "cache:msUser:user:phone:"
-)
+var _ UserModel = (*customUserModel)(nil)
 
 type (
 	// UserModel is an interface to be customized, add more methods here,
@@ -38,8 +32,6 @@ type (
 		FindPageListByPage(ctx context.Context, rowBuilder squirrel.SelectBuilder, page, pageSize int64, orderBy string) ([]*User, error)
 		FindPageListByIdDESC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMinId, pageSize int64) ([]*User, error)
 		FindPageListByIdASC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMaxId, pageSize int64) ([]*User, error)
-		// FindOneByPhone ********** 请在这里添加自定义方法 **********
-		FindOneByPhone(ctx context.Context, phone string) (*User, error)
 	}
 
 	customUserModel struct {
@@ -230,22 +222,4 @@ func (m *defaultUserModel) CountBuilder(field string) squirrel.SelectBuilder {
 // SumBuilder export logic
 func (m *defaultUserModel) SumBuilder(field string) squirrel.SelectBuilder {
 	return squirrel.Select("IFNULL(SUM(" + field + "),0)").From(m.table)
-}
-
-// FindOneByPhone 只查询未被软删除的数据
-func (m *defaultUserModel) FindOneByPhone(ctx context.Context, phone string) (*User, error) {
-	msUserPhoneKey := fmt.Sprintf("%s%v", cacheMsPhonePrefix, phone)
-	var resp User
-	err := m.QueryRowCtx(ctx, &resp, msUserPhoneKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
-		query := fmt.Sprintf("select %s from %s where `phone` = ? and del_state = ? limit 1", userRows, m.table)
-		return conn.QueryRowCtx(ctx, v, query, phone, globalkey.DelStateNo)
-	})
-	switch err {
-	case nil:
-		return &resp, nil
-	case sqlc.ErrNotFound:
-		return nil, ErrNotFound
-	default:
-		return nil, err
-	}
 }

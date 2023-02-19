@@ -10,7 +10,7 @@ tables=$2
 # 表生成的genmodel目录
 modeldir=../../../app/$1/rpc/model
 # 自定义模板目录
-homedir=../../goctl
+homedir=../../goctl/1.4.3
 # 是否使用缓存
 isCache=$3
 

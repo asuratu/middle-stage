@@ -49,8 +49,8 @@ type (
 		Email        sql.NullString `db:"email"`
 		Phone        sql.NullString `db:"phone"`
 		Password     sql.NullString `db:"password"`
-		CreatedAt    time.Time      `db:"created_at"`
-		UpdatedAt    time.Time      `db:"updated_at"`
+		CreatedAt    sql.NullTime   `db:"created_at"`
+		UpdatedAt    sql.NullTime   `db:"updated_at"`
 		City         sql.NullString `db:"city"`
 		Introduction sql.NullString `db:"introduction"`
 		Avatar       sql.NullString `db:"avatar"`
