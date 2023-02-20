@@ -19,11 +19,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: auth.PhoneExistHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodPost,
-				Path:    "/auth/signup/phone/register",
-				Handler: auth.SignupByPhoneHandler(serverCtx),
-			},
-			{
 				Method:  http.MethodGet,
 				Path:    "/auth/verify-codes/captcha",
 				Handler: auth.GenCaptchaHandler(serverCtx),
@@ -32,6 +27,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/auth/verify-codes/sms",
 				Handler: auth.SendSmsCodeHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/auth/signup/phone/register",
+				Handler: auth.SignupByPhoneHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/auth/login/phone",
+				Handler: auth.LoginByPhoneHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/userapi/v1"),

@@ -55,7 +55,6 @@ func (l *SignupByPhoneLogic) SignupByPhone(req *types.SignupByPhoneReq) (resp *t
 	if err != nil {
 		return nil, err
 	}
-	logx.Infof("-------------registerRsp: %+v", registerRsp)
 
 	// 3. 返回token
 	resp = &types.TokenReply{}
@@ -63,6 +62,5 @@ func (l *SignupByPhoneLogic) SignupByPhone(req *types.SignupByPhoneReq) (resp *t
 	if err != nil {
 		return nil, err
 	}
-	logx.Infof("-------------resp: %+v", resp)
 	return
 }

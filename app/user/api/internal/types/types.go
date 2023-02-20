@@ -25,6 +25,13 @@ type TokenReply struct {
 	RefreshAfter int64  `json:"refresh_after"`
 }
 
+type LoginByPhoneReq struct {
+	Phone         string `json:"phone,omitempty" v:"phone @required|size:11#请输入手机号|手机号称长度非法"`
+	Password      string `json:"password"`
+	CaptchaId     string `json:"captcha_id,omitempty"`
+	CaptchaAnswer string `json:"captcha_answer,omitempty"`
+}
+
 type CaptchaReply struct {
 	CaptchaId    string `json:"captchaId"`
 	CaptchaImage string `json:"captchaImage"`

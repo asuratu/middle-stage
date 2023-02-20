@@ -31,6 +31,14 @@ type TokenReply {
 	RefreshAfter int64  `json:"refresh_after"`
 }
 
+// 使用手机号密码登录
+type LoginByPhoneReq {
+	Phone         string `json:"phone,omitempty" v:"phone @required|size:11#请输入手机号|手机号称长度非法"`
+	Password      string `json:"password"`
+	CaptchaId     string `json:"captcha_id,omitempty"`
+	CaptchaAnswer string `json:"captcha_answer,omitempty"`
+}
+
 //生成图形验证码
 type CaptchaReply {
 	CaptchaId    string `json:"captchaId"`
@@ -57,14 +65,16 @@ service user-api {
 	@doc "手机号是否存在"
 	@handler phoneExist
 	post /auth/signup/phone/exist (PhoneExistReq) returns (PhoneExistReply)
-	@doc "使用手机号注册"
-	@handler signupByPhone
-	post /auth/signup/phone/register (SignupByPhoneReq) returns (TokenReply)
 	@doc "生成图形验证码"
 	@handler genCaptcha
 	get /auth/verify-codes/captcha returns (CaptchaReply)
 	@doc "发送短信验证码"
 	@handler sendSmsCode
 	post /auth/verify-codes/sms (SendSmsCodeReq) returns (SendSmsCodeReply)
-	
+	@doc "使用手机号注册"
+	@handler signupByPhone
+	post /auth/signup/phone/register (SignupByPhoneReq) returns (TokenReply)
+	@doc "使用手机号密码登录"
+	@handler loginByPhone
+	post /auth/login/phone (LoginByPhoneReq) returns (TokenReply)
 }
