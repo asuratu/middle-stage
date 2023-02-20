@@ -206,6 +206,22 @@ message GetUserByMobileReq {
   string phone = 1; //mobile
 }
 
+message GetUserListReq {
+  int64 page = 1;
+  int64 pageSize = 2;
+  string sort = 3;
+  string order = 4;
+}
+message GetUserListResp {
+  repeated SimpleUser list = 1;
+}
+message SimpleUser {
+  int64 id = 1; //id
+  string name = 2; //name
+  string city = 3; //city
+  string avatar = 4; //avatar
+}
+
 message GetUserResp {
   User user = 1; //user
 }
@@ -285,6 +301,7 @@ service usersvc{
     rpc GetUserById(GetUserByIdReq) returns (GetUserResp);
     rpc GetUserByMobile(GetUserByMobileReq) returns (GetUserResp);
     rpc SearchUser(SearchUserReq) returns (SearchUserResp);
+    rpc GetUserList(GetUserListReq) returns (GetUserListResp);
 
     //-----------------------auth-----------------------
     rpc SendImageCaptcha(SendImageCaptchaReq) returns (SendImageCaptchaResp);

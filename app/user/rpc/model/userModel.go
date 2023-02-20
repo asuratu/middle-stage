@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/zeromicro/go-zero/core/stores/sqlc"
-
 	"middle/common/globalkey"
 	"middle/common/xerr"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/stores/cache"
+	"github.com/zeromicro/go-zero/core/stores/sqlc"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 

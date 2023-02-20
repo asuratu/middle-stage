@@ -67,7 +67,15 @@ GRPC localhost:5001/user.usersvc/RefreshToken
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTIiLCJ1c2VyX25hbWUiOiIiLCJleHBpcmVfdGltZSI6MTY4MTg4MDQ1MSwiaXNzIjoidXNlcnN2Yy5ycGMiLCJleHAiOjE2ODE4ODA0NTEsIm5iZiI6MTY3NjY5NjQ1MSwiaWF0IjoxNjc2Njk2NDUxfQ.MmzNEx4dwixKhqR-YqPs1yCaW38Lhah2mpHXtKPQlBg"
 }
 
+### 获取用户列表
+GRPC localhost:5001/user.usersvc/GetUserList
 
+{
+  "page": 1,
+  "pageSize": 2,
+  "sort": "id",
+  "order": "desc"
+}
 
 
 
