@@ -55,3 +55,7 @@ type UserInfoReply struct {
 	Introduction string `json:"introduction"`
 	Avatar       string `json:"avatar"`
 }
+
+type UserInfoByIdReq struct {
+	Id int64 `path:"id"`
+}

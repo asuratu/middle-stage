@@ -4,7 +4,10 @@ import (
 	"context"
 	"middle/app/user/api/internal/svc"
 	"middle/app/user/api/internal/types"
+	"middle/app/user/rpc/user"
 	"middle/common/ctxdata"
+
+	"github.com/jinzhu/copier"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,15 +27,24 @@ func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoReply, err error) {
-	logx.Infof("GetUserInfo")
 	// 1. 获取用户id
 	uid := ctxdata.GetUidFromCtx(l.ctx)
 	logx.Infof("uid: %d", uid)
-	// 2. 获取用户信息
-	userName := ctxdata.GetUserNameFromCtx(l.ctx)
-	logx.Infof("userName: %s", userName)
+
+	// 2. 返回用户信息
+	userRsp, err := l.svcCtx.UserRpc.GetUserById(l.ctx, &user.GetUserByIdReq{
+		Id: uid,
+	})
+	if err != nil {
+		return nil, err
+	}
 
 	// 3. 返回用户信息
+	resp = &types.UserInfoReply{}
+	err = copier.Copy(resp, userRsp.User)
+	if err != nil {
+		return nil, err
+	}
 
 	return
 }

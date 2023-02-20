@@ -64,6 +64,10 @@ type UserInfoReply {
 	Avatar       string `json:"avatar"`
 }
 
+type UserInfoByIdReq {
+	Id int64 `path:"id"`
+}
+
 //============================> user v1 <============================
 //no need login
 @server(
@@ -88,6 +92,16 @@ service user-api {
 	post /auth/login/phone (LoginByPhoneReq) returns (TokenReply)
 }
 
+@server(
+	prefix: userapi/v1
+	group: user
+)
+service user-api {
+	@doc "根据id获取用户详情"
+	@handler getUserInfoById
+	get /users/:id (UserInfoByIdReq) returns (UserInfoReply)
+}
+
 //need login
 @server(
 	prefix: userapi/v1
@@ -97,5 +111,5 @@ service user-api {
 service user-api {
 	@doc "获取当前用户详情"
 	@handler getUserInfo
-	get /user returns (UserInfoReply)
+	get /users returns (UserInfoReply)
 }

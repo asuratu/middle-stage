@@ -34,11 +34,11 @@ func (l *GetUserByIdLogic) GetUserById(in *user.GetUserByIdReq) (*user.GetUserRe
 	if err != nil && err != model.ErrNotFound {
 		return nil, errors.Wrapf(xerr.NewErrMsg("get user record fail"), "get user record fail FindOne err : %v , Id:%d", err, in.Id)
 	}
-
 	resp := &user.User{}
-	if userModel != nil {
-		_ = copier.Copy(&resp, userModel)
+	if userModel == nil {
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.UserNotFound), "The user does not exist : %v , Id:%d", err, in.Id)
 	}
+	_ = copier.Copy(&resp, userModel)
 
 	return &user.GetUserResp{
 		User: resp,
