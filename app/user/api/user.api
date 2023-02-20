@@ -63,9 +63,26 @@ type UserInfoReply {
 	Introduction string `json:"introduction"`
 	Avatar       string `json:"avatar"`
 }
+type SimpleUserInfoReply {
+	Id     int64  `json:"id"`
+	Name   string `json:"name"`
+	City   string `json:"city"`
+	Avatar string `json:"avatar"`
+}
 
 type UserInfoByIdReq {
 	Id int64 `path:"id"`
+}
+
+// GET 方法的 query 参数
+type UserListReq {
+	LastId   int64  `form:"last_id"`
+	PageSize int64  `form:"page_size"`
+	Sort     string `form:"sort"`
+	Order    string `form:"order" v:"order @in:desc,asc#排序只允许填写desc或asc"`
+}
+type UserListReply {
+	Users []*SimpleUserInfoReply `json:"users"`
 }
 
 //============================> user v1 <============================
@@ -111,5 +128,9 @@ service user-api {
 service user-api {
 	@doc "获取当前用户详情"
 	@handler getUserInfo
-	get /users returns (UserInfoReply)
+	get /users/me returns (UserInfoReply)
+	@doc "分页获取用户列表"
+	@handler getUserList
+	get /users (UserListReq) returns (UserListReply)
+	
 }

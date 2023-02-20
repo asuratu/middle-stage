@@ -56,6 +56,24 @@ type UserInfoReply struct {
 	Avatar       string `json:"avatar"`
 }
 
+type SimpleUserInfoReply struct {
+	Id     int64  `json:"id"`
+	Name   string `json:"name"`
+	City   string `json:"city"`
+	Avatar string `json:"avatar"`
+}
+
 type UserInfoByIdReq struct {
 	Id int64 `path:"id"`
+}
+
+type UserListReq struct {
+	LastId   int64  `form:"last_id"`
+	PageSize int64  `form:"page_size"`
+	Sort     string `form:"sort"`
+	Order    string `form:"order" v:"order @in:desc,asc#排序只允许填写desc或asc"`
+}
+
+type UserListReply struct {
+	Users []*SimpleUserInfoReply `json:"users"`
 }
