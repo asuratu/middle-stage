@@ -46,3 +46,12 @@ type SendSmsCodeReq struct {
 type SendSmsCodeReply struct {
 	Success bool `json:"success"`
 }
+
+type UserInfoReply struct {
+	Id           int64  `json:"id"`
+	Name         string `json:"name"`
+	Phone        string `json:"phone"`
+	City         string `json:"city"`
+	Introduction string `json:"introduction"`
+	Avatar       string `json:"avatar"`
+}

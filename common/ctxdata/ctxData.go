@@ -7,8 +7,8 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-// CtxKeyJwtUserId get uid from ctx
-var CtxKeyJwtUserId = "jwtUserId"
+var CtxKeyJwtUserId = "user_id"
+var CtxKeyJwtUserName = "user_name"
 
 func GetUidFromCtx(ctx context.Context) int64 {
 	var uid int64
@@ -20,4 +20,12 @@ func GetUidFromCtx(ctx context.Context) int64 {
 		}
 	}
 	return uid
+}
+
+func GetUserNameFromCtx(ctx context.Context) string {
+	var userName string
+	if jwtUserName, ok := ctx.Value(CtxKeyJwtUserName).(string); ok {
+		userName = jwtUserName
+	}
+	return userName
 }

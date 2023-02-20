@@ -55,6 +55,15 @@ type SendSmsCodeReply {
 	Success bool `json:"success"`
 }
 
+type UserInfoReply {
+	Id           int64  `json:"id"`
+	Name         string `json:"name"`
+	Phone        string `json:"phone"`
+	City         string `json:"city"`
+	Introduction string `json:"introduction"`
+	Avatar       string `json:"avatar"`
+}
+
 //============================> user v1 <============================
 //no need login
 @server(
@@ -77,4 +86,16 @@ service user-api {
 	@doc "使用手机号密码登录"
 	@handler loginByPhone
 	post /auth/login/phone (LoginByPhoneReq) returns (TokenReply)
+}
+
+//need login
+@server(
+	prefix: userapi/v1
+	group: user
+	jwt: Auth
+)
+service user-api {
+	@doc "获取当前用户详情"
+	@handler getUserInfo
+	get /user returns (UserInfoReply)
 }

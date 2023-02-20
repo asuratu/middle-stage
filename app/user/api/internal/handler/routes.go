@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	auth "middle/app/user/api/internal/handler/auth"
+	user "middle/app/user/api/internal/handler/user"
 	"middle/app/user/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -39,6 +40,18 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: auth.LoginByPhoneHandler(serverCtx),
 			},
 		},
+		rest.WithPrefix("/userapi/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/user",
+				Handler: user.GetUserInfoHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/userapi/v1"),
 	)
 }

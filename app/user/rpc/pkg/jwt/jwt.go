@@ -3,16 +3,14 @@ package jwt
 
 import (
 	"errors"
-	"middle/app/user/rpc/internal/config"
-	"middle/pkg/app"
-	"strconv"
 	"time"
 
-	"github.com/zeromicro/go-zero/core/logx"
-
-	"github.com/zeromicro/go-zero/core/service"
+	"middle/app/user/rpc/internal/config"
+	"middle/pkg/app"
 
 	jwtpkg "github.com/golang-jwt/jwt/v4"
+	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/service"
 )
 
 var (
@@ -33,7 +31,7 @@ type JWT struct {
 
 // CustomClaims 自定义载荷
 type CustomClaims struct {
-	UserID       string `json:"user_id"`
+	UserID       int64  `json:"user_id"`
 	UserName     string `json:"user_name"`
 	ExpireAtTime int64  `json:"expire_time"`
 
@@ -116,7 +114,7 @@ func (jwt *JWT) IssueToken(userID int64, userName string) (*TokenRsp, error) {
 	// 1. 构造用户 claims 信息(负荷)
 	expireAtTime := jwt.expireAtTime()
 	claims := CustomClaims{
-		strconv.FormatInt(userID, 10),
+		userID,
 		userName,
 		expireAtTime.Unix(),
 		jwtpkg.RegisteredClaims{
@@ -126,6 +124,7 @@ func (jwt *JWT) IssueToken(userID int64, userName string) (*TokenRsp, error) {
 			Issuer:    c.Name,                                         // 签名颁发者
 		},
 	}
+	logx.Infof("------------ claims: %+v", claims)
 
 	// 2. 根据 claims 生成token对象
 	token, err := jwt.createToken(claims)
