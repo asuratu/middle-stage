@@ -2,6 +2,9 @@ package user
 
 import (
 	"context"
+	"middle/app/user/rpc/user"
+
+	"github.com/jinzhu/copier"
 
 	"middle/app/user/api/internal/svc"
 	"middle/app/user/api/internal/types"
@@ -24,6 +27,17 @@ func NewGetUserListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserListLogic) GetUserList(req *types.UserListReq) (resp *types.UserListReply, err error) {
-
+	userListReq := &user.GetUserListReq{}
+	_ = copier.Copy(userListReq, req)
+	userListRsp, err := l.svcCtx.UserRpc.GetUserList(l.ctx, userListReq)
+	if err != nil {
+		return nil, err
+	}
+	resp = &types.UserListReply{}
+	for _, u := range userListRsp.List {
+		simpleUser := &types.SimpleUserInfoReply{}
+		_ = copier.Copy(simpleUser, u)
+		resp.Users = append(resp.Users, simpleUser)
+	}
 	return
 }

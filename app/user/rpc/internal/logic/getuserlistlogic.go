@@ -7,6 +7,8 @@ import (
 	"middle/app/user/rpc/user"
 	"middle/common/xerr"
 
+	"github.com/jinzhu/copier"
+
 	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -37,21 +39,7 @@ func (l *GetUserListLogic) GetUserList(in *user.GetUserListReq) (*user.GetUserLi
 
 	resp := &user.GetUserListResp{}
 	if list != nil {
-		//_ = copier.CopyWithOption(&resp.List, list, copier.Option{IgnoreEmpty: false, DeepCopy: true})
-		for _, v := range list {
-			logx.Info("----------- v : %+v", *v)
-			simpleUser := &user.SimpleUser{}
-			simpleUser.Id = v.Id
-			simpleUser.Name = v.Name
-			simpleUser.City = ""
-			simpleUser.Avatar = ""
-
-			logx.Infof("----------- v.City : %+v", v.City.String)
-			logx.Infof("----------- v.City.String : %+v", v.City.String)
-			logx.Infof("----------- simpleUser : %+v", simpleUser.City)
-
-			resp.List = append(resp.List, simpleUser)
-		}
+		_ = copier.Copy(&resp.List, list)
 	}
 
 	return resp, nil

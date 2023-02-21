@@ -12,6 +12,7 @@ const (
 	DbError                   uint32 = 100005
 	DbUpdateAffectedZeroError uint32 = 100006
 	ParamValidateError        uint32 = 100007
+	PermissionDenied          uint32 = 100008
 )
 
 // 用户模块

@@ -77,6 +77,17 @@ GRPC localhost:5001/user.usersvc/GetUserList
   "order": "desc"
 }
 
+### 更新用户信息
+GRPC localhost:5001/user.usersvc/UpdateUser
+
+{
+  "id": 13,
+  "name": "张三",
+  "city": "江苏省苏州市",
+  "introduction": "this is a test user introduction",
+  "avatar": "http://img-shanghai.huayuanji.com/uploads/2022/04/15/aff67eb4653e3c077bc4418fdb4af393.jpg"
+}
+
 
 
 

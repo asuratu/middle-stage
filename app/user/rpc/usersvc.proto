@@ -178,11 +178,6 @@ message RefreshTokenReq {
 message UpdateUserReq {
   int64 id = 1; //id
   string name = 2; //name
-  string email = 3; //email
-  string phone = 4; //phone
-  string password = 5; //password
-  int64 createdAt = 6; //createdAt
-  int64 updatedAt = 7; //updatedAt
   string city = 8; //city
   string introduction = 9; //introduction
   string avatar = 10; //avatar
@@ -242,7 +237,7 @@ message SearchUserReq {
 }
 
 message SearchUserResp {
-  repeated User user = 1; //user
+  repeated SimpleUser user = 1; //user
 }
 
 //--------------------------------auth--------------------------------

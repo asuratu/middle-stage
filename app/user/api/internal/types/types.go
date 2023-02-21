@@ -68,7 +68,7 @@ type UserInfoByIdReq struct {
 }
 
 type UserListReq struct {
-	LastId   int64  `form:"last_id"`
+	Page     int64  `form:"page"`
 	PageSize int64  `form:"page_size"`
 	Sort     string `form:"sort"`
 	Order    string `form:"order" v:"order @in:desc,asc#排序只允许填写desc或asc"`
