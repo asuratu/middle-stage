@@ -2,7 +2,7 @@
 GRPC localhost:5001/user.usersvc/GetUserById
 
 {
-  "id": 1
+  "id": 2
 }
 
 ### 检查手机号是否已注册

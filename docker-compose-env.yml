@@ -1,10 +1,11 @@
-version: '3'
+version: '3.7'
 
 ######## 项目依赖的环境，启动项目之前要先启动此环境 #######
 ######## The environment that the project depends on, starting this environment before starting the project #######
 
 services:
   # elasticsearch
+  # 将容器内的文件复制到挂载目录: docker cp ccdc1113c376:/usr/share/elasticsearch/ ./data/elasticsearch/
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
     container_name: es_stage
