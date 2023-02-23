@@ -48,8 +48,9 @@ services:
     image: tantobocah/asynqmon:latest # for mac m1
     container_name: asynqmon_stage
     ports:
-      - "8980:8080"
+      - "8980:8180"
     command:
+      - '--port=8180'
       - '--redis-addr=redis:6379'
       - '--redis-password=G62m50oigInC30sf'
     restart: always
@@ -100,6 +101,37 @@ services:
       - ./data/redis/data:/data:rw
     command: "redis-server --requirepass G62m50oigInC30sf  --appendonly yes"
     privileged: true
+    restart: always
+    networks:
+      - middle_net
+
+  etcd:
+#    image: bitnami/etcd
+    image: pachyderm/etcd:v3.5.2-arm64 # for mac m1
+    container_name: etcd_stage
+    environment:
+      TZ: Asia/Shanghai
+      ALLOW_NONE_AUTHENTICATION: yes
+      ETCD_ADVERTISE_CLIENT_URLS: http://0.0.0.0:2379
+      ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+    ports: # 设置端口映射
+      - "2379:2379"
+      - "2380:2380"
+    restart: always
+    networks:
+      - middle_net
+
+  # 启动之后修改地址为 etcd:2379
+  etcd-manage:
+#    image: evildecay/etcdkeeper
+    image: lykart/etcdkeeper:latest    # for mac m1
+    container_name: etcd_manage_stage
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - "8280:8080"
+    depends_on: # 依赖容器
+      - etcd                                          # 在 etcd 服务容器启动后启动
     restart: always
     networks:
       - middle_net
