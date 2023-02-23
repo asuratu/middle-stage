@@ -2,16 +2,14 @@ package auth
 
 import (
 	"context"
+
+	"middle/app/user/api/internal/svc"
+	"middle/app/user/api/internal/types"
 	"middle/app/user/rpc/user"
 	"middle/common/xerr"
 
 	"github.com/jinzhu/copier"
-
 	"github.com/pkg/errors"
-
-	"middle/app/user/api/internal/svc"
-	"middle/app/user/api/internal/types"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 

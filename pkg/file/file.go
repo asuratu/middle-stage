@@ -3,20 +3,20 @@ package file
 
 import (
 	"fmt"
-	"github.com/disintegration/imaging"
-	"github.com/gin-gonic/gin"
-	"io/ioutil"
 	"middle/pkg/app"
 	"middle/pkg/helpers"
 	"mime/multipart"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/disintegration/imaging"
+	"github.com/gin-gonic/gin"
 )
 
 // Put 将数据存入文件
 func Put(data []byte, to string) error {
-	err := ioutil.WriteFile(to, data, 0644)
+	err := os.WriteFile(to, data, 0644)
 	if err != nil {
 		return err
 	}
