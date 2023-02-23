@@ -11,6 +11,12 @@ api:
 rpc:
 	@cd $(dir)/app/$(m)/rpc && $(air) $(m).go -f etc/$(m).yaml
 
+job:
+	@cd $(dir)/app/mqueue/cmd/job && $(air) mqueue.go -f etc/mqueue.yaml
+
+scheduler:
+	@cd $(dir)/app/mqueue/cmd/scheduler && $(air) scheduler.go -f etc/scheduler.yaml
+
 sql2pb:
 	@$(sql2pb) -go_package ./pb -host localhost -package user -password PXDN93VRKUm8TeE7 -port 3310 -schema ms_user -service_name user -user root > user.proto
 
