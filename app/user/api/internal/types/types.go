@@ -77,3 +77,13 @@ type UserListReq struct {
 type UserListReply struct {
 	Users []*SimpleUserInfoReply `json:"users"`
 }
+
+type UpdateUserReq struct {
+	Name         string `json:"name"`
+	City         string `json:"city"`
+	Introduction string `json:"introduction"`
+	Avatar       string `json:"avatar"`
+}
+
+type UpdateUserReply struct {
+}

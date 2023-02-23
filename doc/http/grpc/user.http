@@ -81,7 +81,7 @@ GRPC localhost:5001/user.usersvc/GetUserList
 GRPC localhost:5001/user.usersvc/UpdateUser
 
 {
-  "id": 13,
+  "id": 10,
   "name": "张三",
   "city": "江苏省苏州市",
   "introduction": "this is a test user introduction",

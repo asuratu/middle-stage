@@ -85,6 +85,14 @@ type UserListReply {
 	Users []*SimpleUserInfoReply `json:"users"`
 }
 
+type UpdateUserReq {
+	Name         string `json:"name"`
+	City         string `json:"city"`
+	Introduction string `json:"introduction"`
+	Avatar       string `json:"avatar"`
+}
+type UpdateUserReply {}
+
 //============================> user v1 <============================
 //no need login
 @server(
@@ -132,5 +140,7 @@ service user-api {
 	@doc "分页获取用户列表"
 	@handler getUserList
 	get /users (UserListReq) returns (UserListReply)
-	
+	@doc "更新用户信息"
+	@handler updateUserInfo
+	put /users (UpdateUserReq) returns (UpdateUserReply)
 }

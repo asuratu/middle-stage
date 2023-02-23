@@ -66,6 +66,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/users",
 				Handler: user.GetUserListHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPut,
+				Path:    "/users",
+				Handler: user.UpdateUserInfoHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/userapi/v1"),
