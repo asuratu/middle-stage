@@ -13,7 +13,9 @@ func (l *MqueueScheduler) settleRecordScheduler() {
 
 	task := asynq.NewTask(jobtype.ScheduleSettleRecord, nil)
 	// every one minute exec
-	entryID, err := l.svcCtx.Scheduler.Register("*/1 * * * *", task)
+	//entryID, err := l.svcCtx.Scheduler.Register("*/1 * * * *", task)
+	// every 3 seconds exec
+	entryID, err := l.svcCtx.Scheduler.Register("@every 3s", task)
 	if err != nil {
 		logx.WithContext(l.ctx).Errorf("!!!MqueueSchedulerErr!!! ====> 【settleRecordScheduler】 registered  err:%+v , task:%+v", err, task)
 	}

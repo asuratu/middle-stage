@@ -18,8 +18,10 @@ func newScheduler(c config.Config) *asynq.Scheduler {
 			Password: c.Redis.Pass,
 		}, &asynq.SchedulerOpts{
 			Location: location,
-			EnqueueErrorHandler: func(task *asynq.Task, opts []asynq.Option, err error) {
-				fmt.Printf("Scheduler EnqueueErrorHandler <<<<<<<===>>>>> err : %+v , task : %+v", err, task)
+			PostEnqueueFunc: func(info *asynq.TaskInfo, err error) {
+				if err != nil {
+					fmt.Printf("Scheduler PostEnqueueFunc <<<<<<<===>>>>> err : %+v , info : %+v", err, info)
+				}
 			},
 		})
 }
