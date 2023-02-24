@@ -4,6 +4,8 @@ import (
 	"errors"
 	"middle/app/user/rpc/model"
 
+	"github.com/hibiken/asynq"
+
 	"middle/app/user/rpc/internal/config"
 
 	"github.com/zeromicro/go-zero/core/stores/cache"
@@ -17,7 +19,8 @@ type ServiceContext struct {
 	Cache  cache.Cache
 	Redis  *redis.Redis
 
-	UserModel model.UserModel
+	AsynqClient *asynq.Client
+	UserModel   model.UserModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -33,9 +36,10 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	sqlConn := sqlx.NewMysql(c.DB.DataSource)
 
 	return &ServiceContext{
-		Config:    c,
-		UserModel: model.NewUserModel(sqlConn, c.Cache),
-		Cache:     ca,
-		Redis:     rs,
+		Config:      c,
+		UserModel:   model.NewUserModel(sqlConn, c.Cache),
+		Cache:       ca,
+		Redis:       rs,
+		AsynqClient: newAsynqClient(c),
 	}
 }

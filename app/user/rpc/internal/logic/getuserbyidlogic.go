@@ -2,8 +2,12 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
+	"middle/app/mqueue/cmd/job/jobtype"
 	"middle/app/user/rpc/model"
 	"middle/common/xerr"
+
+	"github.com/hibiken/asynq"
 
 	"github.com/jinzhu/copier"
 
@@ -40,6 +44,18 @@ func (l *GetUserByIdLogic) GetUserById(in *user.GetUserByIdReq) (*user.GetUserRe
 	}
 	_ = copier.Copy(&resp, userModel)
 
+	// asynq 队列
+	payload, err := json.Marshal(jobtype.TestQueuePayload{
+		Name: userModel.Name,
+		Time: userModel.CreatedAt,
+	})
+	if err != nil {
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.JsonMarshalError), "json marshal fail : %v ", err)
+	}
+	_, err = l.svcCtx.AsynqClient.Enqueue(asynq.NewTask(jobtype.JobTestQueue, payload), asynq.Queue("critical"))
+	if err != nil {
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.AsynqEnqueueError), "asynq enqueue fail : %v ", err)
+	}
 	return &user.GetUserResp{
 		User: resp,
 	}, nil

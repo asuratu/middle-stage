@@ -13,6 +13,8 @@ const (
 	DbUpdateAffectedZeroError uint32 = 100006
 	ParamValidateError        uint32 = 100007
 	PermissionDenied          uint32 = 100008
+	JsonMarshalError          uint32 = 100009
+	AsynqEnqueueError         uint32 = 100010
 )
 
 // 用户模块

@@ -25,6 +25,9 @@ func (l *CronJob) Register() *asynq.ServeMux {
 
 	mux := asynq.NewServeMux()
 
+	//test queue job
+	mux.Handle(jobtype.JobTestQueue, NewTestQueueHandler(l.svcCtx))
+
 	//scheduler job
 	mux.Handle(jobtype.ScheduleSettleRecord, NewSettleRecordHandler(l.svcCtx))
 

@@ -14,6 +14,8 @@ func init() {
 	message[DbUpdateAffectedZeroError] = "更新数据影响行数为0"
 	message[ParamValidateError] = "参数校验失败"
 	message[PermissionDenied] = "权限不足"
+	message[JsonMarshalError] = "json marshal fail"
+	message[AsynqEnqueueError] = "异步任务入队失败"
 
 	// 用户模块
 	message[UserNotFound] = "用户不存在"
