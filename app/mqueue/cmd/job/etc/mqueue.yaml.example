@@ -5,7 +5,7 @@ Mode: dev
 
 Log:
   ServiceName: mqueue-job
-  Level: debug
+  Level: error
 
 Redis:
   Host: localhost:36379
