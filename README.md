@@ -35,3 +35,51 @@
     - [ ] 获取用户信息
 - [ ] 搜索
     - [ ] 基于elasticsearch
+
+
+### 需要注意的是 elasticsearch 第一次用的时候，需要初始化密码 执行下面的操作
+```bash
+➜ ~ docker exec -it es /bin/bash
+[root@04b37b58f104 elasticsearch]# sh /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto
+Initiating the setup of passwords for reserved users elastic,apm_system,kibana,kibana_system,logstash_system,beats_system,remote_monitoring_user.
+The passwords will be randomly generated and printed to the console.
+Please confirm that you would like to continue [y/N]y
+
+
+Changed password for user apm_system
+PASSWORD apm_system = 00UcLVZKBIbmVq2LDeNn
+
+Changed password for user kibana_system
+PASSWORD kibana_system = LUyQFglN7NorJ5C3aORq
+
+Changed password for user kibana
+PASSWORD kibana = LUyQFglN7NorJ5C3aORq
+
+Changed password for user logstash_system
+PASSWORD logstash_system = NvtUm3yA6sYjcXSF7Dyj
+
+Changed password for user beats_system
+PASSWORD beats_system = cCgJnQc7yP68dfSXsHLH
+
+Changed password for user remote_monitoring_user
+PASSWORD remote_monitoring_user = 2you6KdlsIsfS4M2CKd5
+
+Changed password for user elastic
+PASSWORD elastic = YGfgsppPByhB3IjFtFu4
+```
+### 如果报错
+```bash
+It doesn't look like the X-Pack security feature is enabled on this Elasticsearch node.
+```
+### 需要修改配置文件 elasticseach.yml 后, 重启容器
+```yaml
+http.host: 0.0.0.0
+xpack.security.enabled: true
+xpack.security.transport.ssl.enabled: true
+```
+### 看到上面最后行
+```
+Changed password for user elastic
+PASSWORD elastic = YGfgsppPByhB3IjFtFu4
+```
+### 得到elastic 的帐号: elastic ,密码: YGfgsppPByhB3IjFtFu4 将这个填入search/rpc/search.yaml 文件中
