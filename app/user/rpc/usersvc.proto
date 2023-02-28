@@ -222,18 +222,9 @@ message GetUserResp {
 }
 
 message SearchUserReq {
-  int64 page = 1; //page
-  int64 limit = 2; //limit
-  int64 id = 3; //id
   string name = 4; //name
-  string email = 5; //email
-  string phone = 6; //phone
-  string password = 7; //password
-  int64 createdAt = 8; //createdAt
-  int64 updatedAt = 9; //updatedAt
   string city = 10; //city
   string introduction = 11; //introduction
-  string avatar = 12; //avatar
 }
 
 message SearchUserResp {

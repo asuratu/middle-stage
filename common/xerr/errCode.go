@@ -15,6 +15,7 @@ const (
 	PermissionDenied          uint32 = 100008
 	JsonMarshalError          uint32 = 100009
 	AsynqEnqueueError         uint32 = 100010
+	ElasticSearchError        uint32 = 100011
 )
 
 // 用户模块

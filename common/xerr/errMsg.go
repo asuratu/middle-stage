@@ -16,6 +16,7 @@ func init() {
 	message[PermissionDenied] = "权限不足"
 	message[JsonMarshalError] = "json marshal fail"
 	message[AsynqEnqueueError] = "异步任务入队失败"
+	message[ElasticSearchError] = "es操作失败"
 
 	// 用户模块
 	message[UserNotFound] = "用户不存在"

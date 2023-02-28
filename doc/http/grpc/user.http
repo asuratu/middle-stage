@@ -88,6 +88,14 @@ GRPC localhost:5001/user.usersvc/UpdateUser
   "avatar": "http://img-shanghai.huayuanji.com/uploads/2022/04/15/aff67eb4653e3c077bc4418fdb4af393.jpg"
 }
 
+### es 查询用户
+GRPC localhost:5001/user.usersvc/SearchUser
+
+{
+  "name": "张三",
+  "city": "",
+  "introduction": ""
+}
 
 
 
