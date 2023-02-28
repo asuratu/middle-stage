@@ -4,6 +4,7 @@ package helpers
 import (
 	"crypto/rand"
 	"database/sql"
+	"encoding/base64"
 	"fmt"
 	"io"
 	mathrand "math/rand"
@@ -65,6 +66,7 @@ func FirstElement(args []string) string {
 }
 
 // RandomString 生成长度为 length 的随机字符串
+// 此函数不是加密安全的，不应用于生成密钥或其他敏感数据
 func RandomString(length int) string {
 	mathrand.Seed(time.Now().UnixNano())
 	letters := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -73,6 +75,18 @@ func RandomString(length int) string {
 		b[i] = letters[mathrand.Intn(len(letters))]
 	}
 	return string(b)
+}
+
+// SecureRandomString 生成长度为 length 的随机字符串
+// 此函数是加密安全的，可以用于生成密钥或其他敏感数据
+// 在使用此函数生成密钥或其他敏感数据时，应根据具体的应用场景和要求进行必要的安全验证和保护
+func SecureRandomString(length int) (string, error) {
+	b := make([]byte, length)
+	_, err := rand.Read(b)
+	if err != nil {
+		return "", err
+	}
+	return base64.URLEncoding.EncodeToString(b)[:length], nil
 }
 
 // StringToNullString 将 string 转为 sql.NullString
