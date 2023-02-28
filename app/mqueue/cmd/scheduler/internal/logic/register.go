@@ -19,5 +19,5 @@ func NewCronScheduler(ctx context.Context, svcCtx *svc.ServiceContext) *MqueueSc
 
 func (l *MqueueScheduler) Register() {
 	// 具体的定时任务
-	l.settleRecordScheduler()
+	//l.settleRecordScheduler()
 }

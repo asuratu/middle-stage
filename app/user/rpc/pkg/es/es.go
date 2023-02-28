@@ -1,6 +1,7 @@
 package es
 
 import (
+	"bytes"
 	"log"
 	"middle/app/user/rpc/internal/config"
 	"strings"
@@ -89,4 +90,17 @@ func (es *Es) DeleteIndex(indexName string) {
 	if response.StatusCode != 200 {
 		log.Fatalf("es delete index %s error: %v", indexName, response)
 	}
+}
+
+// Insert 索引一条数据
+func (es *Es) Insert(indexName, id string, body *bytes.Buffer) error {
+	response, err := es.Client.Create(indexName, id, body)
+	if err != nil {
+		logx.Errorf("es index: %s id: %s body %v insert error: %v", indexName, id, body, err)
+		return err
+	}
+	if response.StatusCode != 201 {
+		logx.Errorf("es index: %s id: %s body %v insert error: %v", indexName, id, body, response)
+	}
+	return nil
 }

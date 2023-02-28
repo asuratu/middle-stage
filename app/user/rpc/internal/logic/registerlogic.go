@@ -1,8 +1,15 @@
 package logic
 
 import (
+	"bytes"
 	"context"
 	"database/sql"
+	"encoding/json"
+	"middle/app/mqueue/cmd/job/jobtype"
+	"middle/app/user/rpc/pkg/es"
+	"strconv"
+
+	"github.com/hibiken/asynq"
 
 	"middle/app/user/rpc/internal/svc"
 	"middle/app/user/rpc/model"
@@ -77,6 +84,10 @@ func (l *RegisterLogic) Register(in *user.RegisterReq) (*user.TokenResp, error) 
 		return nil, err
 	}
 
+	// asynq 队列同步用户数据到es
+	_ = l.handleUserInfoJob(in)
+	_ = l.handleUserInfoEs(in, userId)
+
 	// 生成token
 	generateTokenLogic := NewGenerateTokenLogic(l.ctx, l.svcCtx)
 	tokenResp, _ := generateTokenLogic.GenerateToken(&user.GenerateTokenReq{
@@ -88,4 +99,42 @@ func (l *RegisterLogic) Register(in *user.RegisterReq) (*user.TokenResp, error) 
 		AccessExpire: tokenResp.AccessExpire,
 		RefreshAfter: tokenResp.RefreshAfter,
 	}, nil
+}
+
+func (l *RegisterLogic) handleUserInfoJob(in *user.RegisterReq) error {
+	// asynq 队列同步用户数据到es
+	payload := jobtype.RegisterUserPayload{
+		Name:         in.Name,
+		City:         in.City,
+		Introduction: in.Introduction,
+	}
+	payloadJson, err := json.Marshal(payload)
+	if err != nil {
+		logx.WithContext(l.ctx).Errorf("Register userinfo: %+v json.Marshal err:%v", payload, err)
+	} else {
+		_, err := l.svcCtx.AsynqClient.Enqueue(asynq.NewTask(jobtype.RegisterUserJob, payloadJson))
+		if err != nil {
+			logx.WithContext(l.ctx).Errorf("Register userinfo: %+v asynqClient.Enqueue err:%v", payload, err)
+		}
+	}
+	return nil
+}
+
+func (l *RegisterLogic) handleUserInfoEs(in *user.RegisterReq, id int64) error {
+	body := new(bytes.Buffer)
+	err := json.NewEncoder(body).Encode(es.User{
+		Name:         in.Name,
+		City:         in.City,
+		Introduction: in.Introduction,
+	})
+	if err != nil {
+		logx.WithContext(l.ctx).Errorf("Register userinfo: %+v json.Marshal err:%v", in, err)
+		return err
+	}
+	err = l.svcCtx.EsClient.Insert(es.UserIndexName, strconv.FormatInt(id, 10), body)
+	if err != nil {
+		logx.WithContext(l.ctx).Errorf("Es register userinfo: %+v esClient.Insert err:%v", in, err)
+		return err
+	}
+	return nil
 }

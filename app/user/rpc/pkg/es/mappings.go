@@ -1,5 +1,11 @@
 package es
 
+type User struct {
+	Name         string `json:"name"`
+	City         string `json:"city"`
+	Introduction string `json:"introduction"`
+}
+
 const (
 	UserMappings = `
 	{

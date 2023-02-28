@@ -43,12 +43,12 @@ GRPC localhost:5001/user.usersvc/VerifySmsCode
 GRPC localhost:5001/user.usersvc/Register
 
 {
-  "name": "test2183",
+  "name": "菜园子-张青",
   "email": "",
-  "phone": "00021039414",
+  "phone": "00021030004",
   "password": "123456",
-  "city": "苏州",
-  "introduction": "this is a test user",
+  "city": "山东",
+  "introduction": "this is a test user 水泊梁山",
   "avatar": "http://img-shanghai.huayuanji.com/uploads/2022/04/15/aff67eb4653e3c077bc4418fdb4af393.jpg"
 }
 
