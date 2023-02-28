@@ -1,9 +1,7 @@
 package logic
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"middle/app/user/rpc/internal/svc"
 	"middle/app/user/rpc/pkg/es"
 	"middle/app/user/rpc/user"
@@ -33,32 +31,37 @@ func (l *SearchUserLogic) SearchUser(in *user.SearchUserReq) (*user.SearchUserRe
 	// 先查询 es, 拿到 ids 再查询 mysql
 	// 构造查询的DSL,
 	// DSL的意思是Domain Specific Language，领域特定语言，是一种针对特定领域的语言，比如SQL就是一种针对数据库的DSL
-	query := map[string]interface{}{
-		"query": map[string]interface{}{
-			"bool": map[string]interface{}{
-				"should": []map[string]interface{}{
-					{
-						"match": map[string]interface{}{
-							"name": "俊义",
-						},
-					},
-					//{
-					//	"match": map[string]interface{}{
-					//		"name": "张青",
-					//	},
-					//},
-				},
-			},
+	query := `
+	{
+		"_source":{
+		  "excludes": ["introduction"]
+		}, 
+		"query": {
+		  "bool": {
+		    "should": [
+		      {
+		        "match": {
+		          "name": "俊义"
+		        }
+		      },
+		      {
+		        "match": {
+		          "name": "张青"
+		        }
+		      }
+		    ]
+		  }
 		},
+		"sort": [
+		  {
+		    "city": {
+		      "order": "desc"
+		    }
+		  }
+		]
 	}
-
-	var buf bytes.Buffer
-
-	if err := json.NewEncoder(&buf).Encode(query); err != nil {
-		return nil, errors.Wrapf(xerr.NewErrCode(xerr.JsonMarshalError), "Failed to search user err : %v , in :%+v", err, in)
-	}
-
-	rsp, err := l.svcCtx.EsClient.Search(l.ctx, es.UserIndexName, &buf)
+	`
+	rsp, err := l.svcCtx.EsClient.Search(l.ctx, es.UserIndexName, query)
 	if err != nil {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.ElasticSearchError), "Failed to search user err : %v , in :%+v", err, in)
 	}

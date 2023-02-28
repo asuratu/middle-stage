@@ -134,7 +134,11 @@ func (es *Es) Insert(indexName, id string, body *bytes.Buffer) error {
 
 // 增量更新数据
 
-func (es *Es) Search(ctx context.Context, indexName string, body *bytes.Buffer) (rsp []map[string]interface{}, err error) {
+// Search 查询数据, 未分页
+func (es *Es) Search(ctx context.Context, indexName string, query string) (rsp []map[string]interface{}, err error) {
+	body := &bytes.Buffer{}
+	body.WriteString(query)
+
 	var response *esapi.Response
 	response, err = es.Client.Search(
 		es.Client.Search.WithContext(ctx),
