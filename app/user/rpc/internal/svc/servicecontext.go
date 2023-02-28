@@ -2,12 +2,13 @@ package svc
 
 import (
 	"errors"
-	"middle/app/user/rpc/model"
-
-	"github.com/hibiken/asynq"
+	"middle/app/user/rpc/pkg/es"
 
 	"middle/app/user/rpc/internal/config"
+	"middle/app/user/rpc/model"
 
+	elastic "github.com/elastic/go-elasticsearch/v7"
+	"github.com/hibiken/asynq"
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
@@ -20,6 +21,7 @@ type ServiceContext struct {
 	Redis  *redis.Redis
 
 	AsynqClient *asynq.Client
+	EsClient    *elastic.Client
 	UserModel   model.UserModel
 }
 
@@ -33,6 +35,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		r.Pass = c.Redis.Pass
 	})
 
+	// 初始化数据库
 	sqlConn := sqlx.NewMysql(c.DB.DataSource)
 
 	return &ServiceContext{
@@ -40,6 +43,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		UserModel:   model.NewUserModel(sqlConn, c.Cache),
 		Cache:       ca,
 		Redis:       rs,
-		AsynqClient: newAsynqClient(c),
+		AsynqClient: newAsynqClient(c), // 初始化异步队列
+		EsClient:    es.Boot(c).Client, // 初始化es
 	}
 }

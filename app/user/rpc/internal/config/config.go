@@ -15,6 +15,7 @@ type Config struct {
 		DataSource string
 	}
 	JwtAuth JwtConfig
+	Es      EsConfig
 	// 业务配置
 	App        AppConfig
 	CaptConfig CaptConfig
