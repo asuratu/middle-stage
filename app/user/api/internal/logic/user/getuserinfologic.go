@@ -6,9 +6,12 @@ import (
 	"middle/app/user/api/internal/types"
 	"middle/app/user/rpc/user"
 	"middle/common/ctxdata"
+	"middle/common/xerr"
 
+	sentinel "github.com/alibaba/sentinel-golang/api"
+	"github.com/alibaba/sentinel-golang/core/base"
 	"github.com/jinzhu/copier"
-
+	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -31,10 +34,18 @@ func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoReply, err error) 
 	uid := ctxdata.GetUidFromCtx(l.ctx)
 	logx.Infof("uid: %d", uid)
 
+	// 限流
+	e, b := sentinel.Entry("test", sentinel.WithTrafficType(base.Inbound))
+	if b != nil {
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.RequestLimitError), "uid: %d", uid)
+	}
+	defer e.Exit()
+
 	// 2. 返回用户信息
 	userRsp, err := l.svcCtx.UserRpc.GetUserById(l.ctx, &user.GetUserByIdReq{
 		Id: uid,
 	})
+
 	if err != nil {
 		return nil, err
 	}

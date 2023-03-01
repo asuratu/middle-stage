@@ -16,6 +16,7 @@ const (
 	JsonMarshalError          uint32 = 100009
 	AsynqEnqueueError         uint32 = 100010
 	ElasticSearchError        uint32 = 100011
+	RequestLimitError         uint32 = 100012
 )
 
 // 用户模块

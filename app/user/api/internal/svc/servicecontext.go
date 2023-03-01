@@ -15,6 +15,9 @@ type ServiceContext struct {
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
+	// 初始化 sentinel
+	InitSentinel()
+
 	return &ServiceContext{
 		Config:  c,
 		UserRpc: usersvc.NewUsersvc(zrpc.MustNewClient(c.UserRpcConf)),

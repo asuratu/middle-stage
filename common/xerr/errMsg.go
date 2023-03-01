@@ -17,6 +17,7 @@ func init() {
 	message[JsonMarshalError] = "json marshal fail"
 	message[AsynqEnqueueError] = "异步任务入队失败"
 	message[ElasticSearchError] = "es操作失败"
+	message[RequestLimitError] = "请求过于频繁，请稍后再试"
 
 	// 用户模块
 	message[UserNotFound] = "用户不存在"
