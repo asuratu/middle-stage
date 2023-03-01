@@ -11,7 +11,8 @@ data/*
 !data/.gitkeep
 
 #public
-public/*
+public/logs/*
+public/upload/*
 
 #tmp
 app/user/rpc/tmp

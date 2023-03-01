@@ -4,6 +4,7 @@
 
 # 项目根目录
 projectPath=$(pwd)
+
 # 用户服务
 userServer=user
 userApiPath=${projectPath}/app/${userServer}/api
