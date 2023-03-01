@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"middle/common/interceptor/rpcserver"
 
-	"github.com/zeromicro/go-zero/core/logx"
-
 	"middle/app/user/rpc/internal/config"
 	"middle/app/user/rpc/internal/server"
 	"middle/app/user/rpc/internal/svc"
@@ -36,7 +34,7 @@ func main() {
 		}
 	})
 
-	logx.DisableStat()
+	//logx.DisableStat()
 
 	//rpc log
 	s.AddUnaryInterceptors(rpcserver.LoggerInterceptor)
