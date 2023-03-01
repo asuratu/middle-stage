@@ -8,7 +8,7 @@
     - [x] 队列 (asynq 做延迟队列、定时队列)
     - [x] 缓存
     - [ ] 分布式锁
-- [ ] rocketmq
+- [ ] rocketmq/kafka
     - [ ] 消息队列 (前期项目简单直接使用 asynq 做消息队列)
 - [x] etcd (服务注册发现)
 - [x] elasticsearch
