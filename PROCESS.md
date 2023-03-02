@@ -7,7 +7,6 @@
     - [ ] makefile
     - [ ] ide的配置
     - [ ] 本地安装依赖
-      - [ ] etcd (服务注册发现)``brew install etcd``
       - [ ] air (热加载)``go get -u github.com/cosmtrek/air``
 
 ### 开发流程
@@ -42,3 +41,14 @@
       - [ ] 在 logic 中编写业务代码
         - 调用 rpc 
       - [ ] 在 ide 中调试 rest-api
+- [ ] asynq 基于redis
+    - [ ] 异步任务队列, 延时队列 job
+    - [ ] 定时任务 scheduler
+- [ ] elastic
+    - [ ] 生成 mappings, 生成 index
+    - [ ] 索引数据到 es
+    - [ ] 搜索
+- [ ] sentinal
+    - [ ] 限流
+    - [ ] 熔断 框架自带
+    - [ ] 降级
