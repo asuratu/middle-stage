@@ -106,3 +106,8 @@ func RandomMobile() string {
 func CostTime(start time.Time) int64 {
 	return time.Since(start).Milliseconds()
 }
+
+// CostTimeMin 计算耗时, 单位为分钟
+func CostTimeMin(start time.Time) float64 {
+	return time.Since(start).Minutes()
+}
