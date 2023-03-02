@@ -1,0 +1,44 @@
+# MiddleStudy
+
+### 本地开发环境
+- [ ] 安装依赖
+    - [ ] docker-compose -f docker-compose-env.yml up -d
+    - [ ] 辅助脚本 deploy/script/mysql/genModel.sh
+    - [ ] makefile
+    - [ ] ide的配置
+    - [ ] 本地安装依赖
+      - [ ] etcd (服务注册发现)``brew install etcd``
+      - [ ] air (热加载)``go get -u github.com/cosmtrek/air``
+
+### 开发流程
+- [ ] rpc
+    - [ ] 生成 model
+      - [ ] 关于数据库的操作
+        - [ ] gorm
+        - [ ] 框架自带的 sqlx、sqlc
+      - [ ] 自定义 template 模板
+    - [ ] 使用 sql2pb 生成proto
+      - [ ] sql2pb地址: https://github.com/Mikaelemmmm/sql2pb
+    - [ ] ide 监听 proto 自动生成 rpc 代码
+    - [ ] 关于配置
+      - [ ] 框架自带的配置
+      - [ ] 自定义配置最佳实践
+    - [ ] svc/servicecontext.go 中的配置
+      - [ ] 框架自带的包初始化
+      - [ ] 自定义包初始化
+      - [ ] 依赖的 model 初始化
+    - [ ] 关于 handler 文件
+    - [ ] 在 logic 中编写业务代码
+      - [ ] 统一响应格式, 自定义错误码
+      - [ ] 自定义包封装和使用
+    - [ ] 在 ide 中调试 grpc
+- [ ] api
+    - [ ] 生成 .api 文件
+      - [ ] ``goctl api -o user.api``
+      - [ ] ide 监听 api文件 自动生成 api 代码
+      - [ ] 关于配置
+      - [ ] svc/servicecontext.go 中的配置
+      - [ ] 关于 handler 文件
+      - [ ] 在 logic 中编写业务代码
+        - 调用 rpc 
+      - [ ] 在 ide 中调试 rest-api
