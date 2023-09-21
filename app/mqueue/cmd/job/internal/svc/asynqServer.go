@@ -2,6 +2,7 @@ package svc
 
 import (
 	"fmt"
+
 	"middle/app/mqueue/cmd/job/internal/config"
 
 	"github.com/hibiken/asynq"
@@ -16,7 +17,7 @@ func newAsynqServer(c config.Config) *asynq.Server {
 				fmt.Printf("asynq server exec task IsFailure ======== >>>>>>>>>>>  err : %+v \n", err)
 				return true
 			},
-			Concurrency: 20, //max concurrent process job task num
+			Concurrency: 20, // max concurrent process job task num
 			// 关键队列中的任务将被处理 60% 的时间
 			// 默认队列中的任务将被处理 30% 的时间
 			// 低队列中的任务将被处理 10% 的时间

@@ -44,7 +44,6 @@ killall air
 AsynqServer "job" "${asynqJobPath}"
 AsynqServer "scheduler" "${asynqSchedulerPath}"
 
-#用户服务
+#用户服务.
 RpcServer "${userServer}" "${userRpcPath}"
 ApiServer "${userServer}" "${userApiPath}"
-

@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+
 	"middle/app/mqueue/cmd/job/internal/svc"
 	"middle/app/mqueue/cmd/job/jobtype"
 
@@ -25,19 +26,19 @@ func (l *CronJob) Register() *asynq.ServeMux {
 
 	mux := asynq.NewServeMux()
 
-	//test queue job
+	// test queue job
 	mux.Handle(jobtype.JobTestQueue, NewTestQueueHandler(l.svcCtx))
 
-	//scheduler job
-	//mux.Handle(jobtype.ScheduleSettleRecord, NewSettleRecordHandler(l.svcCtx))
+	// scheduler job
+	// mux.Handle(jobtype.ScheduleSettleRecord, NewSettleRecordHandler(l.svcCtx))
 
-	//defer job
+	// defer job
 	mux.Handle(jobtype.RegisterUserJob, NewRegisterHandler(l.svcCtx))
 
-	//defer job
-	//mux.Handle(jobtype.DeferCloseHomestayOrder, NewCloseHomestayOrderHandler(l.svcCtx))
+	// defer job
+	// mux.Handle(jobtype.DeferCloseHomestayOrder, NewCloseHomestayOrderHandler(l.svcCtx))
 
-	//queue job , asynq support queue job
+	// queue job , asynq support queue job
 	// wait you fill
 
 	return mux

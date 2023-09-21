@@ -2,13 +2,12 @@ package user
 
 import (
 	"context"
-	"middle/app/user/rpc/user"
-
-	"github.com/jinzhu/copier"
 
 	"middle/app/user/api/internal/svc"
 	"middle/app/user/api/internal/types"
+	"middle/app/user/rpc/user"
 
+	"github.com/jinzhu/copier"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -37,5 +36,9 @@ func (l *GetUserInfoByIdLogic) GetUserInfoById(req *types.UserInfoByIdReq) (resp
 
 	resp = &types.UserInfoReply{}
 	err = copier.Copy(resp, userRsp.User)
+
+	// spew.Dump(resp)
+	//
+
 	return
 }
